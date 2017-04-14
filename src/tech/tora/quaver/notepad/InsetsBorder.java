@@ -6,15 +6,15 @@ import java.awt.Insets;
 
 public class InsetsBorder implements javax.swing.border.Border {
 
-	private Insets i;
+	private Insets insets;
 	
 	public InsetsBorder(Insets insets) {
-		this.i = insets;
+		this.insets = insets;
 	}
 	
 	@Override
 	public Insets getBorderInsets(Component arg0) {
-		return i;
+		return insets;
 	}
 
 	@Override
