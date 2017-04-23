@@ -4,16 +4,19 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
+import tech.tora.quaver.config.Settings;
+import tech.tora.quaver.notepad.Interface;
+
 public class Launcher {
 
+	public static Settings globalSettings;
+	
 	public Launcher() {
 		
 		System.out.println("Launching");
 		
 		if (fileExists("res/config.json")) {
 			System.out.println("Config File Found");
-			
-			
 			
 		} else {
 			System.out.println("Config File Not Found");
@@ -26,7 +29,7 @@ public class Launcher {
 					System.out.println("Creating New Config File");
 					
 					if (createConfigFile()) {
-						// Go to interface with details
+						new Interface();
 					} else {
 						Launcher.exit(0, "Failed to create config file");
 					}
@@ -59,7 +62,7 @@ public class Launcher {
 	
 	private boolean createConfigFile() {
 		
-		return false;
+		return true;
 	}
 	
 	
