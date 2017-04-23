@@ -25,6 +25,14 @@ public class SelectionListNode extends JPanel {
 	private int width = 300;
 	private int height = 58;
 	
+	private int borderCol = 200;
+	private int fillCol = 230;
+	private int hoverFillCol = 210;
+
+	private Color borderColour = new Color(borderCol, borderCol, borderCol);
+	private Color fillColour = new Color(fillCol, fillCol, fillCol);
+	private Color hoverFillColour = new Color(hoverFillCol, hoverFillCol, hoverFillCol);
+	
 	public SelectionListNode(SelectionList parent, String title, String subtitle) {
 		this.parentList = parent;
 		setLayout(new BorderLayout());
@@ -32,8 +40,8 @@ public class SelectionListNode extends JPanel {
 		setPreferredSize(new Dimension(width, height));
 		setMinimumSize(new Dimension(width, height));
 		setMaximumSize(new Dimension(width, height));
-		setBackground(new Color(230, 230, 230));
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(200, 200, 200)));
+		setBackground(fillColour);
+		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, borderColour));
 		
 		JLabel label1 = new JLabel(title);
 		label1.setFont(new Font("Helvetica", Font.BOLD, 14));
@@ -50,7 +58,7 @@ public class SelectionListNode extends JPanel {
 		node1padded.setPreferredSize(new Dimension(width, height));
 		node1padded.setMinimumSize(new Dimension(width, height));
 		node1padded.setMaximumSize(new Dimension(width, height));
-		node1padded.setBackground(new Color(230, 230, 230));
+		node1padded.setBackground(fillColour);
 		node1padded.add(label1, BorderLayout.NORTH);
 		node1padded.add(label2, BorderLayout.SOUTH);
 		
@@ -62,26 +70,27 @@ public class SelectionListNode extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("Clicked");
+				parent.setColours(230, 140);
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+				parent.setColours(100, 100);
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				node1padded.setBackground(new Color(230, 230, 230));
-				setBackground(new Color(230, 230, 230));
+				node1padded.setBackground(fillColour);
+				setBackground(fillColour);
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				node1padded.setBackground(new Color(210, 210, 210));
-				setBackground(new Color(210, 210, 210));
+				node1padded.setBackground(hoverFillColour);
+				setBackground(hoverFillColour);
 			}
 			
 			@Override
