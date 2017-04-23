@@ -2,7 +2,7 @@ package tech.tora.quaver;
 
 import java.io.File;
 
-import tech.tora.quaver.notepad.Interface;
+import javax.swing.JOptionPane;
 
 public class Launcher {
 
@@ -18,25 +18,30 @@ public class Launcher {
 		} else {
 			System.out.println("Config File Not Found");
 			
-			new Interface();
+			int failedConfigDialog = JOptionPane.showConfirmDialog(null, "The config file could not be found.\nA fresh config file can be created.\nCreate now?", "Config File Not Found", JOptionPane.OK_CANCEL_OPTION);
+
+			switch (failedConfigDialog) {
+				case 0:
+					// create config file
+					System.out.println("Creating New Config File");
+					
+					if (createConfigFile()) {
+						// Go to interface with details
+					} else {
+						Launcher.exit(0, "Failed to create config file");
+					}
+					
+					break;
+				case 2:
+					Launcher.exit(0, "Closing as no config file found and no new one created");
+					break;
+				default:
+					System.out.println("Trancendence");
+					Launcher.exit(0, "Somehow entered default state in Launcher Switch Case");
+					break;
+			}
 			
-//			int failedConfigDialog = JOptionPane.showConfirmDialog(null, "The config file could not be found.\nA fresh config file can be created.\nCreate now?", "Config File Not Found", JOptionPane.OK_CANCEL_OPTION);
-//
-//			switch (failedConfigDialog) {
-//				case 0:
-//					// create config file
-//					System.out.println("Creating New Config File");
-//					
-//					break;
-//				case 2:
-//					Launcher.exit(0, "Closing as no config file found and no new one created");
-//					break;
-//				default:
-//					System.out.println("Trancendence");
-//					break;
-//			}
-			
-		}
+		} // End If
 		
 	}
 	
@@ -52,6 +57,11 @@ public class Launcher {
 		else return false;
 	}
 	
+	private boolean createConfigFile() {
+		
+		return false;
+	}
+	
 	
 	
 	public static void main(String[] args) {
@@ -59,7 +69,7 @@ public class Launcher {
 	}
 
 	public static void exit(int status, String reason) {
-		System.out.println("Exiting: " + reason);
+		System.err.println("Exiting: " + reason);
 		System.exit(status);
 	}
 	
