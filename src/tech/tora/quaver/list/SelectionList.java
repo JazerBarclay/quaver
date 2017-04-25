@@ -20,8 +20,7 @@ public class SelectionList extends JPanel {
 	private JScrollPane scrollPane;
 
 	// Grey colour fill
-	private int borderCol = 140;
-	private int fillCol = 230;
+	private int fillCol = 230, borderCol = 140;
 	
 	private Color borderColour = new Color(borderCol, borderCol, borderCol);
 	private Color fillColour = new Color(fillCol, fillCol, fillCol);
@@ -41,9 +40,7 @@ public class SelectionList extends JPanel {
 		scrollPane.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, borderColour));
 		
 		this.add(scrollPane);
-		
-//		containerPane.add(new ListNode(this, "Javascript to JSON Test", "10 Jan, 2017"));
-		
+				
 	}
 	
 	public SelectionList() {

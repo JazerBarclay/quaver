@@ -68,27 +68,23 @@ public class SelectionListNode extends JPanel {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("Clicked");
-				parent.setColours(230, 140);
+//				parent.setColours(230, 140);
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				parent.setColours(100, 100);
+//				parent.setColours(100, 100);
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
 				node1padded.setBackground(fillColour);
 				setBackground(fillColour);
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
 				node1padded.setBackground(hoverFillColour);
 				setBackground(hoverFillColour);
 			}
@@ -96,7 +92,6 @@ public class SelectionListNode extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 		});
 		
