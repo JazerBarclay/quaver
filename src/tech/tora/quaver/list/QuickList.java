@@ -36,8 +36,6 @@ public class QuickList extends JPanel {
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		
 		this.add(scrollPane);
-
-
 		
 		int width=200, height=30;
 		

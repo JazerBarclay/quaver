@@ -2,10 +2,8 @@ package tech.tora.quaver.list;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -75,26 +73,22 @@ public class QuickListNode extends JPanel {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("Clicked");
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
 				node1padded.setBackground(new Color(230, 230, 230));
 				setBackground(new Color(230, 230, 230));
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
 				node1padded.setBackground(new Color(210, 210, 210));
 				setBackground(new Color(210, 210, 210));
 			}
@@ -102,7 +96,6 @@ public class QuickListNode extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 		});
 		
