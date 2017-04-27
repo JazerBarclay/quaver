@@ -27,7 +27,7 @@ public abstract class AddButton extends JPanel implements MouseInputListener {
 		add(notesTopLeftAddNote);
 	}
 
-	public abstract void onMouseClick();
+//	public abstract void onMouseClick();
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
@@ -49,10 +49,10 @@ public abstract class AddButton extends JPanel implements MouseInputListener {
 		// Do Nothing
 	}
 
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		onMouseClick();
-	}
+//	@Override
+//	public void mouseReleased(MouseEvent arg0) {
+//		onMouseClick();
+//	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
