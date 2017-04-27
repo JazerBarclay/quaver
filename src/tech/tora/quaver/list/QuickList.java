@@ -24,12 +24,9 @@ public class QuickList extends JPanel {
 	public QuickList(String sectionTitle) {
 		
 		setLayout(new BorderLayout());
-//		setBackground(new Color(20, 230, 230));
 		setOpaque(false);
 		
 		containerPane = new JPanel();
-		containerPane.setBackground(new Color(230, 230, 230));
-//		containerPane.setOpaque(false);
 		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
 
 		scrollPane = new JScrollPane(containerPane);
@@ -37,8 +34,6 @@ public class QuickList extends JPanel {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-//		scrollPane.setBackground(new Color(20, 230, 230));
-//		scrollPane.setOpaque(false);
 		
 		this.add(scrollPane);
 		
@@ -55,7 +50,6 @@ public class QuickList extends JPanel {
 		titleSectionPadded.setPreferredSize(new Dimension(width, height));
 		titleSectionPadded.setMinimumSize(new Dimension(width, height));
 		titleSectionPadded.setMaximumSize(new Dimension(width, height));
-//		titleSectionPadded.setBackground(new Color(20, 230, 230));
 		titleSectionPadded.setOpaque(false);
 		titleSectionPadded.add(label1, BorderLayout.NORTH);
 		JPanel titleSection = new JPanel();
@@ -64,7 +58,6 @@ public class QuickList extends JPanel {
 		titleSection.setPreferredSize(new Dimension(width, height));
 		titleSection.setMinimumSize(new Dimension(width, height));
 		titleSection.setMaximumSize(new Dimension(width, height));
-//		titleSection.setBackground(new Color(20, 230, 230));
 		titleSection.setOpaque(false);
 		titleSection.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(200, 200, 200)));
 		titleSection.add(titleSectionPadded);
@@ -79,6 +72,14 @@ public class QuickList extends JPanel {
 	
 	public void addNode(QuickListNode node) {
 		containerPane.add(node);
+	}
+
+	public void setFillColor(Color fillColor) {
+		containerPane.setBackground(fillColor);
+	}
+	
+	public void setHoverColor(Color fillColor) {
+		containerPane.setBackground(fillColor);
 	}
 	
 }
