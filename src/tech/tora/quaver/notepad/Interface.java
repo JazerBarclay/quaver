@@ -4,20 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.text.DefaultCaret;
-
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.list.QuickList;
 import tech.tora.quaver.list.QuickListNode;
@@ -35,30 +27,34 @@ public class Interface extends JFrame {
 
 	// Window Management
 
-	JPanel wrapperPane;
-	JPanel leftWrapper;
-	JPanel rightWrapper;
+	private JPanel wrapperPane;
+	private JPanel leftWrapper;
+	private JPanel rightWrapper;
 
-	JPanel bookPane;
-	JPanel bookTopPane;
-	JLabel bookTopLabel;
-	JPanel bookBotPane;
-	JPanel bookBotPaneLabel;
+	private JPanel bookPane;
+	private JPanel bookTopPane;
+	private JLabel bookTopLabel;
+	private JPanel bookBotPane;
+	private JPanel bookBotPaneLabel;
+	
+	private JPanel notesPane;
+	private JPanel notesTopPane;
+	private JLabel notesTopTitle;
+	private JLabel notesTopRightFill;
+	private JPanel notesBotPane;
 
-	JPanel notesPane;
-	JPanel notesTopPane;
-	JLabel notesTopTitle;
-	JLabel notesTopRightFill;
-	JPanel notesBotPane;
+	private JPanel rightTopPane;
+	private JPanel rightBotPane;
+
+	private EditAreaThing editArea;
 	
-	JPanel rightTopPane;
+	private QuickList notebooksList;
+	private SelectionList notesList;
 	
-	EditAreaThing editArea;
-	
-//	JEditorPane previewArea;
-	
-	QuickList notebooksList;
-	SelectionList notesList;
+	// Interface Colours
+	public Color bookFillColour = new Color(20, 230, 230);
+	public Color notesFillColour = new Color(230, 230, 230);
+	public Color previewEditFillColour = new Color(230, 230, 230);
 	
 	public Interface() {
 		if (initialiseNotebookAndNotes()) {
@@ -74,10 +70,12 @@ public class Interface extends JFrame {
 	private void initLayout() {
 
 		notebooksList = new QuickList("Notebooks");
+		notebooksList.setFillColor(bookFillColour);
+		notebooksList.setHoverColor(bookFillColour);
 		notesList = new SelectionList();
 		
 		bookPane = new JPanel(new BorderLayout());
-		bookPane.setBackground(new Color(230, 230, 230));
+		bookPane.setBackground(bookFillColour);
 		bookPane.add(notebooksList, BorderLayout.CENTER);
 
 		bookTopLabel = new JLabel();
@@ -88,18 +86,19 @@ public class Interface extends JFrame {
 
 		bookTopPane = new JPanel(new BorderLayout());
 		bookTopPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(140, 140, 140)));
-//		bookTopPane.setBackground(new Color(230, 230, 230));
 		bookTopPane.setOpaque(false);
+		
 		bookTopPane.add(bookTopLabel, BorderLayout.NORTH);
 		bookPane.add(bookTopPane, BorderLayout.NORTH);
 
 		bookBotPane = new JPanel(new BorderLayout());
-//		bookBotPane.setBackground(new Color(230, 230, 230));
 		bookBotPane.setOpaque(false);
+		
 		bookPane.add(bookBotPane, BorderLayout.SOUTH);
 
 		notesPane = new JPanel(new BorderLayout());
 		notesPane.setBackground(new Color(230, 230, 230));
+		
 		notesPane.add(notesList, BorderLayout.CENTER);
 
 		notesTopTitle = new JLabel();
@@ -178,17 +177,28 @@ public class Interface extends JFrame {
 		
 		notesTopPane.add(new AddButton() {
 			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void onMouseClick() {
+//				System.out.println("Create New Note for [NOTEBOOK HERE]");
+//			}
 			@Override
-			public void onMouseClick() {
-				System.out.println("Create New Note for [NOTEBOOK HERE]");
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 		}, BorderLayout.WEST);
 	
 		bookBotPane.add(new AddButton() {
 			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void onMouseClick() {
+//				System.out.println("Add Button Clicked");
+//			}
+
 			@Override
-			public void onMouseClick() {
-				System.out.println("Add Button Clicked");
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 		}, BorderLayout.WEST);
 		
