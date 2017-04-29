@@ -20,14 +20,32 @@ public class QuickList extends JPanel {
 	
 	private JPanel containerPane;
 	private JScrollPane scrollPane;
-
-	public QuickList(String sectionTitle) {
+	
+	protected String title;
+	protected Color fontColor;
+	protected Color fillColor;
+	protected Color hoverColor;
+	protected Font titleFont, label1Font, label2Font;
+	
+	protected QuickListNode selected = null;
+	
+	public QuickList(String sectionTitle, Color fontColor, Color fillColor, Color hoverColor, Font titleFont, Font label1Font, Font label2Font) {
+		
+		this.title = sectionTitle;
+		this.fontColor = fontColor;
+		this.fillColor = fillColor;
+		this.hoverColor = hoverColor;
+		this.titleFont = titleFont;
+		this.label1Font = label1Font;
+		this.label2Font = label2Font;
 		
 		setLayout(new BorderLayout());
-		setOpaque(false);
+//		setBackground(fillColor);
+//		setOpaque(false);
 		
 		containerPane = new JPanel();
 		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
+		containerPane.setBackground(fillColor);
 
 		scrollPane = new JScrollPane(containerPane);
 //		scrollPane = new JScrollPane(containerPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -40,8 +58,8 @@ public class QuickList extends JPanel {
 		int width=200, height=30;
 		
 		JLabel label1 = new JLabel(sectionTitle);
-		label1.setFont(new Font("Helvetica", Font.BOLD, 14));
-		label1.setForeground(new Color(40, 40, 40));
+		label1.setFont(titleFont);
+		label1.setForeground(fontColor);
 		
 		JPanel titleSectionPadded = new JPanel();
 		titleSectionPadded.setLayout(new BorderLayout());
@@ -66,8 +84,8 @@ public class QuickList extends JPanel {
 		
 	}
 	
-	public QuickList() {
-		this("");
+	public QuickList(Color fontColor, Color fillColor, Color hoverColor,Font titleFont, Font label1Font, Font label2Font) {
+		this("", fontColor, fillColor, hoverColor, titleFont, label1Font, label2Font);
 	}
 	
 	public void addNode(QuickListNode node) {

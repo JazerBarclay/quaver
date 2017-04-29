@@ -3,7 +3,6 @@ package tech.tora.quaver.list;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -40,12 +39,12 @@ public class QuickListNode extends JPanel {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(200, 200, 200)));
 		
 		JLabel label1 = new JLabel("  " + title);
-		label1.setFont(new Font("Helvetica", Font.BOLD, 12));
-		label1.setForeground(new Color(40, 40, 40));
+		label1.setFont(parent.label1Font);
+		label1.setForeground(parent.fontColor);
 
 		JLabel label2 = new JLabel(rightSide);
-		label2.setFont(new Font("Helvetica", Font.BOLD, 12));
-		label2.setForeground(new Color(40, 40, 40));
+		label2.setFont(parent.label2Font);
+		label2.setForeground(parent.fontColor);
 		
 		JPanel node1padded = new JPanel();
 		node1padded.setLayout(new BorderLayout());
@@ -54,7 +53,7 @@ public class QuickListNode extends JPanel {
 		node1padded.setPreferredSize(new Dimension(width, height));
 		node1padded.setMinimumSize(new Dimension(width, height));
 		node1padded.setMaximumSize(new Dimension(width, height));
-		node1padded.setBackground(new Color(230, 230, 230));
+		node1padded.setBackground(parent.fillColor);
 		node1padded.add(label1, BorderLayout.CENTER);
 		node1padded.add(label2, BorderLayout.EAST);
 		
@@ -83,14 +82,14 @@ public class QuickListNode extends JPanel {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				node1padded.setBackground(new Color(230, 230, 230));
-				setBackground(new Color(230, 230, 230));
+				node1padded.setBackground(parent.fillColor);
+				setBackground(parent.fillColor);
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				node1padded.setBackground(new Color(210, 210, 210));
-				setBackground(new Color(210, 210, 210));
+				node1padded.setBackground(parent.hoverColor);
+				setBackground(parent.hoverColor);
 			}
 			
 			@Override

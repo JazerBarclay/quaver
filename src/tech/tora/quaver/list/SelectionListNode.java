@@ -25,13 +25,13 @@ public class SelectionListNode extends JPanel {
 	private int width = 300;
 	private int height = 58;
 	
-	private int borderCol = 200;
-	private int fillCol = 230;
-	private int hoverFillCol = 210;
-
-	private Color borderColour = new Color(borderCol, borderCol, borderCol);
-	private Color fillColour = new Color(fillCol, fillCol, fillCol);
-	private Color hoverFillColour = new Color(hoverFillCol, hoverFillCol, hoverFillCol);
+//	private int borderCol = 200;
+//	private int fillCol = 230;
+//	private int hoverFillCol = 210;
+//
+//	private Color borderColour = new Color(borderCol, borderCol, borderCol);
+//	private Color fillColour = new Color(fillCol, fillCol, fillCol);
+//	private Color hoverFillColour = new Color(hoverFillCol, hoverFillCol, hoverFillCol);
 	
 	public SelectionListNode(SelectionList parent, String title, String subtitle) {
 		this.parentList = parent;
@@ -40,16 +40,16 @@ public class SelectionListNode extends JPanel {
 		setPreferredSize(new Dimension(width, height));
 		setMinimumSize(new Dimension(width, height));
 		setMaximumSize(new Dimension(width, height));
-		setBackground(fillColour);
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, borderColour));
+		setBackground(parent.fillColour);
+		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(210, 210, 210)));
 		
 		JLabel label1 = new JLabel(title);
 		label1.setFont(new Font("Helvetica", Font.BOLD, 14));
-		label1.setForeground(new Color(40, 40, 40));
+		label1.setForeground(parent.fontColor);
 		
 		JLabel label2 = new JLabel(subtitle);
 		label2.setFont(new Font("Helvetica", Font.PLAIN, 10));
-		label2.setForeground(new Color(70, 70, 70));
+		label2.setForeground(new Color(parent.fontColor.getRed(), parent.fontColor.getBlue(), parent.fontColor.getGreen()));
 		
 		JPanel node1padded = new JPanel();
 		node1padded.setLayout(new BorderLayout());
@@ -58,7 +58,7 @@ public class SelectionListNode extends JPanel {
 		node1padded.setPreferredSize(new Dimension(width, height));
 		node1padded.setMinimumSize(new Dimension(width, height));
 		node1padded.setMaximumSize(new Dimension(width, height));
-		node1padded.setBackground(fillColour);
+		node1padded.setBackground(parent.fillColour);
 		node1padded.add(label1, BorderLayout.NORTH);
 		node1padded.add(label2, BorderLayout.SOUTH);
 		
@@ -79,14 +79,14 @@ public class SelectionListNode extends JPanel {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				node1padded.setBackground(fillColour);
-				setBackground(fillColour);
+				node1padded.setBackground(parent.fillColour);
+				setBackground(parent.fillColour);
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				node1padded.setBackground(hoverFillColour);
-				setBackground(hoverFillColour);
+				node1padded.setBackground(parent.hoverColor);
+				setBackground(parent.hoverColor);
 			}
 			
 			@Override

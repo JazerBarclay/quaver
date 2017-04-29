@@ -2,6 +2,7 @@ package tech.tora.quaver.list;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -20,12 +21,20 @@ public class SelectionList extends JPanel {
 	private JScrollPane scrollPane;
 
 	// Grey colour fill
-	private int fillCol = 230, borderCol = 140;
+
+	protected Color fontColor, fillColour, hoverColor, borderColour;
+	protected Font label1Font, label2Font;
 	
-	private Color borderColour = new Color(borderCol, borderCol, borderCol);
-	private Color fillColour = new Color(fillCol, fillCol, fillCol);
 	
-	public SelectionList(String sectionTitle) {
+	public SelectionList(String sectionTitle, Color fontColor, Color fillColor, Color hoverColor, Color borderColor, Font label1Font, Font label2Font) {
+		
+		this.fontColor = fontColor;
+		this.fillColour = fillColor;
+		this.hoverColor = hoverColor;
+		this.borderColour = borderColor;
+		
+		this.label1Font = label1Font;
+		this.label2Font = label2Font;
 		
 		setLayout(new BorderLayout());
 		
@@ -43,8 +52,8 @@ public class SelectionList extends JPanel {
 				
 	}
 	
-	public SelectionList() {
-		this("");
+	public SelectionList(Color fontColor, Color fillColor, Color hoverColor, Color borderColor, Font label1Font, Font label2Font) {
+		this("", fontColor, fillColor, hoverColor, borderColor, label1Font, label2Font);
 	}
 	
 	public void addNode(SelectionListNode node) {
