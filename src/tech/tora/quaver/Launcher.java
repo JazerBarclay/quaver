@@ -5,6 +5,7 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import tech.tora.quaver.config.Settings;
+import tech.tora.quaver.config.SettingsManager;
 import tech.tora.quaver.notepad.Interface;
 
 public class Launcher {
@@ -14,9 +15,12 @@ public class Launcher {
 	public Launcher() {
 		
 		System.out.println("Launching");
+		System.out.println(System.getProperty("os.name"));
 		
 		if (fileExists("res/config.json")) {
 			System.out.println("Config File Found");
+			
+			// TODO read in config file
 			
 		} else {
 			System.out.println("Config File Not Found");
@@ -60,9 +64,48 @@ public class Launcher {
 		else return false;
 	}
 	
+	/**
+	 * Simple check if a file exists
+	 * 
+	 * @param location - path to file
+	 * @return Returns true if the file exists
+	 */
+	public boolean dirExists(String location) {
+		File f = new File(location);
+		if(f.exists() && f.isDirectory()) return true;
+		else return false;
+	}
+	
 	private boolean createConfigFile() {
 		
-		return true;
+		Settings tmpSettings = new Settings();
+		
+		String configName = JOptionPane.showInputDialog(null, 
+				"Please enter the name of this configuration", "Configuration Settings", JOptionPane.NO_OPTION);
+		
+		String firstNotebookName = null;
+		while (firstNotebookName != null) {
+			firstNotebookName = JOptionPane.showInputDialog(null, 
+				"Please enter the name of your first notebook", "Create your first notebook", JOptionPane.NO_OPTION);
+		}
+		String firstNotebookLocation = JOptionPane.showInputDialog(null, 
+				"Please enter the location of your notebook", "Create your first notebook", JOptionPane.NO_OPTION);
+
+		// Drop the last character if its a / or a \\
+		if (firstNotebookLocation.substring(firstNotebookLocation.length()-1, firstNotebookLocation.length()).equals("/") || 
+				firstNotebookLocation.substring(firstNotebookLocation.length()-1, firstNotebookLocation.length()).equals("\\")) {
+			firstNotebookLocation = firstNotebookLocation.substring(0, firstNotebookLocation.length()-1);
+		}
+		
+		tmpSettings.settings_title= configName;
+		
+//		if (dirExists()) {
+//			
+//		}
+		
+		tmpSettings.notebooks = new String[] {firstNotebookLocation + "/" + firstNotebookName + ".qvnotebook"};
+		
+		return false;
 	}
 	
 	

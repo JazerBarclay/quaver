@@ -55,32 +55,32 @@ public class Interface extends JFrame {
 				new Font("Helvetica", Font.BOLD, 14), new Font("Helvetica", Font.BOLD, 10)); // N L1, N L2
 		
 		// Testing Layout
-		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Java Notebook", "4"));
-		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Linux Handbook", "0"));
-		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Research Notes", "23"));
+//		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Java Notebook", "4"));
+//		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Linux Handbook", "0"));
+//		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Research Notes", "23"));
+//		
+//		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "Seeker", "10 Jan, 2016"));
+//		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "Spirit", "24 Mar, 2014"));
+//		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "Sage", "10 Jun, 2010"));
+//		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "True", "14 Jan, 2013"));
 		
-		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "Seeker", "10 Jan, 2016"));
-		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "Spirit", "24 Mar, 2014"));
-		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "Sage", "10 Jun, 2010"));
-		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "True", "14 Jan, 2013"));
 		
-		
-		layout.getNotesTopPane().add(new AddButton() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				System.out.println("Create New Note for [NOTEBOOK HERE]");
-			}
-		}, BorderLayout.WEST);
-	
-		layout.getBookBotPane().add(new AddButton() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				System.out.println("Add Button Clicked");
-			}
-		}, BorderLayout.WEST);
+//		layout.getNotesTopPane().add(new AddButton() {
+//			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void mouseReleased(MouseEvent arg0) {
+//				System.out.println("Create New Note for [NOTEBOOK HERE]");
+//			}
+//		}, BorderLayout.WEST);
+//	
+//		layout.getBookBotPane().add(new AddButton() {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public void mouseReleased(MouseEvent e) {
+//				System.out.println("Add Button Clicked");
+//			}
+//		}, BorderLayout.WEST);
 		
 
 //		editArea = new EditAreaThing() {
@@ -105,7 +105,7 @@ public class Interface extends JFrame {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		setContentPane(layout.getWrapperPane());
+		setContentPane(layout.wrapperPane);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setTitle("Quaver");
