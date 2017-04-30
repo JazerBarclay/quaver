@@ -2,23 +2,20 @@ package tech.tora.quaver.notepad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import org.json.simple.parser.ParseException;
+
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.list.QuickList;
-import tech.tora.quaver.list.QuickListNode;
-import tech.tora.quaver.list.SelectionList;
-import tech.tora.quaver.list.SelectionListNode;
 import tech.tora.quaver.notepad.widget.AddButton;
 import tech.tora.quaver.notepad.widget.EditAreaThing;
 import tech.tora.quaver.notepad.widget.LayoutBuilder;
+import tech.tora.quaver.structures.NotebookManager;
 
 public class Interface extends JFrame {
 
@@ -33,14 +30,26 @@ public class Interface extends JFrame {
 	public Color notesFillColour = new Color(230, 230, 230);
 	public Color previewEditFillColour = new Color(230, 230, 230);
 	
+	public EditAreaThing editArea;
+	
 	public Interface() {
 		if (initialiseNotebookAndNotes()) {
 			initLayout();
-		} else 
-			Launcher.exit(1, "Failed to generate UI");
+		} else Launcher.exit(1, "Failed to generate UI");
 	}
 	
 	private boolean initialiseNotebookAndNotes() {
+		
+		for (String n : Launcher.globalSettings.notebooks) {
+			try {
+				System.out.println(n);
+				NotebookManager.readConfigJSON(n);
+			} catch (IOException | ParseException e) {
+				e.printStackTrace();
+				Launcher.exit(1, "Failed to read notebook: " + n);
+			}
+		}
+		
 		return true;
 	}
 	
@@ -54,6 +63,7 @@ public class Interface extends JFrame {
 				new Font("Helvetica", Font.BOLD, 12), new Font("Helvetica", Font.BOLD, 12),  // NB L1, NB L2
 				new Font("Helvetica", Font.BOLD, 14), new Font("Helvetica", Font.BOLD, 10)); // N L1, N L2
 		
+
 		// Testing Layout
 //		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Java Notebook", "4"));
 //		layout.getNotebooksList().addNode(new QuickListNode(layout.getNotebooksList(), "", "Linux Handbook", "0"));
@@ -64,40 +74,39 @@ public class Interface extends JFrame {
 //		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "Sage", "10 Jun, 2010"));
 //		layout.getNotesList().addNode(new SelectionListNode(layout.getNotesList(), "True", "14 Jan, 2013"));
 		
-		
-//		layout.getNotesTopPane().add(new AddButton() {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void mouseReleased(MouseEvent arg0) {
-//				System.out.println("Create New Note for [NOTEBOOK HERE]");
-//			}
-//		}, BorderLayout.WEST);
-//	
-//		layout.getBookBotPane().add(new AddButton() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//				System.out.println("Add Button Clicked");
-//			}
-//		}, BorderLayout.WEST);
+		layout.getNotesTopPane().add(new AddButton() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				System.out.println("Create New Note for [NOTEBOOK HERE]");
+			}
+		}, BorderLayout.WEST);
+	
+		layout.getBookBotPane().add(new AddButton() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				System.out.println("Add Button Clicked");
+			}
+		}, BorderLayout.WEST);
 		
 
-//		editArea = new EditAreaThing() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void onSave() {
-//				System.out.println("Saving");
-//			}
-//
-//			@Override
-//			public void onChange() {
-//				System.out.println("Changed");
-//			}
-//		};
+		editArea = new EditAreaThing() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onSave() {
+				System.out.println("Saving");
+			}
+
+			@Override
+			public void onChange() {
+				System.out.println("Changed");
+			}
+		};
 		
-//		layout.getRightWrapper().add(editArea, BorderLayout.CENTER);
+		layout.getRightWrapper().add(editArea, BorderLayout.CENTER);
 		
 		
 		try {
@@ -105,7 +114,7 @@ public class Interface extends JFrame {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		setContentPane(layout.wrapperPane);
+		setContentPane(layout.getWrapperPane());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setTitle("Quaver");
