@@ -21,10 +21,10 @@ public class LayoutBuilder {
 	private Color notebookFillColor, notebookHoverFillColor, notesFillColor, notesHoverFillColor, editPreviewFillColor, borderColor;
 	private Font notebookTitleFont, notebookL1Font, notebookL2Font, notesL1Font, notesL2Font;
 	
-	public JPanel wrapperPane;
+	private JPanel wrapperPane;
 	
-	public JPanel leftWrapper;
-	public JPanel rightWrapper;
+	private JPanel leftWrapper;
+	private JPanel rightWrapper;
 
 	public JPanel bookPane;
 	public JPanel bookTopPane;
@@ -55,8 +55,8 @@ public class LayoutBuilder {
 			Font notebookTitleFont, Font notebookL1Font, Font notebookL2Font, Font notesL1Font, Font notesL2Font) {
 		
 		// Init Variables
-		this.setNotebookWidth(notebooksWidth);
-		this.setNotesWidth(notesWidth);
+		this.notebookWidth = notebooksWidth;
+		this.notesWidth = notesWidth;
 
 		this.fontColor = fontColor;
 		this.notebookFillColor = notebookFillColor;
@@ -176,6 +176,7 @@ public class LayoutBuilder {
 	/** Generated Getters and Setters **/
 	/* TODO Deal with adding updates to the form on changes */
 	
+	/* Widths */
 	
 	/**
 	 * @return the notebookWidth
@@ -189,6 +190,7 @@ public class LayoutBuilder {
 	 */
 	public void setNotebookWidth(int notebookWidth) {
 		this.notebookWidth = notebookWidth;
+		bookTopLabel.setPreferredSize(new Dimension(notebookWidth, 30));
 	}
 
 	/**
@@ -203,7 +205,93 @@ public class LayoutBuilder {
 	 */
 	public void setNotesWidth(int notesWidth) {
 		this.notesWidth = notesWidth;
+	}	
+	
+	/* Panels */
+	
+	/**
+	 * @return the wrapperPane
+	 */
+	public JPanel getWrapperPane() {
+		return this.wrapperPane;
+	}
+	
+	/**
+	 * @return the leftWrapper
+	 */
+	public JPanel getLeftWrapper() {
+		return this.leftWrapper;
+	}
+	
+	/**
+	 * @return the rightWrapper
+	 */
+	public JPanel getRightWrapper() {
+		return this.rightWrapper;
+	}
+	
+	/**
+	 * @return the bookPane
+	 */
+	public JPanel getBookPane() {
+		return this.bookPane;
+	}
+	
+	/**
+	 * @return the bookTopPane
+	 */
+	public JPanel getBookTopPane() {
+		return this.bookTopPane;
+	}
+	
+	/**
+	 * @return the bookBotPane
+	 */
+	public JPanel getBookBotPane() {
+		return this.bookBotPane;
+	}
+	
+	/**
+	 * @return the bookTopLabel
+	 */
+	public JLabel getBookTopLabel() {
+		return this.bookTopLabel;
+	}
+	
+	/**
+	 * @return the bookBotLabel
+	 */
+	public JLabel getBookBotLabel() {
+		return this.bookBotLabel;
+	}
+	
+	/**
+	 * @return the notesPane
+	 */
+	public JPanel getNotesPane() {
+		return this.notesPane;
+	}
+	
+	/**
+	 * @return the notesTopPane
+	 */
+	public JPanel getNotesTopPane() {
+		return this.notesTopPane;
+	}
+	
+	/**
+	 * @return the notesBotPane
+	 */
+	public JPanel getNotesBotPane() {
+		return this.notesBotPane;
 	}
 
+	/*
+	public JLabel notesTopRightFill;
+	public JLabel notesTopTitle;
+	public JLabel notesBotLabel;
 
+	public JPanel rightTopPane;
+	public JPanel rightBotPane;
+	*/
 }
