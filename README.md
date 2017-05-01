@@ -10,4 +10,4 @@ I love the idea of customisation of software to your particuar needs and prefere
 ## Support the project
 If you want to help fund this project then hit me up with some cash and [donate here](paypal.me/ToraTech "Donate :)")
 
-You can also send some love by tweeting me @_nythril or follow on discord. I am setting up a channel for those that want to keep a close eye on the project with commit updates pushed to it and links provided for quick downloads and screenshots. Issues can be added and pinned as bugs will turn up. Support for the project is appreciated as this is all experimental and I am a solo team. 
+You can also send some love by tweeting me [@_nythril](https://twitter.com/_Nythril "Follow Me!") or follow on discord. I am setting up a channel for those that want to keep a close eye on the project with commit updates pushed to it and links provided for quick downloads and screenshots. Issues can be added and pinned as bugs will turn up. Support for the project is appreciated as this is all experimental and I am a solo team. 
