@@ -72,7 +72,7 @@ public class LayoutBuilder {
 		this.notesL1Font = notesL1Font;
 		this.notesL2Font = notesL2Font;
 		
-		notebooksList = new QuickList("Notebooks", fontColor, notebookFillColor, notebookHoverFillColor, 
+		notebooksList = new QuickList("Books", fontColor, notebookFillColor, notebookHoverFillColor, 
 				notebookTitleFont, notebookL1Font, notebookL2Font);
 		notesList = new SelectionList(fontColor, notesFillColor, notesHoverFillColor, borderColor, 
 				notesL1Font, notesL2Font);
