@@ -8,6 +8,6 @@ I originally saw on [Hacker News](https://news.ycombinator.com/item?id=11009996 
 I love the idea of customisation of software to your particuar needs and preferences. Thus I will release a .jar with all the default settings and configurations. If you are more adventurous and either want to learn how the software works, criticise my work or make a custom version of the program you are more than welcome to make it what you want. 
 
 ## Support the project
-If you want to help fund this project then hit me up with some cash and [donate here](paypal.me/ToraTech "Donate :)")
+If you want to help fund this project then hit me up with some cash and [donate here](http://paypal.me/ToraTech "Donate :)")
 
 You can also send some love by tweeting me [@_nythril](https://twitter.com/_Nythril "Follow Me!") or follow on discord. I am setting up a channel for those that want to keep a close eye on the project with commit updates pushed to it and links provided for quick downloads and screenshots. Issues can be added and pinned as bugs will turn up. Support for the project is appreciated as this is all experimental and I am a solo team. 
