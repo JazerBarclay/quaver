@@ -14,7 +14,7 @@ import org.json.simple.parser.ParseException;
 public class Configuration {
 	
 	public String config_title;
-	public String[] bookLocations;
+	public String[] notebooks;
 	public boolean devmode;
 	
 	/**
@@ -31,7 +31,7 @@ public class Configuration {
 
 		JSONArray notebooks = new JSONArray();
 		
-		for (String notebook : config.bookLocations) notebooks.add(notebook);
+		for (String notebook : config.notebooks) notebooks.add(notebook);
 		obj.put("notebooks", notebooks);
 
 		if (!new File("res").exists()) new File("res").mkdirs();
@@ -66,12 +66,12 @@ public class Configuration {
 		
 		config.config_title  = name;
 		config.devmode  = devmode;
-		config.bookLocations = new String[notebookList.size()];
+		config.notebooks = new String[notebookList.size()];
 		
 		Iterator<String> iterator = notebookList.iterator();
 		int iteratorCount = 0;
 		while (iterator.hasNext()) {
-			config.bookLocations[iteratorCount] = iterator.next();
+			config.notebooks[iteratorCount] = iterator.next();
 			iteratorCount++;
 		}
 		return config;
