@@ -177,6 +177,9 @@ public class LayoutBuilder {
 		
 	}
 
+	public void update() {
+		wrapperPane.repaint();
+	}
 	
 	/** Generated Getters and Setters **/
 	/* TODO Deal with adding updates to the form on changes */
