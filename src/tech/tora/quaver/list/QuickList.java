@@ -27,6 +27,8 @@ public class QuickList extends JPanel {
 	protected Color hoverColor;
 	protected Font titleFont, label1Font, label2Font;
 	
+	protected QuickListNode[] nodes = new QuickListNode[] {};
+	
 	protected QuickListNode selected = null;
 	
 	public QuickList(String sectionTitle, Color fontColor, Color fillColor, Color hoverColor, Font titleFont, Font label1Font, Font label2Font) {
@@ -88,8 +90,19 @@ public class QuickList extends JPanel {
 		this("", fontColor, fillColor, hoverColor, titleFont, label1Font, label2Font);
 	}
 	
+	public void setActiveNode(QuickListNode n) {
+		for (QuickListNode node : nodes) {
+			if (node == n) node.setActive(true);
+			else node.setActive(false);
+		}
+	}
+	
 	public void addNode(QuickListNode node) {
 		containerPane.add(node);
+		QuickListNode[] tmp = new QuickListNode[nodes.length+1];
+		for (int i = 0; i < nodes.length; i++) tmp[i] = nodes[i];
+		tmp[nodes.length] = node;
+		nodes = tmp;
 	}
 
 	public void setFillColor(Color fillColor) {
