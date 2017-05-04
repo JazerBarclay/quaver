@@ -78,12 +78,4 @@ public class Configuration {
 		return config;
 	}
 	
-	@Deprecated
-	public static String[] addNotebookToArray(String[] notebookArray, String notebook) {
-		String[] tmp = new String[notebookArray.length+1];
-		for (int i = 0; i < notebookArray.length; i++) {tmp[i] = notebookArray[i];}
-		tmp[tmp.length-1] = notebook;
-		return tmp;
-	}
-	
 }
