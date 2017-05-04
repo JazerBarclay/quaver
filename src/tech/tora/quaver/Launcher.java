@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.notepad.Interface;
@@ -37,10 +36,10 @@ public class Launcher {
 					System.out.println("Creating New Config File");
 					createConfigFile();
 					createFirstLibrary();
-					
+
 					int wiki = JOptionPane.showConfirmDialog(null, "Would you like a local copy of the Quaver wiki as a notebook?", "Add local wiki of Quaver", JOptionPane.YES_NO_OPTION);
 					if (wiki == 0) createWikiGuide();
-					
+
 					cancel = 0;
 					break;
 				case 2:
@@ -69,10 +68,25 @@ public class Launcher {
 		}
 
 		// Print configuration
+		System.out.println("");
 		System.out.println("Name: " + config.name);
 		System.out.println("Devmode: " + config.devmode);
-		System.out.println("Notebooks:");
+		System.out.println("Libraries:");
 		for (String s : config.libraries) System.out.println("  " + s);
+
+		if (config.libraries.length < 1) {
+			int r = JOptionPane.showConfirmDialog(null, "No libraries found in the configuration file\nWould you like to add one now?", "Add first library", JOptionPane.YES_NO_OPTION);
+			if (r == 0) {
+				createFirstLibrary();
+				int wiki = JOptionPane.showConfirmDialog(null, "Would you like a local copy of the Quaver wiki as a notebook?", "Add local wiki of Quaver", JOptionPane.YES_NO_OPTION);
+				if (wiki == 0) createWikiGuide();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Tough shit, you need it to pass", "YOU SHALL NOT PASS!", JOptionPane.ERROR_MESSAGE);
+				Launcher.exit(1, "No Library");
+			}
+
+		}
 
 		// Launcher Interface
 		new Interface();
@@ -93,12 +107,12 @@ public class Launcher {
 
 
 	private void createConfigFile() {
-		
+
 		config = new Configuration();
 		config.name = getTextInputPopup("Configuration Settings", "Name of this configuration", "Default");
 		config.devmode = false;
 		config.libraries = new String[]{};
-		
+
 		try {
 			Configuration.writeConfigJSON(config);
 		} catch (IOException e) {
@@ -108,11 +122,11 @@ public class Launcher {
 		}
 
 	}
-	
+
 	private void createFirstLibrary() {
-		
+
 		String firstLibraryName = getTextInputPopup("Library Name", "Name your first library", "Quaver");
-		
+
 		String firstNotebookLocation = null;
 		int cancel = 1;
 		while (cancel == 1) {
@@ -123,15 +137,11 @@ public class Launcher {
 		}
 		String fullPath = firstNotebookLocation + Launcher.pathSeparator + firstLibraryName + ".qvlibrary";
 		config.libraries = new String[] {fullPath};
-		
-		System.out.println("Name: " + config.name);
-		System.out.println("Devmode: " + config.devmode);
-		System.out.println("Location: " + config.libraries[0]);
-		
+
 		if (!new File(config.libraries[0]).mkdirs()) {
 			Launcher.exit(1, "Failed to create new library directory");
 		}
-		
+
 		try {
 			Configuration.writeConfigJSON(config);
 		} catch (IOException e) {
@@ -139,9 +149,9 @@ public class Launcher {
 			JOptionPane.showMessageDialog(null, "Failed to update the configuration\n" + e, "Failed configuration", JOptionPane.ERROR_MESSAGE);
 			Launcher.exit(1, "Failed to update configuration file");
 		}
-		
+
 	}
-	
+
 	public void createWikiGuide() {
 		String notebookName = "Getting Started";
 		String library = config.libraries[0];
@@ -174,7 +184,7 @@ public class Launcher {
 			JOptionPane.showMessageDialog(null, "Failed to write note meta "+note.title+"\n" + e, "Failed note write", JOptionPane.ERROR_MESSAGE);
 		}
 		if (failed) return;
-		
+
 	}
 
 	private String getTextInputPopup(String title, String message, String defaultValue) {
@@ -199,6 +209,7 @@ public class Launcher {
 	}
 
 	public static void main(String[] args) {
+		
 		new Launcher();
 	}
 
