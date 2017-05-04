@@ -27,7 +27,7 @@ public class QuickList extends JPanel {
 	protected Color hoverColor;
 	protected Font titleFont, label1Font, label2Font;
 	
-	protected QuickListNode[] nodes = new QuickListNode[] {};
+	public QuickListNode[] nodes = new QuickListNode[] {};
 	
 	protected QuickListNode selected = null;
 	
@@ -95,6 +95,7 @@ public class QuickList extends JPanel {
 			if (node == n) node.setActive(true);
 			else node.setActive(false);
 		}
+		selected = n;
 	}
 	
 	public void addNode(QuickListNode node) {
@@ -113,10 +114,40 @@ public class QuickList extends JPanel {
 		containerPane.setBackground(fillColor);
 	}
 	
-	public void clearNotes() {
-		containerPane = new JPanel();
-		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
-		containerPane.setBackground(fillColor);
+	public void clearList() {
+		
+		nodes = new QuickListNode[] {};
+		
+		containerPane.removeAll();
+		containerPane.revalidate();
+		
+		int width=200, height=30;
+		
+		JLabel label1 = new JLabel(title);
+		label1.setFont(titleFont);
+		label1.setForeground(fontColor);
+		
+		JPanel titleSectionPadded = new JPanel();
+		titleSectionPadded.setLayout(new BorderLayout());
+		titleSectionPadded.setBorder(BorderFactory.createEmptyBorder(10, 5, 8, 5));
+		titleSectionPadded.setSize(width, height);
+		titleSectionPadded.setPreferredSize(new Dimension(width, height));
+		titleSectionPadded.setMinimumSize(new Dimension(width, height));
+		titleSectionPadded.setMaximumSize(new Dimension(width, height));
+		titleSectionPadded.setOpaque(false);
+		titleSectionPadded.add(label1, BorderLayout.NORTH);
+		JPanel titleSection = new JPanel();
+		titleSection.setLayout(new BorderLayout());
+		titleSection.setSize(width, height);
+		titleSection.setPreferredSize(new Dimension(width, height));
+		titleSection.setMinimumSize(new Dimension(width, height));
+		titleSection.setMaximumSize(new Dimension(width, height));
+		titleSection.setOpaque(false);
+		titleSection.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(200, 200, 200)));
+		titleSection.add(titleSectionPadded);
+		
+		containerPane.add(titleSection);
+		
 	}
 	
 }

@@ -112,7 +112,7 @@ public abstract class QuickListNode extends JPanel {
 	public void setActive(boolean active) {
 		this.active = active;
 		// TODO - URGENT!!! add check for colors and only add if within limits!!!
-		int mod = 20;
+		int mod = 10;
 		if (active){
 			setBackground(new Color(
 					parentList.fillColor.getRed()-mod, 
