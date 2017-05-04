@@ -13,8 +13,8 @@ import org.json.simple.parser.ParseException;
 
 public class Configuration {
 	
-	public String config_title;
-	public String[] notebooks;
+	public String name;
+	public String[] libraries;
 	public boolean devmode;
 	
 	/**
@@ -26,20 +26,20 @@ public class Configuration {
 	@SuppressWarnings("unchecked")
 	public static void writeConfigJSON(Configuration config) throws IOException {
 		JSONObject obj = new JSONObject();
-		obj.put("config_name", config.config_title);
+		obj.put("config_name", config.name);
 		obj.put("devmode", config.devmode);
 
-		JSONArray notebooks = new JSONArray();
+		JSONArray libraries = new JSONArray();
 		
-		for (String notebook : config.notebooks) notebooks.add(notebook);
-		obj.put("notebooks", notebooks);
+		for (String notebook : config.libraries) libraries.add(notebook);
+		obj.put("libraries", libraries);
 
-		if (!new File("res").exists()) new File("res").mkdirs();
+		if (!new File("res").exists()) if (!new File("res").mkdirs()) throw new IOException("Res directory could not be created");
 		
-		try (FileWriter file = new FileWriter("res/config.json")) {
+		try (FileWriter file = new FileWriter("res" + Launcher.pathSeparator + "config.json")) {
 			file.write(obj.toJSONString());
 			System.out.println("Successfully Copied JSON Object to File...");
-			System.out.println("\nJSON Object: " + obj);
+			System.out.println("JSON Object: " + obj + "\n");
 		}
 	}
 	
@@ -56,26 +56,32 @@ public class Configuration {
 		JSONParser parser = new JSONParser();
 		Configuration config = new Configuration();
 
-		Object obj = parser.parse(new FileReader("res/config.json"));
+		Object obj = parser.parse(new FileReader("res" + Launcher.pathSeparator + "config.json"));
 
 		JSONObject jsonObject = (JSONObject) obj;
 
 		String name = (String) jsonObject.get("config_name");
 		boolean devmode = (boolean) jsonObject.get("devmode");
-		JSONArray notebookList = (JSONArray) jsonObject.get("notebooks");
+		JSONArray libraries = (JSONArray) jsonObject.get("libraries");
 		
-		config.config_title  = name;
+		config.name  = name;
 		config.devmode  = devmode;
-		config.notebooks = new String[notebookList.size()];
+		config.libraries = new String[libraries.size()];
 		
-		Iterator<String> iterator = notebookList.iterator();
+		Iterator<String> iterator = libraries.iterator();
 		int iteratorCount = 0;
 		while (iterator.hasNext()) {
-			config.notebooks[iteratorCount] = iterator.next();
+			config.libraries[iteratorCount] = iterator.next();
 			iteratorCount++;
 		}
 		return config;
 	}
 	
+	public static String[] addNotebookToArray(String[] notebookArray, String notebook) {
+		String[] tmp = new String[notebookArray.length+1];
+		for (int i = 0; i < notebookArray.length; i++) {tmp[i] = notebookArray[i];}
+		tmp[tmp.length-1] = notebook;
+		return tmp;
+	}
 	
 }
