@@ -15,10 +15,16 @@ import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Launcher;
+import tech.tora.quaver.list.QuickListNode;
+import tech.tora.quaver.list.SelectionListNode;
 import tech.tora.quaver.notepad.widget.AddButton;
 import tech.tora.quaver.notepad.widget.EditAreaThing;
 import tech.tora.quaver.notepad.widget.LayoutBuilder;
+import tech.tora.quaver.notepad.widget.NoteNode;
 import tech.tora.quaver.notepad.widget.NotebookNode;
+import tech.tora.quaver.notepad.widget.PreviewAreaThing;
+import tech.tora.quaver.types.Cell;
+import tech.tora.quaver.types.CellType;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 
@@ -31,6 +37,7 @@ public class Interface extends JFrame {
 
 	public LayoutBuilder layout;
 	public EditAreaThing editArea;
+	public PreviewAreaThing previewArea;
 
 	public static Notebook activeNotebook = null;
 	public static Note activeNote = null;
@@ -54,7 +61,9 @@ public class Interface extends JFrame {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				System.out.println("Create New Note for [NOTEBOOK HERE]");
+				if (activeNotebook != null) {
+					generateNewNote(activeNotebook);
+				}
 			}
 		}, BorderLayout.WEST);
 
@@ -63,7 +72,6 @@ public class Interface extends JFrame {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				System.out.println("Add Button Clicked");
 				generateNewNotebook();
 			}
 		}, BorderLayout.WEST);
@@ -74,12 +82,17 @@ public class Interface extends JFrame {
 
 			@Override
 			public void onSave() {
-				System.out.println("Saving");
+				save();
 			}
 
 			@Override
 			public void onChange() {
-				System.out.println("Changed");
+//				System.out.println("Changed");
+			}
+
+			@Override
+			public void newNotebook() {
+				generateNewNotebook();
 			}
 		};
 
@@ -99,12 +112,12 @@ public class Interface extends JFrame {
 		setSize(1280, 800);
 
 	}
-	
+
 	// General purpose getting notebooks and total notes contained in each
 	private void getNotebooks() {
 
 		int noteCount = 0;
-		
+
 		for (String lib : Launcher.config.libraries) {
 			File[] libContents = new File(lib).listFiles();
 			// For each of the files and folders in the library, if they end in .qvnotebook and contain a meta file
@@ -127,6 +140,7 @@ public class Interface extends JFrame {
 							public void mouseClick() {
 								activeNotebook = n;
 								layout.notebooksList.setActiveNode(this);
+								activeNote = null;
 								updateAll();
 							}
 						};
@@ -137,13 +151,54 @@ public class Interface extends JFrame {
 				}
 			} // End Notebook File For Loop
 		} // End Lib Search Loop
-		
+
+		if (activeNotebook != null) {
+			for (QuickListNode n : layout.notebooksList.nodes) {
+				NotebookNode node = (NotebookNode) n;
+				if (node.notebook.name.equals(activeNotebook.name)) node.setActive(true);
+			}
+		}
+
+	}
+
+	private void getNotes() {
+
+		File activeNotebookFile = new File(activeNotebook.path);
+		File[] dirs = activeNotebookFile.listFiles();
+		for (File f : dirs) {
+			if (f.exists() && f.isDirectory() && f.getAbsolutePath().endsWith(".qvnote")&& new File(f.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
+				Note n;
+				try {
+					n = Note.readMetaJSON(f.getAbsolutePath());
+					NoteNode noteNode = new NoteNode(layout.notesList, n.title, new java.util.Date((long)n.created_at*1000).toString(), n) {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public void onClick() {
+							activeNote = n;
+							layout.notesList.setActiveNode(this);
+							updateAll();
+						}
+					};
+					layout.notesList.addNode(noteNode);
+				} catch (ParseException | IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		if (activeNote != null) {
+			for (SelectionListNode n : layout.notesList.nodes) {
+				NoteNode node = (NoteNode) n;
+				if (node.note.uuid.equals(activeNote.uuid)) node.setActive(true);
+			}
+		}
+
 	}
 
 	private void generateNewNotebook() {
-		
+
 		// TODO add option for importing an existing notebook
-		
+
 		String notebookName = getTextInputPopup("New Notebook Name", "What would you like to call your new notebook?", "");
 		if (notebookName == null) return;
 		String location = getComboInputPopup("Select a Destination", "Select a library for this notebook", Launcher.config.libraries, Launcher.config.libraries[0]);
@@ -155,9 +210,42 @@ public class Interface extends JFrame {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Failed to write notebook "+notebookName+"\n" + e, "Failed notebook write", JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 		// Update quicklist for new notebook to be added
-		
+		layout.notebooksList.clearList();
+		getNotebooks();
+
+	}
+
+	private void generateNewNote(Notebook parent) {
+
+		String noteName = getTextInputPopup("New Note Name", "What would you like to call your new note?", "");
+		if (noteName == null) return;
+		boolean failed = false;
+		Note newNote = new Note(parent.path, 
+				noteName, UUID.nameUUIDFromBytes(noteName.getBytes()).toString(), 
+				System.currentTimeMillis() / 1000L, System.currentTimeMillis() / 1000L);
+		try {
+			Note.writeContentJSON(newNote);
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Failed to write note contents "+noteName+"\n" + e, "Failed note write", JOptionPane.ERROR_MESSAGE);
+		}
+		if (failed) return;
+		try {
+			Note.writeMetaJSON(newNote);
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Failed to write note contents "+noteName+"\n" + e, "Failed note write", JOptionPane.ERROR_MESSAGE);
+		}
+		if (failed) return;
+
+		// Update selectionList for new note to be added
+		layout.notebooksList.clearList();
+		layout.notesList.clearList();
+		getNotebooks();
+		getNotes();
+
 	}
 
 	private String getTextInputPopup(String title, String message, String defaultValue) {
@@ -170,7 +258,7 @@ public class Interface extends JFrame {
 	private String getComboInputPopup(String title, String message, String[] array, String defaultValue) {
 		Object response = JOptionPane.showInputDialog(null, 
 				"Select a library for this notebook", "Select a Destination", JOptionPane.QUESTION_MESSAGE,
-	            null, Launcher.config.libraries, Launcher.config.libraries[0]);
+				null, Launcher.config.libraries, Launcher.config.libraries[0]);
 		if (response == null) return null;
 		return (String)response;
 	}
@@ -181,17 +269,110 @@ public class Interface extends JFrame {
 	//				+ "<h1 style=\"color: #FFFFFF;\">"+ "TITLE" +"</h1><hr><br><div style=\"\"></div></body></html>");
 
 	public void updateAll() {
-		
-		if (activeNotebook != null) layout.notesTopTitle.setText(activeNotebook.name);
-		
+
+		if (activeNotebook != null) {
+			layout.notesTopTitle.setText(activeNotebook.name);
+			layout.notesList.clearList();
+			getNotes();
+		}
+
+		if (activeNote != null) {
+			try {
+				Note n = Note.readContentsJSON(activeNote.path);
+				editArea.setText("");
+				for (Cell c : n.cells) {
+					editArea.appendText("[~" + c.type + "~]");
+					editArea.appendText(c.data);
+				}
+			} catch (ParseException | IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			editArea.setText("");
+		}
+
+
 	}
-	
+
 	public void updatePreview() {
 
 	}
 
 	public void save() {
+		// THought here - what if it lost the active one. need a check if its been lonst and reset to null
+		if (activeNotebook != null && activeNote != null) {
+			
+			Cell[] cells = new Cell[]{};
+			String[] splitText = editArea.getText().split("\n");
+			Cell currentCell = new Cell();
+			currentCell.type = CellType.MARKDOWN.type;
+			currentCell.data = "";
 
+			int lineCount = 0;
+
+			for (String line : splitText) {
+				lineCount++;
+
+				if (lineCount == 1) {
+					if (line.startsWith("[~") && line.endsWith("~]") && line.length() > 4) {
+						if (line.substring(2, line.length()-2).equals(CellType.MARKDOWN.type)) {
+							currentCell.type = CellType.MARKDOWN.type;
+						} else if (line.substring(2, line.length()-2).equals(CellType.CODE.type)) {
+							currentCell.type = CellType.CODE.type;
+						} else if (line.substring(2, line.length()-2).equals(CellType.TEXT.type)) {
+							currentCell.type = CellType.TEXT.type;
+						}
+						currentCell.data = "";
+					} else {
+						currentCell.data += line;
+						if (lineCount == splitText.length) currentCell.data += "";
+						else currentCell.data += "\n";
+					}
+				} else {
+					if (line.startsWith("[~") && line.endsWith("~]") && line.length	() > 4) {
+						Cell[] tmp = new Cell[cells.length+1];
+						for (int i = 0; i < cells.length; i++) tmp[i] = cells[i];
+						tmp[cells.length] = currentCell;
+						cells = tmp;
+						currentCell = new Cell();
+						if (line.substring(2, line.length()-2).equals(CellType.MARKDOWN.type)) {
+							currentCell.type = CellType.MARKDOWN.type;
+						} else if (line.substring(2, line.length()-2).equals(CellType.CODE.type)) {
+							currentCell.type = CellType.CODE.type;
+						} else if (line.substring(2, line.length()-2).equals(CellType.TEXT.type)) {
+							currentCell.type = CellType.TEXT.type;
+						}
+						currentCell.data = "";
+					} else {
+						currentCell.data += line;
+						if (lineCount == splitText.length) currentCell.data += "";
+						else currentCell.data += "\n";
+					}
+				}
+
+			}
+
+			Cell[] tmp = new Cell[cells.length+1];
+			for (int i = 0; i < cells.length; i++) tmp[i] = cells[i];
+			tmp[cells.length] = currentCell;
+			cells = tmp;
+			
+			try {
+				Note n0;
+				Note n1 = Note.readMetaJSON(activeNote.path);
+				
+				n0 = new Note(new File(activeNote.path).getParent().toString(), n1.title, n1.uuid, n1.created_at, System.currentTimeMillis() / 1000L);
+				n0.cells = cells;
+
+				Note.writeContentJSON(n0);
+				Note.writeMetaJSON(n0);
+			} catch (ParseException | IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
 	}
-
+	
+	
 }
