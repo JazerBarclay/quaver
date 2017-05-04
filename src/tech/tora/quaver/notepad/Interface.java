@@ -15,13 +15,12 @@ import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Launcher;
+import tech.tora.quaver.list.QuickListNode;
 import tech.tora.quaver.notepad.widget.AddButton;
 import tech.tora.quaver.notepad.widget.EditAreaThing;
 import tech.tora.quaver.notepad.widget.LayoutBuilder;
-import tech.tora.quaver.notepad.widget.NoteNode;
 import tech.tora.quaver.notepad.widget.NotebookNode;
-import tech.tora.quaver.structures.NotebookManager;
-import tech.tora.quaver.structures.NotebookMeta;
+import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 
 public class Interface extends JFrame {
@@ -34,8 +33,8 @@ public class Interface extends JFrame {
 	public LayoutBuilder layout;
 	public EditAreaThing editArea;
 
-	public NotebookNode[] notebooksList = new NotebookNode[] {};
-	public NoteNode[] noteList = new NoteNode[] {};
+	public static Notebook activeNotebook = null;
+	public static Note activeNote = null;
 
 	public Interface() {
 		initLayout();
@@ -104,40 +103,41 @@ public class Interface extends JFrame {
 	
 	private void getNotebooks() {
 
-		for (String notebook : Launcher.config.libraries) {
-			File dir = new File(notebook);
-			if (dir.isDirectory() && dir.getAbsolutePath().endsWith(".qvnotebook")) {
-				if (new File(dir.getAbsolutePath()+"/meta.json").exists()) {
-					// Get notebook config
-					NotebookMeta notebookMeta;
-					try {
-						notebookMeta = NotebookManager.readConfigJSON(dir.getAbsolutePath());
-						System.out.println("NotebookMeta: " + notebookMeta.name + "_" + notebookMeta.uuid);
-						int noteCount = 0;
-						File[] notes = dir.listFiles();
-						for (File n : notes) {
-							File content = new File(n.getAbsolutePath()+"/content.json");
-							File meta = new File(n.getAbsolutePath()+"/meta.json");
-							if (!content.exists() || !meta.exists()) continue;
-							else noteCount++;
+		int noteCount = 0;
+		
+		for (String lib : Launcher.config.libraries) {
+			File[] libContents = new File(lib).listFiles();
+			// For each of the files and folders in the library, if they end in .qvnotebook and contain a meta file
+			for (File libF : libContents) {
+				if (libF.isDirectory() && libF.getAbsolutePath().endsWith(".qvnotebook") && new File(libF.getAbsolutePath()+Launcher.pathSeparator + "meta.json").exists()) {
+					System.out.println("Notebook Found: " + libF.getName());
+					noteCount = 0;
+					File[] notebookContents = libF.listFiles();
+					for (File nbF : notebookContents) {
+						if (nbF.isDirectory() && nbF.getAbsolutePath().endsWith(".qvnote") && new File(nbF.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
+							noteCount++;
 						}
-						System.out.println("Notes Count: " + noteCount);
-						NotebookNode[] tmp = new NotebookNode[notebooksList.length + 1];
-						for (int i = 0; i < notebooksList.length; i++) tmp[i] = notebooksList[i];
-						tmp[notebooksList.length] = new NotebookNode(layout.notebooksList, "", notebookMeta.name, "" + noteCount, notebookMeta);
-						notebooksList = tmp;
+					}
+					Notebook n;
+					try {
+						n = Notebook.readJSON(libF.getAbsolutePath());
+						NotebookNode newNotebook = new NotebookNode(layout.notebooksList, "", n.name, ""+noteCount, n){
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void mouseClick() {
+								activeNotebook = n;
+								this.setActive(true);
+								System.out.println(activeNotebook.name);
+								updateAll();
+							}
+						};
+						layout.notebooksList.addNode(newNotebook);
 					} catch (IOException | ParseException e) {
 						e.printStackTrace();
 					}
-				} else {
-					// For some reason that notebook is not there
-					// Now is the time to panic as file has been tampered with outside the application!
 				}
-				
-			}
-
-		}
-		for (NotebookNode n : notebooksList) layout.notebooksList.addNode(n);
+			} // End Notebook File For Loop
+		} // End Lib Search Loop
 		
 	}
 
@@ -156,7 +156,6 @@ public class Interface extends JFrame {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Failed to write notebook "+notebookName+"\n" + e, "Failed notebook write", JOptionPane.ERROR_MESSAGE);
 		}
-		
 		
 	}
 
@@ -180,7 +179,12 @@ public class Interface extends JFrame {
 	//				+ "</head><body style=\"background-color: #2a3137; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
 	//				+ "<h1 style=\"color: #FFFFFF;\">"+ "TITLE" +"</h1><hr><br><div style=\"\"></div></body></html>");
 
-
+	public void updateAll() {
+		
+		if (activeNotebook != null) layout.notesTopTitle.setText(activeNotebook.name);
+		
+	}
+	
 	public void updatePreview() {
 
 	}
