@@ -35,24 +35,17 @@ public class Note {
 	public static void writeContentJSON(Note note) throws IOException {
 		JSONObject obj = new JSONObject();
 		obj.put("title", note.title);
-		System.out.println("Title Added: " + note.title);
 
 		JSONArray cells = new JSONArray();
-
-		System.out.println("Total Cells: " + note.cells.length);
 
 		for (Cell c2: note.cells) {
 			JSONObject c = new JSONObject();
 			c.put("type", c2.type);
-			System.out.println("Cell Type: " + c2.type);
 			c.put("language", c2.language);
-			System.out.println("Cell Lang: " + c2.language);
 			c.put("data", c2.data);
-			System.out.println("Cell Data: Just Trust");
 			cells.add(c);
 		}
 
-		System.out.println("Added");
 		obj.put("cells", cells);
 
 		if (!new File(note.path + Launcher.pathSeparator + note.uuid).exists()) {
@@ -63,8 +56,8 @@ public class Note {
 		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + Launcher.pathSeparator + "content.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
-			System.out.println("Successfully Copied JSON Object to File...");
-			System.out.println("\nJSON Object: " + obj);
+			System.out.println("\nSuccessfully Copied JSON Object to File...");
+			System.out.println("JSON Object: " + obj);
 		}
 	}
 
@@ -90,15 +83,13 @@ public class Note {
 		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + Launcher.pathSeparator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
-			System.out.println("Successfully Copied JSON Object to File...");
-			System.out.println("\nJSON Object: " + obj);
+			System.out.println("\nSuccessfully Copied JSON Object to File...");
+			System.out.println("JSON Object: " + obj);
 		}
 	}
 
 	public void addCell(Cell cell) {
-		System.out.println("Length " + cells.length);
 		Cell[] tmpArray = new Cell[cells.length+1];
-		System.out.println("New Length " + tmpArray.length);
 		for (int i = 0; i < cells.length; i++) tmpArray[i] = cells[i];
 		tmpArray[cells.length] = cell;
 		cells = tmpArray;

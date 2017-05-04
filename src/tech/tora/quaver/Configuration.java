@@ -39,8 +39,8 @@ public class Configuration {
 		try (FileWriter file = new FileWriter("res" + Launcher.pathSeparator + "config.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
-			System.out.println("Successfully Copied JSON Object to File...");
-			System.out.println("JSON Object: " + obj + "\n");
+			System.out.println("\nSuccessfully Copied JSON Object to File...");
+			System.out.println("JSON Object: " + obj + "");
 		}
 	}
 	

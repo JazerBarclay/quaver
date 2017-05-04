@@ -49,8 +49,8 @@ public class Notebook {
 		try (FileWriter file = new FileWriter(path + Launcher.pathSeparator + name + ".qvnotebook" + Launcher.pathSeparator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
-			System.out.println("Successfully Copied JSON Object to File...");
-			System.out.println("JSON Object: " + obj + "\n");
+			System.out.println("\nSuccessfully Copied JSON Object to File...");
+			System.out.println("JSON Object: " + obj);
 		}
 	}
 
