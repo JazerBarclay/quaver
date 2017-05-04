@@ -48,12 +48,12 @@ public class Note {
 
 		obj.put("cells", cells);
 
-		if (!new File(note.path + Launcher.pathSeparator + note.uuid).exists()) {
-			if (!new File(note.path + Launcher.pathSeparator + note.uuid).mkdirs()) 
-				throw new IOException("Failed to create path " + note.path + Launcher.pathSeparator + note.uuid);
+		if (!new File(note.path + Launcher.pathSeparator + note.uuid + ".qvnote").exists()) {
+			if (!new File(note.path + Launcher.pathSeparator + note.uuid + ".qvnote").mkdirs()) 
+				throw new IOException("Failed to create path " + note.path + Launcher.pathSeparator + note.uuid + ".qvnote");
 		}
 		
-		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + Launcher.pathSeparator + "content.json")) {
+		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + ".qvnote" + Launcher.pathSeparator + "content.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -75,12 +75,12 @@ public class Note {
 
 		obj.put("tags", tags);
 
-		if (!new File(note.path + Launcher.pathSeparator + note.uuid).exists()) {
-			if (!new File(note.path + Launcher.pathSeparator + note.uuid).mkdirs()) 
-				throw new IOException("Failed to create path " + note.path + Launcher.pathSeparator + note.uuid);
+		if (!new File(note.path + Launcher.pathSeparator + note.uuid + ".qvnote").exists()) {
+			if (!new File(note.path + Launcher.pathSeparator + note.uuid + ".qvnote").mkdirs()) 
+				throw new IOException("Failed to create path " + note.path + Launcher.pathSeparator + note.uuid + ".qvnote");
 		}
 		
-		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + Launcher.pathSeparator + "meta.json")) {
+		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + ".qvnote" + Launcher.pathSeparator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
