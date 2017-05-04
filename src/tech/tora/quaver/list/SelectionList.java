@@ -68,6 +68,8 @@ public class SelectionList extends JPanel {
 		scrollPane.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, bColour));
 	}
 	
+	
+	
 //	
 //	private void generateUI() {
 //		containerPane = new JPanel();
@@ -76,8 +78,10 @@ public class SelectionList extends JPanel {
 //		scrollPane = new JScrollPane(containerPane);
 //	}
 //	
-//	public void clearList() {
-//		containerPane = new JPanel();
-//	}
+	public void clearList() {
+		containerPane = new JPanel();
+		containerPane.setBackground(fillColour);
+		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
+	}
 	
 }
