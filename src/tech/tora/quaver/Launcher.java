@@ -1,66 +1,84 @@
 package tech.tora.quaver;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.json.simple.parser.ParseException;
 
-import tech.tora.quaver.config.Settings;
-import tech.tora.quaver.config.SettingsManager;
 import tech.tora.quaver.notepad.Interface;
-import tech.tora.quaver.structures.NotebookManager;
+import tech.tora.quaver.types.Cell;
+import tech.tora.quaver.types.Note;
+import tech.tora.quaver.types.Notebook;
 
 public class Launcher {
 
-	public static Settings globalSettings;
-	
-	public Launcher() {
-		
-		System.out.println("Launching");
-		System.out.println(System.getProperty("os.name"));
-		
-		if (fileExists("res/config.json")) {
-			System.out.println("Config File Found");
-			
-			try {
-				globalSettings = SettingsManager.readConfigJSON();
-			} catch (IOException | ParseException e) {
-				e.printStackTrace();
-				Launcher.exit(1, "Failed to read config file");
-			}
-			
-			new Interface();
-			
-		} else {
-			System.out.println("Config File Not Found");
-			
-			int failedConfigDialog = JOptionPane.showConfirmDialog(null, "The config file could not be found.\nA fresh config file can be created.\nCreate now?", "Config File Not Found", JOptionPane.OK_CANCEL_OPTION);
+	public static Configuration config;
 
-			switch (failedConfigDialog) {
+	public static String pathSeparator = (System.getProperty("os.name").startsWith("Windows")?"\\":"/");
+
+	public Launcher() {
+
+		System.out.println("Launching Quaver");
+		System.out.println("OS: " + System.getProperty("os.name"));
+
+		// If configuration file cannot be found, generate new one
+		if (!fileExists("res" + pathSeparator + "config.json")) {
+			System.out.println("Config File Not Found");
+			int cancel = 1;
+			while (cancel == 1) {
+				int failedConfigDialog = JOptionPane.showConfirmDialog(null, "The config file could not be found.\nA new config file can be created.\nCreate now?", "Config File Not Found", JOptionPane.OK_CANCEL_OPTION);
+				switch (failedConfigDialog) {
 				case 0:
 					System.out.println("Creating New Config File");
-					if (createConfigFile()) {
-						new Interface();
-					} else {
-						Launcher.exit(0, "Failed to create config file");
-					}
+					createConfigFile();
+					createFirstLibrary();
+					
+					int wiki = JOptionPane.showConfirmDialog(null, "Would you like a local copy of the Quaver wiki as a notebook?", "Add local wiki of Quaver", JOptionPane.YES_NO_OPTION);
+					if (wiki == 0) createWikiGuide();
+					
+					cancel = 0;
 					break;
 				case 2:
-					Launcher.exit(0, "Closing as no config file found and no new one created");
+					cancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit setup", "Quit Setup", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if (cancel == 0) Launcher.exit(0, "Closing as no config file found and no new one created");
 					break;
 				default:
-					System.out.println("Trancendence");
-					Launcher.exit(0, "Somehow entered default state in Launcher Switch Case");
+					Launcher.exit(0, "Closing as no config file found and no new one created");
 					break;
+				}
 			}
-			
-		} // End If
-		
+		}
+
+		// Read the configuration file in
+		try {
+			config = Configuration.readConfigJSON();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			Launcher.exit(1, "Configuration file was not found");
+		} catch (IOException e) {
+			e.printStackTrace();
+			Launcher.exit(1, "Failed or interrupted I/O operations on configuration read");
+		} catch (ParseException e) {
+			e.printStackTrace();
+			Launcher.exit(1, "Failed to read config file");
+		}
+
+		// Print configuration
+		System.out.println("Name: " + config.name);
+		System.out.println("Devmode: " + config.devmode);
+		System.out.println("Notebooks:");
+		for (String s : config.libraries) System.out.println("  " + s);
+
+		// Launcher Interface
+		new Interface();
+
 	}
-	
+
 	/**
 	 * Simple check if a file exists
 	 * 
@@ -72,103 +90,114 @@ public class Launcher {
 		if(f.exists() && !f.isDirectory()) return true;
 		else return false;
 	}
-	
-	/**
-	 * Simple check if a directory exists
-	 * 
-	 * @param location - path to file
-	 * @return Returns true if the file exists
-	 */
-	public boolean dirExists(String location) {
-		File f = new File(location);
-		if(f.exists() && f.isDirectory()) return true;
-		else return false;
-	}
-	
-	private boolean createConfigFile() {
-		
-		Settings tmpSettings = new Settings();
-		
-		String configName = generateConfigName();
-		String firstNotebookName = generateNotebookName();
-		String firstNotebookLocation = generateNotebookLocation();
 
-		// Drop the last character if its a / or a \\
-		if (firstNotebookLocation.substring(firstNotebookLocation.length()-1, firstNotebookLocation.length()).equals("/") || 
-				firstNotebookLocation.substring(firstNotebookLocation.length()-1, firstNotebookLocation.length()).equals("\\")) {
-			firstNotebookLocation = firstNotebookLocation.substring(0, firstNotebookLocation.length()-1);
-		}
+
+	private void createConfigFile() {
 		
-		tmpSettings.settings_title= configName;
-		tmpSettings.notebooks = new String[] {firstNotebookLocation + "/" + firstNotebookName + ".qvnotebook"};
+		config = new Configuration();
+		config.name = getTextInputPopup("Configuration Settings", "Name of this configuration", "Default");
+		config.devmode = false;
+		config.libraries = new String[]{};
 		
-		// write config file using what we have here
-		tmpSettings.devmode = false;
 		try {
-			SettingsManager.writeConfigJSON(tmpSettings);
+			Configuration.writeConfigJSON(config);
 		} catch (IOException e) {
 			e.printStackTrace();
-			Launcher.exit(1, "Failed to write config file");
+			JOptionPane.showMessageDialog(null, "Failed to create the configuration\n" + e, "Failed configuration", JOptionPane.ERROR_MESSAGE);
+			Launcher.exit(1, "Failed to create configuration file");
+		}
+
+	}
+	
+	private void createFirstLibrary() {
+		
+		String firstLibraryName = getTextInputPopup("Library Name", "Name your first library", "Quaver");
+		
+		String firstNotebookLocation = null;
+		int cancel = 1;
+		while (cancel == 1) {
+			firstNotebookLocation = getPathInputPopup("Select new library location", new java.io.File(System.getProperty("user.home")));
+			if (firstNotebookLocation == null) cancel = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit setup", "Quit Setup", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			else cancel = 2;
+			if (cancel == 0) Launcher.exit(0, "Closing as no location was specified for library");
+		}
+		String fullPath = firstNotebookLocation + Launcher.pathSeparator + firstLibraryName + ".qvlibrary";
+		config.libraries = new String[] {fullPath};
+		
+		System.out.println("Name: " + config.name);
+		System.out.println("Devmode: " + config.devmode);
+		System.out.println("Location: " + config.libraries[0]);
+		
+		if (!new File(config.libraries[0]).mkdirs()) {
+			Launcher.exit(1, "Failed to create new library directory");
 		}
 		
-		// write first notebook folder and files
 		try {
-			NotebookManager.writeNotebookJSON(firstNotebookName, UUID.nameUUIDFromBytes(firstNotebookName.getBytes()).toString(), tmpSettings.notebooks[0]);
+			Configuration.writeConfigJSON(config);
 		} catch (IOException e) {
 			e.printStackTrace();
-			Launcher.exit(1, "Failed to write first notebook");
+			JOptionPane.showMessageDialog(null, "Failed to update the configuration\n" + e, "Failed configuration", JOptionPane.ERROR_MESSAGE);
+			Launcher.exit(1, "Failed to update configuration file");
 		}
 		
-		globalSettings = tmpSettings;
-		
-		return true;
 	}
 	
-	private String generateConfigName() {
-		String configName;
-		
-		configName = JOptionPane.showInputDialog(null, 
-				"Please enter the name of this configuration", "Configuration Settings", JOptionPane.NO_OPTION);
-		
-		if (configName == null) {
-			Launcher.exit(1, "Cancelled creation of new config");
-		} else if (configName.equals("")) { 
-			configName = generateConfigName();
+	public void createWikiGuide() {
+		String notebookName = "Getting Started";
+		String library = config.libraries[0];
+		boolean failed = false;
+		Notebook notebook = new Notebook(library, notebookName, UUID.nameUUIDFromBytes(notebookName.getBytes()).toString());
+		try {
+			Notebook.writeJSON(notebook);
+		} catch (IOException e) {
+			e.printStackTrace();
+			failed = true;
+			JOptionPane.showMessageDialog(null, "Failed to write notebook "+notebookName+"\n" + e, "Failed notebook write", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		return configName;
-	}
-	
-	private String generateNotebookName() {
-		String notebookName;
-		
-		notebookName = JOptionPane.showInputDialog(null, 
-				"Please enter the name of your first notebook", "Create your first notebook", JOptionPane.NO_OPTION);
-		
-		if (notebookName == null) {
-			Launcher.exit(1, "Cancelled creation of new notebook");
-		} else if (notebookName.equals("")) {
-			notebookName = generateNotebookName();
+		if (failed) return;
+		Note note = new Note(notebook.path + Launcher.pathSeparator + notebook.name + ".qvnotebook", 
+				"Welcome to Quaver", UUID.nameUUIDFromBytes("Welcome to Quaver".getBytes()).toString(), System.currentTimeMillis() / 1000L, System.currentTimeMillis() / 1000L);
+		note.addCell(new Cell("markdown", null, "## Testing\nHopefully this works when its written into the note"));
+		try {
+			Note.writeContentJSON(note);
+		} catch (IOException e) {
+			e.printStackTrace();
+			failed = true;
+			JOptionPane.showMessageDialog(null, "Failed to write note content "+note.title+"\n" + e, "Failed note write", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		return notebookName;
-	}
-	
-	private String generateNotebookLocation() {
-		String notebookLocation;
-		
-		notebookLocation = JOptionPane.showInputDialog(null, 
-				"Please enter the location of your notebook", "Create your first notebook", JOptionPane.NO_OPTION);
-		
-		if (notebookLocation == null) {
-			Launcher.exit(1, "Cancelled creation of new notebook");
-		} else if (notebookLocation.equals("")) {
-			notebookLocation = generateNotebookLocation();
+		if (failed) return;
+		try {
+			Note.writeMetaJSON(note);
+		} catch (IOException e) {
+			e.printStackTrace();
+			failed = true;
+			JOptionPane.showMessageDialog(null, "Failed to write note meta "+note.title+"\n" + e, "Failed note write", JOptionPane.ERROR_MESSAGE);
 		}
+		if (failed) return;
 		
-		return notebookLocation;
 	}
-	
+
+	private String getTextInputPopup(String title, String message, String defaultValue) {
+		String value = (String) JOptionPane.showInputDialog(null, message, title, JOptionPane.NO_OPTION, null, null, defaultValue);
+		if (value == null) Launcher.exit(1, "Cancelled input: " + title + " : " + message);
+		else if (value.equals("")) value = getTextInputPopup(title, message, defaultValue);
+		return value;
+	}
+
+	private String getPathInputPopup(String title, File defaultPath) {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(defaultPath);
+		chooser.setDialogTitle(title);
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setAcceptAllFileFilterUsed(false);
+
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile().toString();
+		} else {
+			return null;
+		}
+	}
+
 	public static void main(String[] args) {
 		new Launcher();
 	}
@@ -177,5 +206,5 @@ public class Launcher {
 		System.err.println("Exiting: " + reason);
 		System.exit(status);
 	}
-	
+
 }
