@@ -8,7 +8,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.structures.CellMeta;
 
 public class Note {
 
@@ -16,7 +15,7 @@ public class Note {
 	public String title = "";
 	public String uuid = "";
 	public long created_at = 0, updated_at = 0;
-	public CellMeta[] cells = new CellMeta[] {};
+	public Cell[] cells = new Cell[] {};
 	public String[] tags = new String[] {};
 
 	public Note() {
@@ -42,7 +41,7 @@ public class Note {
 
 		System.out.println("Total Cells: " + note.cells.length);
 
-		for (CellMeta c2: note.cells) {
+		for (Cell c2: note.cells) {
 			JSONObject c = new JSONObject();
 			c.put("type", c2.type);
 			System.out.println("Cell Type: " + c2.type);
