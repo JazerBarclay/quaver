@@ -15,18 +15,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class QuickListNode extends JPanel {
+public abstract class QuickListNode extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
 	private QuickList parentList;
 	
 	private int width = 200;
 	private int height = 25;
+	
+	private boolean active = false;
+	
+	private JPanel node1padded;
 	
 	public QuickListNode(QuickList parent, String image, String title, String rightSide) {
 		this.parentList = parent;
@@ -46,7 +49,7 @@ public class QuickListNode extends JPanel {
 		label2.setFont(parent.label2Font);
 		label2.setForeground(parent.fontColor);
 		
-		JPanel node1padded = new JPanel();
+		node1padded = new JPanel();
 		node1padded.setLayout(new BorderLayout());
 		node1padded.setBorder(BorderFactory.createEmptyBorder(2, 10, 0, 10));
 		node1padded.setSize(width, height);
@@ -72,7 +75,7 @@ public class QuickListNode extends JPanel {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				System.out.println("Clicked");
+				mouseClick();
 			}
 			
 			@Override
@@ -82,14 +85,18 @@ public class QuickListNode extends JPanel {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				node1padded.setBackground(parent.fillColor);
-				setBackground(parent.fillColor);
+				if (!active) {
+					node1padded.setBackground(parent.fillColor);
+					setBackground(parent.fillColor);
+				}
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				node1padded.setBackground(parent.hoverColor);
-				setBackground(parent.hoverColor);
+				if (!active) {
+					node1padded.setBackground(parent.hoverColor);
+					setBackground(parent.hoverColor);
+				}
 			}
 			
 			@Override
@@ -98,6 +105,19 @@ public class QuickListNode extends JPanel {
 			}
 		});
 		
+	}
+	
+	public abstract void mouseClick();
+	
+	public void setActive(boolean active) {
+		this.active = active;
+		if (active){
+			setBackground(parentList.fillColor.darker());
+			node1padded.setBackground(parentList.fillColor.darker());
+		} else {
+			node1padded.setBackground(parentList.fillColor);
+			setBackground(parentList.fillColor);
+		}
 	}
 	
 }
