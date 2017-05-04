@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.text.DefaultCaret;
 
 import tech.tora.quaver.notepad.InsetsBorder;
@@ -50,21 +51,23 @@ public abstract class EditAreaThing extends JPanel implements KeyListener {
 
 	public abstract void onSave();
 	public abstract void onChange();
+	public abstract void newNotebook();
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getModifiers() == Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) {
-			if (e.getKeyCode() == KeyEvent.VK_S) {
-//				System.out.println("Saving");
-				onSave();
-			}
+		if (e.getKeyCode() == KeyEvent.VK_S) {
+			onSave();
+		} else if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+//			if (e.getKeyCode() == KeyEvent.VK_SHIFT) if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+		} else {
+			System.err.println(e.getKeyCode());
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		caretPosition = (DefaultCaret)textArea.getCaret();
-		System.out.println(caretPosition);
+//		System.out.println(caretPosition);
 		onChange();
 //		System.out.println("Typed " + e.getKeyChar());
 	}
@@ -72,6 +75,18 @@ public abstract class EditAreaThing extends JPanel implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 //		System.out.println("Typed " + e.getKeyChar());
+	}
+	
+	public void setText(String s) {
+		textArea.setText(s);
+	}
+	
+	public void appendText(String s) {
+		textArea.setText(textArea.getText() + (textArea.getText().length()<=0?"":"\n") + s);
+	}
+	
+	public String getText() {
+		return textArea.getText();
 	}
 	
 }
