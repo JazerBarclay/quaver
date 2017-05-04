@@ -100,4 +100,10 @@ public class QuickList extends JPanel {
 		containerPane.setBackground(fillColor);
 	}
 	
+	public void clearNotes() {
+		containerPane = new JPanel();
+		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
+		containerPane.setBackground(fillColor);
+	}
+	
 }
