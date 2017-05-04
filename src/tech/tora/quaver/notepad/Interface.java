@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.list.QuickListNode;
 import tech.tora.quaver.notepad.widget.AddButton;
 import tech.tora.quaver.notepad.widget.EditAreaThing;
 import tech.tora.quaver.notepad.widget.LayoutBuilder;
@@ -101,6 +100,7 @@ public class Interface extends JFrame {
 
 	}
 	
+	// General purpose getting notebooks and total notes contained in each
 	private void getNotebooks() {
 
 		int noteCount = 0;
@@ -126,8 +126,7 @@ public class Interface extends JFrame {
 							@Override
 							public void mouseClick() {
 								activeNotebook = n;
-								this.setActive(true);
-								System.out.println(activeNotebook.name);
+								layout.notebooksList.setActiveNode(this);
 								updateAll();
 							}
 						};
@@ -156,6 +155,8 @@ public class Interface extends JFrame {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Failed to write notebook "+notebookName+"\n" + e, "Failed notebook write", JOptionPane.ERROR_MESSAGE);
 		}
+		
+		// Update quicklist for new notebook to be added
 		
 	}
 
