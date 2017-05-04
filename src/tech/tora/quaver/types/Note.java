@@ -95,4 +95,13 @@ public class Note {
 		}
 	}
 
+	public void addCell(Cell cell) {
+		System.out.println("Length " + cells.length);
+		Cell[] tmpArray = new Cell[cells.length+1];
+		System.out.println("New Length " + tmpArray.length);
+		for (int i = 0; i < cells.length; i++) tmpArray[i] = cells[i];
+		tmpArray[cells.length] = cell;
+		cells = tmpArray;
+	}
+	
 }
