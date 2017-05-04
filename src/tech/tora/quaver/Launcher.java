@@ -17,8 +17,6 @@ import tech.tora.quaver.types.Notebook;
 public class Launcher {
 
 	public static Configuration config;
-	
-	public static Interface iFace;
 
 	public static String pathSeparator = (System.getProperty("os.name").startsWith("Windows")?"\\":"/");
 
@@ -91,7 +89,7 @@ public class Launcher {
 		}
 
 		// Launcher Interface
-		iFace = new Interface();
+		new Interface();
 
 	}
 
