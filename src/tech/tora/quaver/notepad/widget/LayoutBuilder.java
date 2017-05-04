@@ -8,10 +8,12 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
 
 import tech.tora.quaver.list.QuickList;
 import tech.tora.quaver.list.SelectionList;
 
+@SuppressWarnings("unused")
 public class LayoutBuilder {
 
 	private int notebookWidth, notesWidth;
@@ -40,6 +42,8 @@ public class LayoutBuilder {
 	public JLabel notesTopRightFill;
 	public JLabel notesTopTitle;
 	public JLabel notesBotLabel;
+	
+	public JTextPane notesBotFilter;
 
 	public JPanel rightTopPane;
 	public JPanel rightBotPane;
@@ -93,7 +97,7 @@ public class LayoutBuilder {
 		bookPane.setBackground(notebookFillColor);
 		
 		bookTopPane = new JPanel(new BorderLayout());
-		bookTopPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(140, 140, 140)));
+		bookTopPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, borderColor));
 		bookTopPane.setOpaque(false);
 		
 		bookTopLabel = new JLabel();
@@ -115,11 +119,11 @@ public class LayoutBuilder {
 		notesPane.setPreferredSize(new Dimension(notesWidth, 30));
 		
 		notesTopPane = new JPanel(new BorderLayout());
-		notesTopPane.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, new Color(140, 140, 140)));
+		notesTopPane.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, borderColor));
 		notesTopPane.setOpaque(false);
 		
 		notesTopTitle = new JLabel();
-		notesTopTitle.setText("Java Notebook");
+		notesTopTitle.setText("");
 		notesTopTitle.setFont(new Font("Helvetica", Font.BOLD, 14));
 		notesTopTitle.setHorizontalAlignment(JLabel.CENTER);
 		notesTopTitle.setPreferredSize(new Dimension(240, 30));
@@ -131,13 +135,14 @@ public class LayoutBuilder {
 		notesTopRightFill.setPreferredSize(new Dimension(30, 30));
 		
 		notesBotPane = new JPanel(new BorderLayout());
-		notesBotPane.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, new Color(140, 140, 140)));
+		notesBotPane.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, borderColor));
 		notesBotPane.setOpaque(false);
 		
-		notesBotLabel = new JLabel("Placeholder");
-		notesBotLabel.setFont(new Font("Helvetica", Font.PLAIN, 14));
-		notesBotLabel.setHorizontalAlignment(JLabel.CENTER);
-		notesBotLabel.setPreferredSize(new Dimension(30, 30));
+		notesBotFilter = new JTextPane();
+		notesBotFilter.setBackground(notesFillColor);
+		notesBotFilter.setPreferredSize(new Dimension(notesWidth, 30));
+		notesBotFilter.setFont(new Font("Helvetica", Font.PLAIN, 14));
+		
 		
 		/* Left Construction */
 		
@@ -153,7 +158,7 @@ public class LayoutBuilder {
 		notesTopPane.add(notesTopTitle, BorderLayout.CENTER);
 		notesTopPane.add(notesTopRightFill, BorderLayout.EAST);
 		
-		notesBotPane.add(notesBotLabel, BorderLayout.CENTER);
+		notesBotPane.add(notesBotFilter, BorderLayout.CENTER);
 		
 		notesPane.add(notesTopPane, BorderLayout.NORTH);
 		notesPane.add(notesList, BorderLayout.CENTER);
