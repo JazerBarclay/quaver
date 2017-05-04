@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class SelectionListNode extends JPanel {
+public abstract class SelectionListNode extends JPanel {
 
 
 	/**
@@ -19,11 +19,14 @@ public class SelectionListNode extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
 	private SelectionList parentList;
 	
 	private int width = 300;
 	private int height = 58;
+
+	private boolean active = false;
+	
+	private JPanel node1padded;
 	
 //	private int borderCol = 200;
 //	private int fillCol = 230;
@@ -51,7 +54,7 @@ public class SelectionListNode extends JPanel {
 		label2.setFont(new Font("Helvetica", Font.PLAIN, 10));
 		label2.setForeground(new Color(parent.fontColor.getRed(), parent.fontColor.getBlue(), parent.fontColor.getGreen()));
 		
-		JPanel node1padded = new JPanel();
+		node1padded = new JPanel();
 		node1padded.setLayout(new BorderLayout());
 		node1padded.setBorder(BorderFactory.createEmptyBorder(10, 5, 8, 5));
 		node1padded.setSize(width, height);
@@ -68,7 +71,7 @@ public class SelectionListNode extends JPanel {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				System.out.println("Clicked");
+				onClick();
 //				parent.setColours(230, 140);
 			}
 			
@@ -79,14 +82,18 @@ public class SelectionListNode extends JPanel {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				node1padded.setBackground(parent.fillColour);
-				setBackground(parent.fillColour);
+				if (!active) {
+					node1padded.setBackground(parent.fillColour);
+					setBackground(parent.fillColour);
+				}
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				node1padded.setBackground(parent.hoverColor);
-				setBackground(parent.hoverColor);
+				if (!active) {
+					node1padded.setBackground(parent.hoverColor);
+					setBackground(parent.hoverColor);
+				}
 			}
 			
 			@Override
@@ -96,6 +103,27 @@ public class SelectionListNode extends JPanel {
 		});
 		
 		
+	}
+	
+	public abstract void onClick();
+	
+	public void setActive(boolean active) {
+		this.active = active;
+		// TODO - URGENT!!! add check for colors and only add if within limits!!!
+		int mod = 10;
+		if (active){
+			setBackground(new Color(
+					parentList.fillColour.getRed()-mod, 
+					parentList.fillColour.getBlue()-mod, 
+					parentList.fillColour.getGreen()-mod));
+			node1padded.setBackground(new Color(
+					parentList.fillColour.getRed()-mod, 
+					parentList.fillColour.getBlue()-mod, 
+					parentList.fillColour.getGreen()-mod));
+		} else {
+			node1padded.setBackground(parentList.fillColour);
+			setBackground(parentList.fillColour);
+		}
 	}
 	
 }

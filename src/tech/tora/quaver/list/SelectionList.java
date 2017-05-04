@@ -20,6 +20,9 @@ public class SelectionList extends JPanel {
 	private JPanel containerPane;
 	private JScrollPane scrollPane;
 
+	public SelectionListNode[] nodes = new SelectionListNode[] {};
+	protected SelectionListNode selected = null;
+	
 	// Grey colour fill
 
 	protected Color fontColor, fillColour, hoverColor, borderColour;
@@ -58,6 +61,10 @@ public class SelectionList extends JPanel {
 	
 	public void addNode(SelectionListNode node) {
 		containerPane.add(node);
+		SelectionListNode[] tmp = new SelectionListNode[nodes.length+1];
+		for (int i = 0; i < nodes.length; i++) tmp[i] = nodes[i];
+		tmp[nodes.length] = node;
+		nodes = tmp;
 	}
 	
 	public void setColours(int fillColour, int borderColour) {
@@ -68,6 +75,13 @@ public class SelectionList extends JPanel {
 		scrollPane.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, bColour));
 	}
 	
+	public void setActiveNode(SelectionListNode n) {
+		for (SelectionListNode node : nodes) {
+			if (node == n) node.setActive(true);
+			else node.setActive(false);
+		}
+		selected = n;
+	}
 	
 	
 //	
@@ -79,9 +93,11 @@ public class SelectionList extends JPanel {
 //	}
 //	
 	public void clearList() {
-		containerPane = new JPanel();
-		containerPane.setBackground(fillColour);
-		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
+		nodes = new SelectionListNode[] {};
+		containerPane.removeAll();
+		containerPane.revalidate();
+		containerPane.repaint();
+		
 	}
 	
 }
