@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -14,6 +13,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import tech.tora.quaver.Launcher;
 
 public abstract class QuickListNode extends JPanel {
 
@@ -62,7 +63,7 @@ public abstract class QuickListNode extends JPanel {
 		
 		BufferedImage myPicture = null;
 		try {
-			myPicture = ImageIO.read(new File("res/icon1.png"));
+			myPicture = ImageIO.read(Launcher.class.getResourceAsStream("/icon1.png"));
 			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 			node1padded.add(picLabel, BorderLayout.WEST);
 		} catch (IOException e) {
