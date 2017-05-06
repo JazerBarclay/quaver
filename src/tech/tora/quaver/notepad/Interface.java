@@ -3,6 +3,7 @@ package tech.tora.quaver.notepad;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.UUID;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.json.simple.parser.ParseException;
 
@@ -76,6 +78,7 @@ public class Interface extends JFrame {
 			}
 		}, BorderLayout.WEST);
 
+		layout.notesBotFilter.setToolTipText("Filter Here");
 
 		editArea = new EditAreaThing() {
 			private static final long serialVersionUID = 1L;
@@ -87,7 +90,7 @@ public class Interface extends JFrame {
 
 			@Override
 			public void onChange() {
-//				System.out.println("Changed");
+				updatePreview();
 			}
 
 			@Override
@@ -96,8 +99,27 @@ public class Interface extends JFrame {
 			}
 		};
 
-		layout.getRightWrapper().add(editArea, BorderLayout.CENTER);
+		previewArea = new PreviewAreaThing() {
+			private static final long serialVersionUID = 1L;
 
+		};
+		previewArea.setText("<html><head><title>" + "Quaver" + "</title>"
+				+ "</head><body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
+				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview (pre alpha version 0.8)</p></body></html>");
+
+
+		// Setting up layout
+		
+		JPanel splitter = new JPanel(new GridLayout());
+		splitter.setOpaque(false);
+		splitter.add(editArea);
+		splitter.add(previewArea);
+
+		layout.getRightWrapper().add(splitter, BorderLayout.CENTER);
+
+
+		
+		
 		try {
 			setIconImage(new ImageIcon(Launcher.class.getResource("/icon1.png")).getImage());
 		} catch(Exception e) {
@@ -109,7 +131,7 @@ public class Interface extends JFrame {
 		setTitle("Quaver");
 		setVisible(true);
 
-		setSize(1280, 800);
+		setSize(1600, 800);
 
 	}
 
@@ -158,6 +180,8 @@ public class Interface extends JFrame {
 				if (node.notebook.name.equals(activeNotebook.name)) node.setActive(true);
 			}
 		}
+		
+		layout.notebooksList.revalidate();
 
 	}
 
@@ -263,11 +287,6 @@ public class Interface extends JFrame {
 		return (String)response;
 	}
 
-
-	//		previewArea.setText("<html><head><title>" + "TITLE" + "</title>"
-	//				+ "</head><body style=\"background-color: #2a3137; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
-	//				+ "<h1 style=\"color: #FFFFFF;\">"+ "TITLE" +"</h1><hr><br><div style=\"\"></div></body></html>");
-
 	public void updateAll() {
 
 		if (activeNotebook != null) {
@@ -281,27 +300,163 @@ public class Interface extends JFrame {
 				Note n = Note.readContentsJSON(activeNote.path);
 				editArea.setText("");
 				for (Cell c : n.cells) {
-					editArea.appendText("[~" + c.type + "~]");
+					editArea.appendText("[~" + c.type + "~]" + "\n");
 					editArea.appendText(c.data);
 				}
+				updatePreview();
 			} catch (ParseException | IOException e) {
 				e.printStackTrace();
 			}
 		} else {
 			editArea.setText("");
+			previewArea.setText("");
 		}
 
 
 	}
 
 	public void updatePreview() {
+		
+		Note n = activeNote;
+		
+		String previewText = "";
+		
+		previewText = "<html><head><title>" + n.title + "</title>"
+				+ "</head><body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
+				+ "<h1>"+n.title+"</h1><hr>";
+		
+		String editText = editArea.getText();
+		String[] split = editText.split("\n");
+		
+		boolean noAction;
+		
+		CellType lastUsedType = null;
+		CellType type = CellType.MARKDOWN;
+		
+		
+		for (String t : split) {
+			
+			noAction = true;
+			
+			// Replacements before starting checks
+			t = t.replace("<", "&lt;");
+			t = t.replace(">", "&gt;");
 
+			// Type Checks
+			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.MARKDOWN.type)) : false)) {
+				lastUsedType = type;
+				type = CellType.MARKDOWN;
+				if (Launcher.config.devmode) previewText+="[Markdown Set]<br>";
+				if (lastUsedType == CellType.CODE) previewText+="</div>";
+				noAction = false;
+			} 
+			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.CODE.type)) : false)) {
+				lastUsedType = type;
+				type = CellType.CODE;
+				if (Launcher.config.devmode) previewText+="[Code Set]<br>";
+				previewText+="<div style=\"background-color: #2D2D2D;\">";
+				// <div style=\"background-color: #272727; width: 10px; float: left;\"></div>
+				if (lastUsedType == CellType.CODE) previewText+="</div>";
+				noAction = false;
+			} 
+			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.TEXT.type)) : false)) {
+				lastUsedType = type;
+				type = CellType.TEXT;
+				if (Launcher.config.devmode) previewText+="[Text Set]<br>";
+				if (lastUsedType == CellType.CODE) previewText+="</div>";
+				noAction = false;
+			}
+			
+			if (type.equals(CellType.CODE.type) && t.startsWith("[=") && t.endsWith("=]") && (t.length() > 4) ? (t.substring(2, t.length() -2).equals("javascript")) : false) {
+				if (Launcher.config.devmode) previewText += "[--" + t.substring(2, t.length()-2) + "--]<br>";
+				// set code style on here until the end of the section!
+				noAction = false;
+			}
+			
+			// Headings
+			if (t.startsWith("# ")) {
+				previewText += "<h1>";
+				previewText += t.substring(2, t.length());
+				previewText += "</h1>";
+				noAction = false;
+			}
+			if (t.startsWith("## ")) {
+				previewText += "<h2>";
+				previewText += t.substring(3, t.length());
+				previewText += "</h2>";
+				noAction = false;
+			}
+			if (t.startsWith("### ")) {
+				previewText += "<h3>";
+				previewText += t.substring(4, t.length());
+				previewText += "</h3>";
+				noAction = false;
+			}
+			if (t.startsWith("#### ")) {
+				previewText += "<h4>";
+				previewText += t.substring(5, t.length());
+				previewText += "</h4>";
+				noAction = false;
+			}
+			if (t.startsWith("##### ")) {
+				previewText += "<h5>";
+				previewText += t.substring(6, t.length());
+				previewText += "</h5>";
+				noAction = false;
+			}
+			if (t.startsWith("###### ")) {
+				previewText += "<h6>";
+				previewText += t.substring(7, t.length());
+				previewText += "</h6>";
+				noAction = false;
+			}
+
+			// Formatting
+			if (t.startsWith("*") && t.endsWith("*") && t.length()>2) {
+				previewText+="<i>";
+				previewText+=t.substring(1, t.length()-1);
+				previewText+="</i>";
+				noAction = false;
+			}
+			
+			// Quoting
+			if (t.startsWith("&gt;")) {
+				previewText+="<div style=\"color: #00ff00;\">";
+				previewText+=t;
+				previewText+="</div>";
+				noAction = false;
+			}
+			// Bullet Points
+			if (t.startsWith("* ")) {
+				previewText += "&bull " + t.substring(2) + "<br>";
+				noAction = false;
+			}
+			
+			if (t.contains((char)'9' + "")) {
+				previewText += t.replace((char)9, ' ');
+				previewText += "<br>";
+				noAction = false;
+			}
+			if (noAction) {
+				if (type == CellType.CODE) {
+					previewText+="<b>" + t + "</b><br/>";
+				} 
+				else {
+					previewText+=t + "<br/>";
+				}
+			}
+		}
+		
+		previewText += "</body></html>";
+				
+		previewArea.setText(previewText);
+		
 	}
 
 	public void save() {
-		// THought here - what if it lost the active one. need a check if its been lonst and reset to null
+		// Thought here - what if it lost the active one. need a check if its been lonst and reset to null
 		if (activeNotebook != null && activeNote != null) {
-			
+
 			Cell[] cells = new Cell[]{};
 			String[] splitText = editArea.getText().split("\n");
 			Cell currentCell = new Cell();
@@ -356,11 +511,11 @@ public class Interface extends JFrame {
 			for (int i = 0; i < cells.length; i++) tmp[i] = cells[i];
 			tmp[cells.length] = currentCell;
 			cells = tmp;
-			
+
 			try {
 				Note n0;
 				Note n1 = Note.readMetaJSON(activeNote.path);
-				
+
 				n0 = new Note(new File(activeNote.path).getParent().toString(), n1.title, n1.uuid, n1.created_at, System.currentTimeMillis() / 1000L);
 				n0.cells = cells;
 
@@ -369,10 +524,10 @@ public class Interface extends JFrame {
 			} catch (ParseException | IOException e) {
 				e.printStackTrace();
 			}
-			
-			
+
+
 		}
 	}
-	
-	
+
+
 }
