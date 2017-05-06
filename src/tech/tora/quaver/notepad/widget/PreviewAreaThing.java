@@ -14,9 +14,11 @@ public abstract class PreviewAreaThing extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	protected JEditorPane preview;
+	
 	public PreviewAreaThing() {
 		
-		JEditorPane preview = new JEditorPane();
+		preview = new JEditorPane();
 		preview.setMargin(new Insets(0, 0, 0, 0));
 		preview.setAutoscrolls(false);
 		preview.setContentType("text/html");
@@ -31,6 +33,15 @@ public abstract class PreviewAreaThing extends JPanel {
 		add(previewScroll, BorderLayout.CENTER);
 	}
 	
-	public abstract void setHTML();
+//	public abstract void setHTML();
+	
+	public void setText(String s) {
+		preview.setText(s);
+	}
+
+	public void appendText(String s) {
+		preview.setText(preview.getText() + s);
+	}
+	
 	
 }
