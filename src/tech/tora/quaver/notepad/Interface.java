@@ -431,12 +431,8 @@ public class Interface extends JFrame {
 				previewText += "&bull " + t.substring(2) + "<br>";
 				noAction = false;
 			}
-			
-			if (t.contains((char)'9' + "")) {
-				previewText += t.replace((char)9, ' ');
-				previewText += "<br>";
-				noAction = false;
-			}
+			// Tab Management
+			// todo
 			if (noAction) {
 				if (type == CellType.CODE) {
 					previewText+="<b>" + t + "</b><br/>";
