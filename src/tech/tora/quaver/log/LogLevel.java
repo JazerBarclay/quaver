@@ -1,4 +1,4 @@
-package tech.tora.quaver;
+package tech.tora.quaver.log;
 
 public enum LogLevel {
 
