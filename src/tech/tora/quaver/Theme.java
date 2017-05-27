@@ -12,18 +12,18 @@ import tech.tora.quaver.colour.ColourValue;
 
 public class Theme {
 
-	public String themeName;
-	public ColourValue fontColour;
-	public ColourValue wrapperFillColour;
-	public ColourValue notebookFillColour;
-	public ColourValue notebookHoverColour;
-	public ColourValue noteFillColour;
-	public ColourValue noteHoverColour;
-	public ColourValue editFontColour;
-	public ColourValue editFillColour;
-	public ColourValue previewFontColour;
-	public ColourValue previewFillColour;
-	public ColourValue borderColour;
+	public String themeName = null;
+	public ColourValue fontColour = null;
+	public ColourValue wrapperFillColour = null;
+	public ColourValue notebookFillColour = null;
+	public ColourValue notebookHoverColour = null;
+	public ColourValue noteFillColour = null;
+	public ColourValue noteHoverColour = null;
+	public ColourValue editFontColour = null;
+	public ColourValue editFillColour = null;
+	public ColourValue previewFontColour = null;
+	public ColourValue previewFillColour = null;
+	public ColourValue borderColour = null;
 
 	/**
 	 * Writes a blank configuration file
