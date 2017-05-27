@@ -1,7 +1,15 @@
 # Technical Reference
 
+## Themes
+
+
+## Layout
+(To be added in the future when I have full drawn specifications of the application. Currently not at version 1 so no point right now.)
+
 
 ## File Structure
+This section covers the structure of the libraries, notebooks and notes. It also covers 
+
 ### Libraries
 These are folders that contain all notebooks and their notes. This is to be named as the library name and to be appended with '.qvLibrary' for searching and for the application.
     
