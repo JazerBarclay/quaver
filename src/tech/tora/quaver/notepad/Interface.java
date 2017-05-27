@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import org.json.simple.parser.ParseException;
 
+import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.list.QuickListNode;
 import tech.tora.quaver.list.SelectionListNode;
@@ -37,6 +38,9 @@ public class Interface extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public static Configuration config;
+	public boolean fresh = false;
+	
 	public LayoutBuilder layout;
 	public EditAreaThing editArea;
 	public PreviewAreaThing previewArea;
@@ -44,7 +48,14 @@ public class Interface extends JFrame {
 	public static Notebook activeNotebook = null;
 	public static Note activeNote = null;
 
-	public Interface() {
+	public Interface(Configuration c) {
+		if (c == null) {
+			fresh = true;
+			config = new Configuration();
+			config.devmode = false;
+			config.name = "Default";
+			config.libraries = new String[]{};
+		}
 		initLayout();
 		getNotebooks();
 	}
@@ -140,7 +151,7 @@ public class Interface extends JFrame {
 
 		int noteCount = 0;
 
-		for (String lib : Launcher.config.libraries) {
+		for (String lib : this.config.libraries) {
 			File[] libContents = new File(lib).listFiles();
 			// For each of the files and folders in the library, if they end in .qvnotebook and contain a meta file
 			for (File libF : libContents) {
@@ -225,7 +236,7 @@ public class Interface extends JFrame {
 
 		String notebookName = getTextInputPopup("New Notebook Name", "What would you like to call your new notebook?", "");
 		if (notebookName == null) return;
-		String location = getComboInputPopup("Select a Destination", "Select a library for this notebook", Launcher.config.libraries, Launcher.config.libraries[0]);
+		String location = getComboInputPopup("Select a Destination", "Select a library for this notebook", this.config.libraries, this.config.libraries[0]);
 		if (location == null) return;
 
 		try {
@@ -282,7 +293,7 @@ public class Interface extends JFrame {
 	private String getComboInputPopup(String title, String message, String[] array, String defaultValue) {
 		Object response = JOptionPane.showInputDialog(null, 
 				"Select a library for this notebook", "Select a Destination", JOptionPane.QUESTION_MESSAGE,
-				null, Launcher.config.libraries, Launcher.config.libraries[0]);
+				null, this.config.libraries, this.config.libraries[0]);
 		if (response == null) return null;
 		return (String)response;
 	}
@@ -346,14 +357,14 @@ public class Interface extends JFrame {
 			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.MARKDOWN.type)) : false)) {
 				lastUsedType = type;
 				type = CellType.MARKDOWN;
-				if (Launcher.config.devmode) previewText+="[Markdown Set]<br>";
+				if (this.config.devmode) previewText+="[Markdown Set]<br>";
 				if (lastUsedType == CellType.CODE) previewText+="</div>";
 				noAction = false;
 			} 
 			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.CODE.type)) : false)) {
 				lastUsedType = type;
 				type = CellType.CODE;
-				if (Launcher.config.devmode) previewText+="[Code Set]<br>";
+				if (this.config.devmode) previewText+="[Code Set]<br>";
 				previewText+="<div style=\"background-color: #2D2D2D;\">";
 				// <div style=\"background-color: #272727; width: 10px; float: left;\"></div>
 				if (lastUsedType == CellType.CODE) previewText+="</div>";
@@ -362,13 +373,13 @@ public class Interface extends JFrame {
 			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.TEXT.type)) : false)) {
 				lastUsedType = type;
 				type = CellType.TEXT;
-				if (Launcher.config.devmode) previewText+="[Text Set]<br>";
+				if (this.config.devmode) previewText+="[Text Set]<br>";
 				if (lastUsedType == CellType.CODE) previewText+="</div>";
 				noAction = false;
 			}
 			
 			if (type.equals(CellType.CODE.type) && t.startsWith("[=") && t.endsWith("=]") && (t.length() > 4) ? (t.substring(2, t.length() -2).equals("javascript")) : false) {
-				if (Launcher.config.devmode) previewText += "[--" + t.substring(2, t.length()-2) + "--]<br>";
+				if (this.config.devmode) previewText += "[--" + t.substring(2, t.length()-2) + "--]<br>";
 				// set code style on here until the end of the section!
 				noAction = false;
 			}
