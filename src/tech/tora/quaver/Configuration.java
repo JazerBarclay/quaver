@@ -16,6 +16,7 @@ public class Configuration {
 	public String name;
 	public String[] libraries;
 	public boolean devmode;
+	public String theme;
 	
 	/**
 	 * Writes a blank configuration file
@@ -28,6 +29,7 @@ public class Configuration {
 		JSONObject obj = new JSONObject();
 		obj.put("config_name", config.name);
 		obj.put("devmode", config.devmode);
+		obj.put("theme", config.theme);
 
 		JSONArray libraries = new JSONArray();
 		
@@ -63,10 +65,12 @@ public class Configuration {
 
 		String name = (String) jsonObject.get("config_name");
 		boolean devmode = (boolean) jsonObject.get("devmode");
+		String theme = (String) jsonObject.get("theme");
 		JSONArray libraries = (JSONArray) jsonObject.get("libraries");
 		
 		config.name  = name;
 		config.devmode  = devmode;
+		config.theme = theme;
 		config.libraries = new String[libraries.size()];
 		
 		Iterator<String> iterator = libraries.iterator();
