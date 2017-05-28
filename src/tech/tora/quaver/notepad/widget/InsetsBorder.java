@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad;
+package tech.tora.quaver.notepad.widget;
 
 import java.awt.Component;
 import java.awt.Graphics;
