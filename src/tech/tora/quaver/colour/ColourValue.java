@@ -1,5 +1,7 @@
 package tech.tora.quaver.colour;
 
+import java.awt.Color;
+
 public class ColourValue {
 
 	/*
@@ -44,6 +46,10 @@ public class ColourValue {
 
 	public static String getHex(ColourValue v) {
 		return String.format("%02x%02x%02x", v.r, v.g, v.b);
+	}
+	
+	public Color getAsColor() {
+		return new Color(r, g, b);
 	}
 
 }
