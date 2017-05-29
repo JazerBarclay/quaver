@@ -8,6 +8,7 @@
 	<property name="src" value="${basedir}/src"/>
 	<property name="bin" value="${basedir}/bin"/>
 	<property name="lib" value="${basedir}/lib"/>
+	<property name="res" value="${basedir}/res"/>
 	<property name="builds" value="${basedir}/builds"/>
 	<property name="classes" value="${bin}/src"/>
 	<property name="currentBuild" value="${builds}/${project.name}-${build.release}.${build.major}.${build.minor}.${build.revision}"/>
@@ -90,6 +91,7 @@
 		<mkdir dir="${basedir}"/>
 		<mkdir dir="${builds}"/>
 		<jar destfile="${currentBuild}.jar" basedir="${classes}">
+		<fileset dir="${res}"/>
 		<manifest>
 			<attribute name="Main-Class" value="${main.class}"/>
 			<attribute name="Class-Path" value="${lib.list}"/>
@@ -97,7 +99,7 @@
 		</jar>
 	</target>
 
-	<target name="run-project" depends="jar">
+	<target name="run-project" depends="jar-project">
 		<echo message="Launching Version ${build.release}.${build.major}.${build.minor}.${build.revision}"/>
 		<java jar="${currentBuild}.jar" fork="true"/>
 	</target>
