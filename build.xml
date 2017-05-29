@@ -10,7 +10,7 @@
 	<property name="lib" value="${basedir}/lib"/>
 	<property name="res" value="${basedir}/res"/>
 	<property name="builds" value="${basedir}/builds"/>
-	<property name="classes" value="${bin}/src"/>
+	<property name="classes" value="${bin}"/>
 	<property name="currentBuild" value="${builds}/${project.name}-${build.release}.${build.major}.${build.minor}.${build.revision}"/>
 
 	<path id="build-classpath">
@@ -79,6 +79,11 @@
 
 	<target name="compile-project">
 		<mkdir dir="${classes}"/>
+		<copy todir="${classes}">
+			<fileset dir="${res}">
+				<exclude name="**/*.gitignore*"/>
+			</fileset>
+		</copy>
 		<javac failonerror="true" srcdir="${src}" destdir="${classes}">
 			<classpath>
 				<path refid="build-classpath"/>
@@ -87,7 +92,6 @@
 	</target>
 
 	<target name="jar-project">
-
 		<mkdir dir="${basedir}"/>
 		<mkdir dir="${builds}"/>
 		<jar destfile="${currentBuild}.jar" basedir="${classes}">
