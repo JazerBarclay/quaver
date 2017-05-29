@@ -1,0 +1,109 @@
+<!DOCTYPE project>
+<!-- *** Please make all property changes to the 'quaver.build.properties' file *** -->
+<project name="Quaver" default="help" basedir=".">
+	<property file="quaver.build.properties"/>
+
+	<property name="properties" value="quaver.build.properties"/>
+	
+	<property name="src" value="${basedir}/src"/>
+	<property name="bin" value="${basedir}/bin"/>
+	<property name="lib" value="${basedir}/lib"/>
+	<property name="builds" value="${basedir}/builds"/>
+	<property name="classes" value="${bin}/src"/>
+	<property name="currentBuild" value="${builds}/${project.name}-${build.release}.${build.major}.${build.minor}.${build.revision}"/>
+
+	<path id="build-classpath">
+		<fileset dir="${lib}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<manifestclasspath property="lib.list" jarfile="${currentBuild}.jar">
+		<classpath refid="build-classpath"/>
+	</manifestclasspath>
+
+	<target name="help">
+		<echo message="Targets:"/>
+		<echo message="   all      		Clean, rebuild and deploy."/>
+		<echo message="   build     	Clean and build."/>
+		<echo message="   deploy   		Run the current compiled version"/>
+		<echo message="   minor    		Roll a new minor release"/>
+		<echo message="   major    		Roll a new major release"/>
+		<echo message="   release  		Roll a new full release"/>
+	</target>
+	
+	<!-- Main Targets -->
+	<target name="all" depends="clean-project,compile-project,jar-project,inc-revision,run-project"/>
+	<target name="build" depends="clean-project,compile-project,jar-project,inc-revision"/>
+	<target name="deploy" depends="run-project"/>
+	<target name="minor" depends="clean-project,compile-project,jar-project,inc-minor"/>
+	<target name="major" depends="clean-project,compile-project,jar-project,inc-major"/>
+	<target name="release" depends="clean-project,compile-project,jar-project,inc-release"/>
+
+	<target name="inc-revision">
+	    <propertyfile  file="${properties}">
+			<entry key="build.revision" type="int" operation="+" value="1"/>
+		</propertyfile>
+	</target>
+	
+	<target name="inc-minor">
+		<propertyfile  file="${properties}">
+			<entry key="build.minor" type="int" operation="+" value="1"/>
+			<entry key="build.revision" type="int" value="0"/>
+		</propertyfile>
+	</target>
+	
+	<target name="inc-major">
+		<propertyfile  file="${properties}">
+            <entry key="build.major" type="int" operation="+" value="1"/>
+            <entry key="build.minor" type="int" value="0"/>
+            <entry key="build.revision" type="int" value="0"/>
+		</propertyfile>
+	</target>
+	
+	<target name="inc-release">
+		<propertyfile  file="${properties}">
+            <entry key="build.release" type="int" operation="+" value="1"/>
+            <entry key="build.major" type="int" value="0"/>
+            <entry key="build.minor" type="int" value="0"/>
+            <entry key="build.revision" type="int" value="0"/>
+		</propertyfile>
+	</target>
+	
+	<!-- Build Source -->
+	<target name="clean-project">
+		<delete dir="build"/>
+		<delete dir="bin" includeemptydirs="true"/>
+	</target>
+
+	<target name="compile-project">
+		<mkdir dir="${classes}"/>
+		<javac failonerror="true" srcdir="${src}" destdir="${classes}">
+			<classpath>
+				<path refid="build-classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar-project">
+
+		<mkdir dir="${basedir}"/>
+		<mkdir dir="${builds}"/>
+		<jar destfile="${currentBuild}.jar" basedir="${classes}">
+		<manifest>
+			<attribute name="Main-Class" value="${main.class}"/>
+			<attribute name="Class-Path" value="${lib.list}"/>
+		</manifest>
+		</jar>
+	</target>
+
+	<target name="run-project" depends="jar">
+		<echo message="Launching Version ${build.release}.${build.major}.${build.minor}.${build.revision}"/>
+		<java jar="${currentBuild}.jar" fork="true"/>
+	</target>
+	
+	<target name="party">
+		<echo message="Congratulations on the V${build.release} release!"/>
+	</target>
+
+</project>
