@@ -1,0 +1,13 @@
+{
+	"theme_name":"Default",
+	"font_colour":"282828",
+	"wrapper_fill_colour":"000000",
+	"notebook_fill_colour":"e6e6e6",
+	"notebook_hover_colour":"d2d2d2",
+	"note_fill_colour":"e6e64ce",
+	"note_hover_colour":"d2d2d2",
+	"edit_fill_colour":"e6e6e6",
+	"preview_font_colour":"f2f2f2",
+	"preview_fill_colour":"393f4b",
+	"border_colour":"8c8c8c"
+}
