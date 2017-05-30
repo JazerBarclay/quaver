@@ -73,8 +73,8 @@ public class Launcher {
 		@Deprecated
 		public void LauncherOld() {
 	
-			System.out.println("Launching Quaver");
-			System.out.println("OS: " + System.getProperty("os.name"));
+//			System.out.println("Launching Quaver");
+//			System.out.println("OS: " + System.getProperty("os.name"));
 	
 			// If configuration file cannot be found, generate new one
 			if (!fileExists("res" + pathSeparator + "config.json")) {
