@@ -12,7 +12,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.json.simple.parser.ParseException;
 
-import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.Interface;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Note;

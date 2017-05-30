@@ -238,7 +238,7 @@ public class Interface extends JFrame {
 
 		String notebookName = getTextInputPopup("New Notebook Name", "What would you like to call your new notebook?", "");
 		if (notebookName == null) return;
-		String location = getComboInputPopup("Select a Destination", "Select a library for this notebook", this.config.libraries, this.config.libraries[0]);
+		String location = getComboInputPopup("Select a Destination", "Select a library for this notebook", config.libraries, config.libraries[0]);
 		if (location == null) return;
 
 		try {
@@ -295,7 +295,7 @@ public class Interface extends JFrame {
 	private String getComboInputPopup(String title, String message, String[] array, String defaultValue) {
 		Object response = JOptionPane.showInputDialog(null, 
 				"Select a library for this notebook", "Select a Destination", JOptionPane.QUESTION_MESSAGE,
-				null, this.config.libraries, this.config.libraries[0]);
+				null, config.libraries, config.libraries[0]);
 		if (response == null) return null;
 		return (String)response;
 	}
@@ -359,14 +359,14 @@ public class Interface extends JFrame {
 			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.MARKDOWN.type)) : false)) {
 				lastUsedType = type;
 				type = CellType.MARKDOWN;
-				if (this.config.devmode) previewText+="[Markdown Set]<br>";
+				if (config.devmode) previewText+="[Markdown Set]<br>";
 				if (lastUsedType == CellType.CODE) previewText+="</div>";
 				noAction = false;
 			} 
 			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.CODE.type)) : false)) {
 				lastUsedType = type;
 				type = CellType.CODE;
-				if (this.config.devmode) previewText+="[Code Set]<br>";
+				if (config.devmode) previewText+="[Code Set]<br>";
 				previewText+="<div style=\"background-color: #2D2D2D;\">";
 				// <div style=\"background-color: #272727; width: 10px; float: left;\"></div>
 				if (lastUsedType == CellType.CODE) previewText+="</div>";
@@ -375,13 +375,13 @@ public class Interface extends JFrame {
 			if (t.startsWith("[~") && t.endsWith("~]") && (t.length() > 4 ? (t.substring(2, t.length()-2).equals(CellType.TEXT.type)) : false)) {
 				lastUsedType = type;
 				type = CellType.TEXT;
-				if (this.config.devmode) previewText+="[Text Set]<br>";
+				if (config.devmode) previewText+="[Text Set]<br>";
 				if (lastUsedType == CellType.CODE) previewText+="</div>";
 				noAction = false;
 			}
 			
 			if (type.equals(CellType.CODE.type) && t.startsWith("[=") && t.endsWith("=]") && (t.length() > 4) ? (t.substring(2, t.length() -2).equals("javascript")) : false) {
-				if (this.config.devmode) previewText += "[--" + t.substring(2, t.length()-2) + "--]<br>";
+				if (config.devmode) previewText += "[--" + t.substring(2, t.length()-2) + "--]<br>";
 				// set code style on here until the end of the section!
 				noAction = false;
 			}
