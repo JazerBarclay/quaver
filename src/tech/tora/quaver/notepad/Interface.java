@@ -55,6 +55,8 @@ public class Interface extends JFrame {
 			config.devmode = false;
 			config.name = "Default";
 			config.libraries = new String[]{};
+		} else {
+			config = c;
 		}
 		initLayout();
 		getNotebooks();
@@ -151,7 +153,7 @@ public class Interface extends JFrame {
 
 		int noteCount = 0;
 
-		for (String lib : this.config.libraries) {
+		for (String lib : config.libraries) {
 			File[] libContents = new File(lib).listFiles();
 			// For each of the files and folders in the library, if they end in .qvnotebook and contain a meta file
 			for (File libF : libContents) {
