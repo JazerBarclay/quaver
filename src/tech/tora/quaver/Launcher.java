@@ -1,8 +1,11 @@
 package tech.tora.quaver;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -14,14 +17,49 @@ import tech.tora.quaver.notepad.Interface;
 
 public class Launcher {
 
-	//	public static Configuration config;
-
+	public static String projectName = "Quaver";
+	
+	public static String buildID = "0.0.0.0";
+	public static String buildRelease = "0.0.0.0";
+	public static int buildMajor = 0;
+	public static int buildMinor = 0;
+	public static int buildRevision = 0;
+	
 	public static String pathSeparator = (System.getProperty("os.name").startsWith("Windows")?"\\":"/");
 
 	public Launcher() {
-		System.out.println("Launching Quaver");
+		System.out.print("Launching " + projectName);
 		System.out.println("OS: " + System.getProperty("os.name"));
 
+		Properties prop = new Properties();
+		InputStream input = null;
+
+		try {
+
+			input = new FileInputStream("quaver.build.properties");
+
+			// load a properties file
+			prop.load(input);
+
+			// get the property value and print it out
+			System.out.println(prop.getProperty("project.name"));
+			System.out.println(prop.getProperty("build.release"));
+			System.out.println(prop.getProperty("build.major"));
+			System.out.println(prop.getProperty("build.minor"));
+			System.out.println(prop.getProperty("build.revision"));
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		try {
 			// Set cross-platform Java L&F (also called "Metal")
 	        UIManager.setLookAndFeel(
