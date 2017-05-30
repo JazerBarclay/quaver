@@ -34,12 +34,12 @@
 	</target>
 	
 	<!-- Main Targets -->
-	<target name="all" depends="clean-project,compile-project,jar-project,inc-revision,run-project"/>
-	<target name="build" depends="clean-project,compile-project,jar-project,inc-revision"/>
+	<target name="all" depends="clean-project,inc-revision,compile-project,jar-project,run-project"/>
+	<target name="build" depends="clean-project,inc-revision,compile-project,jar-project"/>
 	<target name="deploy" depends="run-project"/>
-	<target name="minor" depends="clean-project,compile-project,jar-project,inc-minor"/>
-	<target name="major" depends="clean-project,compile-project,jar-project,inc-major"/>
-	<target name="release" depends="clean-project,compile-project,jar-project,inc-release"/>
+	<target name="minor" depends="clean-project,inc-minor,compile-project,jar-project"/>
+	<target name="major" depends="clean-project,inc-major,compile-project,jar-project"/>
+	<target name="release" depends="clean-project,inc-release,compile-project,jar-project"/>
 
 	<target name="inc-revision">
 	    <propertyfile  file="${properties}">
