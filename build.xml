@@ -10,7 +10,6 @@
 	<property name="lib" value="${basedir}/lib"/>
 	<property name="res" value="${basedir}/res"/>
 	<property name="builds" value="${basedir}/builds"/>
-	<property name="classes" value="${bin}"/>
 	<property name="currentBuild" value="${builds}/${project.name}-${build.release}.${build.major}.${build.minor}.${build.revision}"/>
 
 	<path id="build-classpath">
@@ -28,29 +27,21 @@
 		<echo message="   all      		Clean, rebuild and deploy."/>
 		<echo message="   build     	Clean and build."/>
 		<echo message="   deploy   		Run the current compiled version"/>
-		<echo message="   minor    		Roll a new minor release"/>
 		<echo message="   major    		Roll a new major release"/>
 		<echo message="   release  		Roll a new full release"/>
 	</target>
 	
 	<!-- Main Targets -->
-	<target name="all" depends="clean-project,inc-revision,compile-project,jar-project,run-project"/>
-	<target name="build" depends="clean-project,inc-revision,compile-project,jar-project"/>
+	<target name="all" depends="clean-project,inc-minor,compile-project,jar-project,run-project"/>
+	<target name="build" depends="clean-project,inc-minor,compile-project,jar-project"/>
 	<target name="deploy" depends="run-project"/>
-	<target name="minor" depends="clean-project,inc-minor,compile-project,jar-project"/>
 	<target name="major" depends="clean-project,inc-major,compile-project,jar-project"/>
 	<target name="release" depends="clean-project,inc-release,compile-project,jar-project"/>
+	<target name="compile" depends="clean-project,inc-minor,compile-project"/>
 
-	<target name="inc-revision">
-	    <propertyfile  file="${properties}">
-			<entry key="build.revision" type="int" operation="+" value="1"/>
-		</propertyfile>
-	</target>
-	
 	<target name="inc-minor">
 		<propertyfile  file="${properties}">
 			<entry key="build.minor" type="int" operation="+" value="1"/>
-			<entry key="build.revision" type="int" value="0"/>
 		</propertyfile>
 	</target>
 	
@@ -58,7 +49,6 @@
 		<propertyfile  file="${properties}">
             <entry key="build.major" type="int" operation="+" value="1"/>
             <entry key="build.minor" type="int" value="0"/>
-            <entry key="build.revision" type="int" value="0"/>
 		</propertyfile>
 	</target>
 	
@@ -67,7 +57,6 @@
             <entry key="build.release" type="int" operation="+" value="1"/>
             <entry key="build.major" type="int" value="0"/>
             <entry key="build.minor" type="int" value="0"/>
-            <entry key="build.revision" type="int" value="0"/>
 		</propertyfile>
 	</target>
 	
@@ -78,13 +67,21 @@
 	</target>
 
 	<target name="compile-project">
-		<mkdir dir="${classes}"/>
-		<copy todir="${classes}">
+		<mkdir dir="${bin}"/>
+		<copy todir="${bin}">
 			<fileset dir="${res}">
 				<exclude name="**/*.gitignore*"/>
 			</fileset>
 		</copy>
-		<javac failonerror="true" srcdir="${src}" destdir="${classes}">
+		
+		<propertyfile file="${bin}/quaver.properties">
+		  <entry  key="project.name" value="${project.name}"/>
+		  <entry  key="project.release" value="${build.release}"/>
+		  <entry  key="project.minor" value="${build.major}"/>
+		  <entry  key="project.major" value="${build.minor}"/>
+		</propertyfile>
+		
+		<javac failonerror="true" srcdir="${src}" destdir="${bin}">
 			<classpath>
 				<path refid="build-classpath"/>
 			</classpath>
@@ -92,10 +89,9 @@
 	</target>
 
 	<target name="jar-project">
-		<mkdir dir="${basedir}"/>
 		<mkdir dir="${builds}"/>
-		<jar destfile="${currentBuild}.jar" basedir="${classes}">
-		<fileset dir="${res}"/>
+		<jar destfile="${currentBuild}.jar" basedir="${bin}">
+		<!--<fileset dir="${res}"/>-->
 		<manifest>
 			<attribute name="Main-Class" value="${main.class}"/>
 			<attribute name="Class-Path" value="${lib.list}"/>
