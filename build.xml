@@ -1,7 +1,7 @@
 <!DOCTYPE project>
 <!-- *** Please make all property changes to the 'quaver.build.properties' file *** -->
 <project name="Quaver" default="help" basedir=".">
-	<property file="quaver.build.properties"/>
+	<property file="quaver.build.properties" prefix="current"/>
 
 	<property name="properties" value="quaver.build.properties"/>
 	
@@ -10,7 +10,7 @@
 	<property name="lib" value="${basedir}/lib"/>
 	<property name="res" value="${basedir}/res"/>
 	<property name="builds" value="${basedir}/builds"/>
-	<property name="currentBuild" value="${builds}/${project.name}-${build.release}.${build.major}.${build.minor}.${build.revision}"/>
+	<property name="currentBuild" value="${builds}/${current.project.name}-${current.build.release}.${current.build.major}.${current.build.minor}"/>
 
 	<path id="build-classpath">
 		<fileset dir="${lib}">
@@ -32,13 +32,18 @@
 	</target>
 	
 	<!-- Main Targets -->
-	<target name="all" depends="clean-project,inc-minor,compile-project,jar-project,run-project"/>
-	<target name="build" depends="clean-project,inc-minor,compile-project,jar-project"/>
-	<target name="deploy" depends="run-project"/>
-	<target name="major" depends="clean-project,inc-major,compile-project,jar-project"/>
-	<target name="release" depends="clean-project,inc-release,compile-project,jar-project"/>
-	<target name="compile" depends="clean-project,inc-minor,compile-project"/>
+	<target name="all" depends="clean-project,inc-minor,update,compile-project,jar-project,run-project"/>
+	<target name="build" depends="clean-project,inc-minor,update,compile-project,jar-project"/>
+	<target name="deploy" depends="update,run-project"/>
+	<target name="major" depends="clean-project,inc-major,update,compile-project,jar-project"/>
+	<target name="release" depends="clean-project,inc-release,update,compile-project,jar-project"/>
+	<target name="compile" depends="clean-project,inc-minor,update,compile-project"/>
 
+	<target name="update">
+		<property file="quaver.build.properties" prefix="latest"/>
+		<property name="latestBuild" value="${builds}/${latest.project.name}-${latest.build.release}.${latest.build.major}.${latest.build.minor}"/>
+	</target>
+	
 	<target name="inc-minor">
 		<propertyfile  file="${properties}">
 			<entry key="build.minor" type="int" operation="+" value="1"/>
@@ -75,10 +80,10 @@
 		</copy>
 		
 		<propertyfile file="${bin}/quaver.properties">
-		  <entry  key="project.name" value="${project.name}"/>
-		  <entry  key="project.release" value="${build.release}"/>
-		  <entry  key="project.minor" value="${build.major}"/>
-		  <entry  key="project.major" value="${build.minor}"/>
+		  <entry key="project.name" value="${latest.project.name}"/>
+		  <entry key="project.release" value="${latest.build.release}"/>
+		  <entry key="project.minor" value="${latest.build.major}"/>
+		  <entry key="project.major" value="${latest.build.minor}"/>
 		</propertyfile>
 		
 		<javac failonerror="true" srcdir="${src}" destdir="${bin}">
@@ -90,22 +95,22 @@
 
 	<target name="jar-project">
 		<mkdir dir="${builds}"/>
-		<jar destfile="${currentBuild}.jar" basedir="${bin}">
+		<jar destfile="${latestBuild}.jar" basedir="${bin}">
 		<!--<fileset dir="${res}"/>-->
 		<manifest>
-			<attribute name="Main-Class" value="${main.class}"/>
+			<attribute name="Main-Class" value="${latest.main.class}"/>
 			<attribute name="Class-Path" value="${lib.list}"/>
 		</manifest>
 		</jar>
 	</target>
 
 	<target name="run-project" depends="jar-project">
-		<echo message="Launching Version ${build.release}.${build.major}.${build.minor}.${build.revision}"/>
-		<java jar="${currentBuild}.jar" fork="true"/>
+		<echo message="Launching Version ${latest.build.release}.${latest.build.major}.${latest.build.minor}"/>
+		<java jar="${latestBuild}.jar" fork="true"/>
 	</target>
 	
 	<target name="party">
-		<echo message="Congratulations on the V${build.release} release!"/>
+		<echo message="Congratulations on the V${latest.build.release} release!"/>
 	</target>
 
 </project>
