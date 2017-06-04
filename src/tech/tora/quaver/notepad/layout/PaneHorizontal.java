@@ -1,6 +1,7 @@
 package tech.tora.quaver.notepad.layout;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JPanel;
 
@@ -13,12 +14,18 @@ public class PaneHorizontal extends JPanel {
 
 	private JPanel leftPane, centerPane, rightPane;
 	
-	public PaneHorizontal() {
+	public PaneHorizontal(Color c) {
 		this.setLayout(new BorderLayout());
 		leftPane = new JPanel(new BorderLayout());
 		centerPane = new JPanel(new BorderLayout());
 		rightPane = new JPanel(new BorderLayout());
 
+		if (c != null) {
+			leftPane.setBackground(c);
+			centerPane.setBackground(c);
+			rightPane.setBackground(c);
+		}
+		
 		add(leftPane, BorderLayout.WEST);
 		add(centerPane, BorderLayout.CENTER);
 		add(rightPane, BorderLayout.EAST);
@@ -46,6 +53,12 @@ public class PaneHorizontal extends JPanel {
 
 	public void setRightPane(JPanel rightPane) {
 		this.rightPane = rightPane;
+	}
+	
+	public void setColour(Color c) {
+		leftPane.setBackground(c);
+		centerPane.setBackground(c);
+		rightPane.setBackground(c);
 	}
 	
 }
