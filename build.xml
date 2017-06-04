@@ -11,7 +11,7 @@
 	<property name="res" value="${basedir}/res"/>
 	<property name="builds" value="${basedir}/builds"/>
 	<property name="classes" value="${bin}"/>
-	<property name="currentBuild" value="${builds}/${project.name}-${build.release}.${build.major}.${build.minor}.${build.revision}"/>
+	<property name="currentBuild" value="${builds}/${project.name}-${build.release}.${build.major}.${build.minor}"/>
 
 	<path id="build-classpath">
 		<fileset dir="${lib}">
@@ -28,24 +28,16 @@
 		<echo message="   all      		Clean, rebuild and deploy."/>
 		<echo message="   build     	Clean and build."/>
 		<echo message="   deploy   		Run the current compiled version"/>
-		<echo message="   minor    		Roll a new minor release"/>
 		<echo message="   major    		Roll a new major release"/>
 		<echo message="   release  		Roll a new full release"/>
 	</target>
 	
 	<!-- Main Targets -->
-	<target name="all" depends="clean-project,inc-revision,compile-project,jar-project,run-project"/>
-	<target name="build" depends="clean-project,inc-revision,compile-project,jar-project"/>
+	<target name="all" depends="clean-project,inc-minor,compile-project,jar-project,run-project"/>
+	<target name="build" depends="clean-project,inc-minor,compile-project,jar-project"/>
 	<target name="deploy" depends="run-project"/>
-	<target name="minor" depends="clean-project,inc-minor,compile-project,jar-project"/>
 	<target name="major" depends="clean-project,inc-major,compile-project,jar-project"/>
 	<target name="release" depends="clean-project,inc-release,compile-project,jar-project"/>
-
-	<target name="inc-revision">
-	    <propertyfile  file="${properties}">
-			<entry key="build.revision" type="int" operation="+" value="1"/>
-		</propertyfile>
-	</target>
 	
 	<target name="inc-minor">
 		<propertyfile  file="${properties}">
@@ -104,7 +96,7 @@
 	</target>
 
 	<target name="run-project" depends="jar-project">
-		<echo message="Launching Version ${build.release}.${build.major}.${build.minor}.${build.revision}"/>
+		<echo message="Launching Version ${build.release}.${build.major}.${build.minor}"/>
 		<java jar="${currentBuild}.jar" fork="true"/>
 	</target>
 	

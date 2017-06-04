@@ -19,17 +19,15 @@ public class Launcher {
 
 	public static String projectName = "Quaver";
 	
-	public static String buildID = "0.0.0.0";
-	public static String buildRelease = "0.0.0.0";
+	public static String buildID = "0.0 r0";
+	public static int buildRelease = 0;
 	public static int buildMajor = 0;
 	public static int buildMinor = 0;
-	public static int buildRevision = 0;
 	
 	public static String pathSeparator = (System.getProperty("os.name").startsWith("Windows")?"\\":"/");
 
 	public Launcher() {
 		System.out.print("Launching " + projectName);
-		System.out.println("OS: " + System.getProperty("os.name"));
 
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -42,11 +40,12 @@ public class Launcher {
 			prop.load(input);
 
 			// get the property value and print it out
-			System.out.println(prop.getProperty("project.name"));
-			System.out.println(prop.getProperty("build.release"));
-			System.out.println(prop.getProperty("build.major"));
-			System.out.println(prop.getProperty("build.minor"));
-			System.out.println(prop.getProperty("build.revision"));
+			projectName = prop.getProperty("project.name");
+			buildRelease = Integer.parseInt(prop.getProperty("build.release"));
+			buildMajor = Integer.parseInt(prop.getProperty("build.major"));
+			buildMinor = Integer.parseInt(prop.getProperty("build.minor"));
+
+			buildID = buildRelease + "." + buildMajor + " r" + buildMinor;
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -59,6 +58,9 @@ public class Launcher {
 				}
 			}
 		}
+		
+		System.out.println(" v" + buildID);
+		System.out.println("OS: " + System.getProperty("os.name"));
 		
 		try {
 			// Set cross-platform Java L&F (also called "Metal")
