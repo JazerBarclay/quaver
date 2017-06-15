@@ -1,27 +1,25 @@
 <!DOCTYPE project>
-<!-- *** Please make all property changes to the 'quaver.build.properties' file *** -->
+<!-- *** Please make all property changes to the '*.properties' file(s) *** -->
 <project name="Quaver" default="help" basedir=".">
-	<property file="quaver.build.properties" prefix="current"/>
 
-	<property name="properties" value="quaver.build.properties"/>
-	
-	<property name="src" value="${basedir}/src"/>
+	<property name="project.global.name" value="quaver"/>
+
+	<property file="${project.global.name}.properties" prefix="current"/>
+	<property name="properties" value="${project.global.name}.properties"/>
+
 	<property name="bin" value="${basedir}/bin"/>
+	<property name="src" value="${basedir}/src"/>
 	<property name="lib" value="${basedir}/lib"/>
 	<property name="res" value="${basedir}/res"/>
 	<property name="builds" value="${basedir}/builds"/>
 	<property name="currentBuild" value="${builds}/${current.project.name}-${current.build.release}.${current.build.major}.${current.build.minor}"/>
-
-	<path id="build-classpath">
-		<fileset dir="${lib}">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
 	
-	<manifestclasspath property="lib.list" jarfile="${currentBuild}.jar">
-		<classpath refid="build-classpath"/>
-	</manifestclasspath>
-
+	<path id="main-classpath">
+      <fileset dir="${lib}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+	
 	<target name="help">
 		<echo message="Targets:"/>
 		<echo message="   all      		Clean, rebuild and deploy."/>
@@ -32,15 +30,14 @@
 	</target>
 	
 	<!-- Main Targets -->
-	<target name="all" depends="clean-project,inc-minor,update,compile-project,jar-project,run-project"/>
-	<target name="build" depends="clean-project,inc-minor,update,compile-project,jar-project"/>
-	<target name="deploy" depends="update,run-project"/>
-	<target name="major" depends="clean-project,inc-major,update,compile-project,jar-project"/>
-	<target name="release" depends="clean-project,inc-release,update,compile-project,jar-project"/>
-	<target name="compile" depends="clean-project,inc-minor,update,compile-project"/>
-
+	<target name="all" depends="clean,inc-minor,compile,jar"/>
+	<target name="major" depends="clean,inc-major,compile,jar"/>
+	<target name="release" depends="clean,inc-release,compile,jar,party"/>
+	
+	<!-- Update Targets -->
 	<target name="update">
-		<property file="quaver.build.properties" prefix="latest"/>
+		<echo message="Updating properties reference"/>
+		<property file="${properties}" prefix="latest"/>
 		<property name="latestBuild" value="${builds}/${latest.project.name}-${latest.build.release}.${latest.build.major}.${latest.build.minor}"/>
 	</target>
 	
@@ -65,52 +62,57 @@
 		</propertyfile>
 	</target>
 	
-	<!-- Build Source -->
-	<target name="clean-project">
-		<delete dir="build"/>
+	<!-- Project Targets -->
+	<target name="clean" description="Delete bin" depends="">
+		<tstamp/>
 		<delete dir="bin" includeemptydirs="true"/>
 	</target>
-
-	<target name="compile-project">
+	
+	<target name="compile" depends="clean,update">
 		<mkdir dir="${bin}"/>
+		<mkdir dir="${res}"/>
 		<copy todir="${bin}">
 			<fileset dir="${res}">
-				<exclude name="**/*.gitignore*"/>
+				<exclude name="**/*.gitignore"/>
+				<exclude name="config.json"/>
+				<exclude name="**/*.example"/>
+			</fileset>
+			<fileset dir="${lib}">
+				<exclude name="**/*.gitignore"/>
 			</fileset>
 		</copy>
 		
-		<propertyfile file="${bin}/quaver.properties">
+		<propertyfile file="${bin}/${properties}">
 		  <entry key="project.name" value="${latest.project.name}"/>
 		  <entry key="project.release" value="${latest.build.release}"/>
 		  <entry key="project.minor" value="${latest.build.major}"/>
 		  <entry key="project.major" value="${latest.build.minor}"/>
 		</propertyfile>
 		
-		<javac failonerror="true" srcdir="${src}" destdir="${bin}">
-			<classpath>
-				<path refid="build-classpath"/>
-			</classpath>
+		<javac includeantruntime="false" failonerror="true" srcdir="${src}" destdir="${bin}">
+			<classpath refid="main-classpath"/>
 		</javac>
 	</target>
-
-	<target name="jar-project">
+	
+	<target name="jar" depends="compile">
 		<mkdir dir="${builds}"/>
 		<jar destfile="${latestBuild}.jar" basedir="${bin}">
-		<!--<fileset dir="${res}"/>-->
-		<manifest>
-			<attribute name="Main-Class" value="${latest.main.class}"/>
-			<attribute name="Class-Path" value="${lib.list}"/>
-		</manifest>
+			<manifest>
+				<attribute name="Rsrc-Main-Class" value="${latest.main.class}"/>
+				<attribute name="Rsrc-Class-Path" value="${latest.class.path}"/>
+				<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
 		</jar>
 	</target>
-
-	<target name="run-project" depends="jar-project">
+	
+	<target name="party" depends="update">
+		<echo message="Congratulations on the V${latest.build.release} release!"/>
+	</target>
+	
+	<target name="run" depends="update">
 		<echo message="Launching Version ${latest.build.release}.${latest.build.major}.${latest.build.minor}"/>
 		<java jar="${latestBuild}.jar" fork="true"/>
 	</target>
 	
-	<target name="party">
-		<echo message="Congratulations on the V${latest.build.release} release!"/>
-	</target>
-
 </project>
