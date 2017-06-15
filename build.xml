@@ -21,12 +21,13 @@
     </path>
 	
 	<target name="help">
-		<echo message="Targets:"/>
-		<echo message="   all      		Clean, rebuild and deploy."/>
-		<echo message="   build     	Clean and build."/>
-		<echo message="   deploy   		Run the current compiled version"/>
-		<echo message="   major    		Roll a new major release"/>
-		<echo message="   release  		Roll a new full release"/>
+		<echo message="Active Targets:"/>
+		<echo message="   all      		Clean, rebuild and jar a new minor release"/>
+		<echo message="   clean  		Delete compiled and copied binary files"/>
+		<echo message="   compile  		Clean and build new minor release"/>
+		<echo message="   jar	  		Jar the current release"/>
+		<echo message="   major    		Compile and jar a new major release"/>
+		<echo message="   release  		Compile and jar a new full release"/>
 	</target>
 	
 	<!-- Main Targets -->
