@@ -41,7 +41,7 @@ public class Launcher {
 
 		try {
 
-			input = new FileInputStream("quaver.build.properties");
+			input = new FileInputStream("quaver.properties");
 
 			// load a properties file
 			prop.load(input);
