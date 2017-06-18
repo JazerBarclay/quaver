@@ -86,8 +86,8 @@
 		<propertyfile file="${bin}/${properties}">
 		  <entry key="project.name" value="${latest.project.name}"/>
 		  <entry key="build.release" value="${latest.build.release}"/>
-		  <entry key="build.minor" value="${latest.build.major}"/>
-		  <entry key="build.major" value="${latest.build.minor}"/>
+		  <entry key="build.major" value="${latest.build.major}"/>
+		  <entry key="build.minor" value="${latest.build.minor}"/>
 		</propertyfile>
 		
 		<javac includeantruntime="false" failonerror="true" srcdir="${src}" destdir="${bin}">
