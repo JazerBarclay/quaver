@@ -1,7 +1,6 @@
 package tech.tora.quaver;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +34,9 @@ public class Launcher {
 
 	public static Configuration config = null;
 	
+	/**
+	 *  Gets property values from properties, checks configuration, parses values
+	 */
 	public Launcher() {
 		System.out.print("Launching " + projectName);
 
@@ -42,7 +44,7 @@ public class Launcher {
 		InputStream input = null;
 
 		try {
-
+			
 			input = Launcher.class.getResourceAsStream("/quaver.properties");
 			// load a properties file
 			prop.load(input);
@@ -88,7 +90,6 @@ public class Launcher {
 			// handle exception
 		}
 
-		// Coming soon
 		if (fileExists("res" + pathSeparator + "config.json")) {
 			Configuration c = null;
 			try {
@@ -105,8 +106,6 @@ public class Launcher {
 			new InterfaceTest(null);
 		}
 		
-//		LauncherOld();
-
 	}
 
 		/**
