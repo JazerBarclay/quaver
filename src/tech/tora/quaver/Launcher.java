@@ -15,7 +15,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.json.simple.parser.ParseException;
 
+import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.Interface;
+import tech.tora.quaver.notepad.InterfaceTest;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
@@ -41,8 +43,7 @@ public class Launcher {
 
 		try {
 
-			input = new FileInputStream("quaver.properties");
-
+			input = Launcher.class.getResourceAsStream("/quaver.properties");
 			// load a properties file
 			prop.load(input);
 
@@ -88,23 +89,23 @@ public class Launcher {
 		}
 
 		// Coming soon
-//		if (fileExists("res" + pathSeparator + "config.json")) {
-//			Configuration c = null;
-//			try {
-//				c = Configuration.readConfigJSON();
-//			} catch (FileNotFoundException e) {
-//				Logging.errorMessage(1, null, "Configuration Read Error", "Configuration file was not found", e);
-//			} catch (IOException e) {
-//				Logging.errorMessage(1, null, "Configuration Read Error", "Failed or interrupted I/O operations on configuration read", e);
-//			} catch (ParseException e) {
-//				Logging.errorMessage(1, null, "Configuration Read Error", "Failed to read config file", e);
-//			}
-//			new Interface(c);
-//		} else {
-//			new Interface(null);
-//		}
+		if (fileExists("res" + pathSeparator + "config.json")) {
+			Configuration c = null;
+			try {
+				c = Configuration.readConfigJSON();
+			} catch (FileNotFoundException e) {
+				Logging.errorMessage(1, null, "Configuration Read Error", "Configuration file was not found", e);
+			} catch (IOException e) {
+				Logging.errorMessage(1, null, "Configuration Read Error", "Failed or interrupted I/O operations on configuration read", e);
+			} catch (ParseException e) {
+				Logging.errorMessage(1, null, "Configuration Read Error", "Failed to read config file", e);
+			}
+			new InterfaceTest(c);
+		} else {
+			new InterfaceTest(null);
+		}
 		
-		LauncherOld();
+//		LauncherOld();
 
 	}
 
