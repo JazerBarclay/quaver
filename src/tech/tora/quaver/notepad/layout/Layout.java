@@ -23,11 +23,19 @@ public abstract class Layout {
 		defaultWidth = w;
 	}
 	
+	public int getDefaultWidth() {
+		return defaultWidth;
+	}
+	
 	/** Default height set by the layout standard **/
 	public void setDefaultHeight(int h) {
 		defaultHeight = h;
 	}
-
+	
+	public int getDefaultHeight() {
+		return defaultHeight;
+	}
+	
 	/** Sets the active width of the layout **/
 	public void setWidth(int w) {
 		width = w;

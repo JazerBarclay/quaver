@@ -69,6 +69,8 @@ public class InterfaceTest extends JFrame {
 		}
 
 		layout = new BasicLayout();
+		layout.setWidth(layout.getDefaultWidth());
+		layout.setHeight(layout.getDefaultHeight());
 	}
 
 	public void buildWindow() {
