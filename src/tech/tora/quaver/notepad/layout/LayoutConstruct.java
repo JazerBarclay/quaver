@@ -7,9 +7,14 @@ import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import tech.tora.quaver.notepad.InterfaceTest;
+import tech.tora.quaver.notepad.widget.layout.PaneHorizontal;
+import tech.tora.quaver.notepad.widget.layout.PaneVertical;
 
 public class LayoutConstruct {
 	
@@ -33,12 +38,44 @@ public class LayoutConstruct {
 //	private JLabel notebooksTitle; // This will be a button, not text
 	private JLabel notesTitle;
 	
+	private JMenuBar topMenu;
+	private JMenu fileMenu;
+	private JMenu editMenu;
+	private JMenuItem newMenuItem;
+	private JMenuItem saveMenuItem;
+	private JMenuItem updateMenuItem;
+	private JMenuItem exitMenuItem;
+	private JMenuItem insertLinkMenuItem;
+	
 	public LayoutConstruct() {
 		initFrame();
 		buildFrame();
 	}
 	
 	private void initFrame() {
+		
+		// Top Bar
+		topMenu = new JMenuBar();
+		
+		fileMenu = new JMenu("File");
+		newMenuItem = new JMenuItem("New Notebook");
+		updateMenuItem = new JMenuItem("New Note");
+		saveMenuItem = new JMenuItem("Save All");
+		exitMenuItem = new JMenuItem("Exit");
+		
+		fileMenu.add(newMenuItem);
+		fileMenu.add(updateMenuItem);
+		fileMenu.add(saveMenuItem);
+		fileMenu.add(exitMenuItem);
+		
+		editMenu = new JMenu("Edit");
+		insertLinkMenuItem = new JMenuItem("Insert Link");
+		
+		editMenu.add(insertLinkMenuItem);
+		
+	    topMenu.add(fileMenu);
+	    topMenu.add(editMenu);
+		
 		
 		// Main Wrappers
 		wrapper = new JPanel(new BorderLayout());
@@ -107,6 +144,10 @@ public class LayoutConstruct {
 	
 	public JPanel getWrapperPane() {
 		return wrapper;
+	}
+	
+	public JMenuBar getMenu() {
+		return topMenu;
 	}
 	
 }

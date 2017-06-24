@@ -11,6 +11,9 @@ import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.Theme;
 import tech.tora.quaver.colour.ColourValue;
+import tech.tora.quaver.log.Logging;
+import tech.tora.quaver.notepad.layout.BasicLayout;
+import tech.tora.quaver.notepad.layout.Layout;
 import tech.tora.quaver.notepad.layout.LayoutConstruct;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
@@ -26,7 +29,7 @@ public class InterfaceTest extends JFrame {
 
 	public boolean newBuild = false;
 
-	public LayoutConstruct layout;
+	public Layout layout;
 	public static Theme theme;
 
 	public static Notebook activeNotebook = null;
@@ -58,14 +61,14 @@ public class InterfaceTest extends JFrame {
 				try {
 					Theme.readThemeJSON(config.theme);
 				} catch (IOException e) {
-					e.printStackTrace();
+					Logging.errorMessage(1, null, "Read Theme Failed", "Cannot load theme from file", e);
 				} catch (ParseException e) {
-					e.printStackTrace();
+					Logging.errorMessage(1, null, "Read Theme Failed", "Cannot load theme from file", e);
 				}
 			}
 		}
 
-		layout = new LayoutConstruct();
+		layout = new BasicLayout();
 	}
 
 	public void buildWindow() {
@@ -74,13 +77,14 @@ public class InterfaceTest extends JFrame {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		setContentPane(layout.getWrapperPane());
+		setJMenuBar(layout.getMenu());
+		setContentPane(layout.getWrapper());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setTitle("Quaver : " + Launcher.buildID);
 		setVisible(true);
 
-		setSize(1600, 800);
+		setSize(layout.getWidth(), layout.getHeight());
 		setLocationRelativeTo(null);
 	}
 
