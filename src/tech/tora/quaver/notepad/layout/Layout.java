@@ -9,10 +9,13 @@ public abstract class Layout {
 	private int defaultWidth = 0, defaultHeight = 0;
 	
 	public Layout() {
+		initFrame();
 		buildFrame();
 	}
 	
 	public abstract JPanel getWrapper();
+
+	public abstract void initFrame();
 
 	public abstract void buildFrame();
 	
