@@ -6,6 +6,11 @@ import javax.swing.JPanel;
 public class DefaultLayout extends Layout {
 
 	@Override
+	public void initFrame() {
+		
+	}
+	
+	@Override
 	public void buildFrame() {
 		
 	}

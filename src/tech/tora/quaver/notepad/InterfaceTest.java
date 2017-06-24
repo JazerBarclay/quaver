@@ -14,7 +14,6 @@ import tech.tora.quaver.colour.ColourValue;
 import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.layout.BasicLayout;
 import tech.tora.quaver.notepad.layout.Layout;
-import tech.tora.quaver.notepad.layout.LayoutConstruct;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 
