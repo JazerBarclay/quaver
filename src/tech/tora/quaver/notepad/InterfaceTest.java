@@ -9,11 +9,15 @@ import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.Theme;
 import tech.tora.quaver.colour.ColourValue;
+import tech.tora.quaver.list.QuickList;
+import tech.tora.quaver.list.SelectionList;
 import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.layout.BasicLayout;
 import tech.tora.quaver.notepad.layout.Layout;
+import tech.tora.quaver.notepad.widget.EditAreaThing;
+import tech.tora.quaver.notepad.widget.PreviewAreaThing;
+import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 
@@ -31,6 +35,12 @@ public class InterfaceTest extends JFrame {
 	public Layout layout;
 	public static Theme theme;
 
+	public QuickList notebooksList;
+	public SelectionList notesList;
+	
+	public EditAreaThing editArea;
+	public PreviewAreaThing previewArea;
+	
 	public static Notebook activeNotebook = null;
 	public static Note activeNote = null;
 
@@ -48,7 +58,6 @@ public class InterfaceTest extends JFrame {
 		}
 		initLayout();
 		buildWindow();
-		//		getNotebooks();
 	}
 
 	public void initLayout() {
@@ -67,7 +76,7 @@ public class InterfaceTest extends JFrame {
 			}
 		}
 
-		layout = new BasicLayout();
+		layout = new BasicLayout(theme);
 		layout.setWidth(layout.getDefaultWidth());
 		layout.setHeight(layout.getDefaultHeight());
 	}
