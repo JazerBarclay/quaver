@@ -3,20 +3,26 @@ package tech.tora.quaver.notepad.layout;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-public abstract class Layout {
+import tech.tora.quaver.theme.Theme;
 
+public abstract class Layout {
+	
 	private int width = -1, height = -1;
 	private int defaultWidth = 0, defaultHeight = 0;
 	
-	public Layout() {
-		initFrame();
+	// Creates the elements and builds the framework
+	public Layout(Theme theme) {
+		initFrame(theme);
 		buildFrame();
 	}
 	
+	/** Returns top level wrapper **/
 	public abstract JPanel getWrapper();
 
-	public abstract void initFrame();
+	/** Creates all elements for frame **/
+	public abstract void initFrame(Theme t);
 
+	/** Adds elements to each other to create layout **/
 	public abstract void buildFrame();
 	
 	public abstract JMenuBar getMenu();
@@ -26,6 +32,7 @@ public abstract class Layout {
 		defaultWidth = w;
 	}
 	
+	/** Returns the default width of the layout **/
 	public int getDefaultWidth() {
 		return defaultWidth;
 	}
@@ -34,7 +41,8 @@ public abstract class Layout {
 	public void setDefaultHeight(int h) {
 		defaultHeight = h;
 	}
-	
+
+	/** Returns the default height of the layout **/
 	public int getDefaultHeight() {
 		return defaultHeight;
 	}
