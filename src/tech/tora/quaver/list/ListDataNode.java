@@ -1,4 +1,4 @@
-package tech.tora.quaver.listnew;
+package tech.tora.quaver.list;
 
 
 public class ListDataNode {
@@ -12,6 +12,14 @@ public class ListDataNode {
 	public ListDataNode(String uuid, String title) {
 		this.UUID = uuid;
 		this.title = title;
+	}
+	
+	protected void addNode(ListData list) {
+		list.addNode(this);
+	}
+	
+	protected void removeNode() {
+		parentList.removeNode(this.UUID);
 	}
 	
 	/** Set the parent - Only for DataList **/
@@ -30,5 +38,5 @@ public class ListDataNode {
 	public ListDataNode getParentNode() {
 		return parentNode;
 	}
-
+	
 }

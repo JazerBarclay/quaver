@@ -10,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
-import tech.tora.quaver.list.QuickList;
-import tech.tora.quaver.list.SelectionList;
+import tech.tora.quaver.listold.QuickList;
+import tech.tora.quaver.listold.SelectionList;
 
 @SuppressWarnings("unused")
 public class LayoutBuilder {

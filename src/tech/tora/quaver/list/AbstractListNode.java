@@ -1,4 +1,4 @@
-package tech.tora.quaver.listnew;
+package tech.tora.quaver.list;
 
 import javax.swing.JPanel;
 

@@ -1,7 +1,7 @@
 package tech.tora.quaver.notepad.widget;
 
-import tech.tora.quaver.list.SelectionList;
-import tech.tora.quaver.list.SelectionListNode;
+import tech.tora.quaver.listold.SelectionList;
+import tech.tora.quaver.listold.SelectionListNode;
 import tech.tora.quaver.types.Note;
 
 public abstract class NoteNode extends SelectionListNode {

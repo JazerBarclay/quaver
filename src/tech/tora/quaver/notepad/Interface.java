@@ -18,8 +18,8 @@ import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.list.QuickListNode;
-import tech.tora.quaver.list.SelectionListNode;
+import tech.tora.quaver.listold.QuickListNode;
+import tech.tora.quaver.listold.SelectionListNode;
 import tech.tora.quaver.notepad.widget.AddButton;
 import tech.tora.quaver.notepad.widget.EditAreaThing;
 import tech.tora.quaver.notepad.widget.LayoutBuilder;

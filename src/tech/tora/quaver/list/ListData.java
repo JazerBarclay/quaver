@@ -1,4 +1,4 @@
-package tech.tora.quaver.listnew;
+package tech.tora.quaver.list;
 
 import java.util.LinkedHashMap;
 
@@ -26,6 +26,14 @@ public abstract class ListData {
 			node.setParentList(this);
 			nodes.put(node.UUID, node);
 		}
+	}
+	
+	protected void removeNode(ListDataNode node) {
+		removeNode(node.UUID);
+	}
+	
+	protected void removeNode(String key) {
+		nodes.remove(key);
 	}
 	
 	protected void renameAndSaveDuplicate(ListDataNode newNode, String newuuid, String newTitle) {

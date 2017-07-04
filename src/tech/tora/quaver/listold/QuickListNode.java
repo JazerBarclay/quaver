@@ -1,4 +1,4 @@
-package tech.tora.quaver.list;
+package tech.tora.quaver.listold;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,14 +16,14 @@ import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
 
-public abstract class QuickListNodeTest extends JPanel {
+public abstract class QuickListNode extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private QuickListTest parentList;
+	private QuickList parentList;
 	
 	private int width = 200;
 	private int height = 25;
@@ -32,8 +32,8 @@ public abstract class QuickListNodeTest extends JPanel {
 	
 	private JPanel node1padded;
 	
-	public QuickListNodeTest(QuickListTest notebooksList, String image, String title, String rightSide) {
-		this.parentList = notebooksList;
+	public QuickListNode(QuickList parent, String image, String title, String rightSide) {
+		this.parentList = parent;
 		setLayout(new BorderLayout());
 		setSize(width, height);
 		setPreferredSize(new Dimension(width, height));
@@ -43,12 +43,12 @@ public abstract class QuickListNodeTest extends JPanel {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(200, 200, 200)));
 		
 		JLabel label1 = new JLabel("  " + title);
-		label1.setFont(notebooksList.label1Font);
-		label1.setForeground(notebooksList.fontColor);
+		label1.setFont(parent.label1Font);
+		label1.setForeground(parent.fontColor);
 
 		JLabel label2 = new JLabel(rightSide);
-		label2.setFont(notebooksList.label2Font);
-		label2.setForeground(notebooksList.fontColor);
+		label2.setFont(parent.label2Font);
+		label2.setForeground(parent.fontColor);
 		
 		node1padded = new JPanel();
 		node1padded.setLayout(new BorderLayout());
@@ -57,7 +57,7 @@ public abstract class QuickListNodeTest extends JPanel {
 		node1padded.setPreferredSize(new Dimension(width, height));
 		node1padded.setMinimumSize(new Dimension(width, height));
 		node1padded.setMaximumSize(new Dimension(width, height));
-		node1padded.setBackground(notebooksList.fillColor);
+		node1padded.setBackground(parent.fillColor);
 		node1padded.add(label1, BorderLayout.CENTER);
 		node1padded.add(label2, BorderLayout.EAST);
 		
@@ -87,16 +87,16 @@ public abstract class QuickListNodeTest extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if (!active) {
-					node1padded.setBackground(notebooksList.fillColor);
-					setBackground(notebooksList.fillColor);
+					node1padded.setBackground(parent.fillColor);
+					setBackground(parent.fillColor);
 				}
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (!active) {
-					node1padded.setBackground(notebooksList.hoverColor);
-					setBackground(notebooksList.hoverColor);
+					node1padded.setBackground(parent.hoverColor);
+					setBackground(parent.hoverColor);
 				}
 			}
 			

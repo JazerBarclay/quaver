@@ -1,7 +1,7 @@
 package tech.tora.quaver.notepad.widget;
 
-import tech.tora.quaver.list.QuickList;
-import tech.tora.quaver.list.QuickListNode;
+import tech.tora.quaver.listold.QuickList;
+import tech.tora.quaver.listold.QuickListNode;
 import tech.tora.quaver.types.Notebook;
 
 public abstract class NotebookNode extends QuickListNode {
