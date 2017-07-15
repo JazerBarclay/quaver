@@ -46,16 +46,14 @@ public class BasicLayout extends Layout {
 	private JMenuItem exitMenuItem;
 	private JMenuItem insertLinkMenuItem;
 	
-	public int notebooksWidth = 200, notesWidth = 300;
-	public int notebooksTopHeight = 40, notebooksBotHeight = 40;
-	public int notesTopHeight = 40, notesBotHeight = 40;
+	private static int notebooksWidth = 200, notesWidth = 300;
+	private static int notebooksTopHeight = 40, notebooksBotHeight = 40;
+	private static int notesTopHeight = 40, notesBotHeight = 40;
 	
 	public BasicLayout(Theme t) {
 		super(t);
 		setDefaultWidth(1600);
 		setDefaultHeight(800);
-		notebooksWidth = 200;
-		notesWidth = 300;
 	}
 	
 	@Override
@@ -65,13 +63,6 @@ public class BasicLayout extends Layout {
 	
 	@Override
 	public void initFrame(Theme theme) {
-
-		int nbwidth = 200;
-		int nbTopHeight = 40;
-		int nbBotHeight = 40;
-		int nswidth = 300;
-		int nsTopHeight = 40;
-		int nsBotHeight = 40;
 		
 		// Top Bar
 		topMenu = new JMenuBar();
@@ -124,7 +115,7 @@ public class BasicLayout extends Layout {
 
 		notebooksTop = new JPanel(new BorderLayout());
 		notebooksTop.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, theme.borderColour.getAsColor()));
-		notebooksTop.setPreferredSize(new Dimension(nbwidth, nbTopHeight));
+		notebooksTop.setPreferredSize(new Dimension(notebooksWidth, notebooksTopHeight));
 		//notebooksTop.setBackground(theme.notebookFillColour.getAsColor());
 		notebooksTop.setBackground(new Color(100, 100, 100));
 		
@@ -133,11 +124,11 @@ public class BasicLayout extends Layout {
 		notebooksListContainer.setBackground(theme.notebookFillColour.getAsColor());
 		
 		notebooksBot = new PaneHorizontal(theme.notebookFillColour.getAsColor());
-		notebooksBot.setPreferredSize(new Dimension(nbwidth, nbBotHeight));
+		notebooksBot.setPreferredSize(new Dimension(notebooksWidth, notebooksBotHeight));
 		
 		// Notes
 		notesTop = new PaneHorizontal(theme.noteFillColour.getAsColor());
-		notesTop.setPreferredSize(new Dimension(nswidth, nsTopHeight));
+		notesTop.setPreferredSize(new Dimension(notesWidth, notesTopHeight));
 		notesTop.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, theme.borderColour.getAsColor()));
 		
 		notesListContainer = new JPanel(new FlowLayout());
@@ -145,7 +136,7 @@ public class BasicLayout extends Layout {
 		notesListContainer.setBackground(theme.noteFillColour.getAsColor());
 		
 		notesBot = new PaneHorizontal(theme.noteFillColour.getAsColor());
-		notesBot.setPreferredSize(new Dimension(nswidth, nsBotHeight));
+		notesBot.setPreferredSize(new Dimension(notesWidth, notesBotHeight));
 		notesBot.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, theme.borderColour.getAsColor()));
 
 		// Content
