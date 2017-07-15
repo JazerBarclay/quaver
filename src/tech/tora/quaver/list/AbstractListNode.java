@@ -2,25 +2,46 @@ package tech.tora.quaver.list;
 
 import javax.swing.JPanel;
 
-public class AbstractListNode extends JPanel {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	private ListDataNode data;
+public abstract class AbstractListNode {
+	
+	public String UUID;
+	public String title;
+	
+	private AbstractListNode parentNode;
+	private AbstractList parentList;
+	
+	public JPanel nodeLook = null;
+	
+	public abstract JPanel generateNode();
 	
 	public AbstractListNode(String uuid, String title) {
-		setupData(uuid, title);
+		this.UUID = uuid;
+		this.title = title;
 	}
 	
-	protected void setupData(String uuid, String name) {
-		data = new ListDataNode(uuid, name);
+	protected void addNode(AbstractList list) {
+		list.addNode(this);
 	}
 	
-	public ListDataNode getData() {
-		return data;
+	protected void removeNode() {
+		parentList.removeNode(this.UUID);
 	}
-
+	
+	/** Set the parent - Only for DataList **/
+	void setParentList(AbstractList parent) {
+		this.parentList = parent;
+	}
+	
+	public AbstractList getParentList() {
+		return parentList;
+	}
+	
+	public void setParentNode(AbstractListNode parent) {
+		this.parentNode = parent;
+	}
+	
+	public AbstractListNode getParentNode() {
+		return parentNode;
+	}
+	
 }
