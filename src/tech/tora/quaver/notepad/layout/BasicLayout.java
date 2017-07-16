@@ -66,8 +66,6 @@ public class BasicLayout extends Layout {
 	
 	    if (System.getProperty("os.name").contains("Mac")) {
 	    		System.setProperty("apple.laf.useScreenMenuBar", "true");
-	    		System.setProperty(
-                "com.apple.mrj.application.apple.menu.about.name", "Name");
 	    }
 		
 		// Top Bar

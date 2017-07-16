@@ -5,6 +5,11 @@ import javax.swing.JPanel;
 
 import tech.tora.quaver.theme.Theme;
 
+/**
+ * Base class for interface layout
+ * 
+ * @author Nythril
+ */
 public abstract class Layout {
 	
 	private int width = -1, height = -1;

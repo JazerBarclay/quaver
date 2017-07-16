@@ -15,8 +15,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.log.Logging;
+import tech.tora.quaver.notepad.InterfaceOld;
 import tech.tora.quaver.notepad.Interface;
-import tech.tora.quaver.notepad.InterfaceTest;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
@@ -39,7 +39,7 @@ public class Launcher {
 	 */
 	public Launcher() {
 		System.out.print("Launching " + projectName);
-
+		
 		Properties prop = new Properties();
 		InputStream input = null;
 
@@ -72,6 +72,10 @@ public class Launcher {
 		System.out.println(" v" + buildID);
 		System.out.println("OS: " + System.getProperty("os.name"));
 		
+		if (System.getProperty("os.name").contains("Mac")) {
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ImageRotator");
+		}
+		
 		try {
 			// Set cross-platform Java L&F (also called "Metal")
 	        UIManager.setLookAndFeel(
@@ -101,9 +105,9 @@ public class Launcher {
 			} catch (ParseException e) {
 				Logging.errorMessage(1, null, "Configuration Read Error", "Failed to read config file", e);
 			}
-			new InterfaceTest(c);
+			new Interface(c);
 		} else {
-			new InterfaceTest(null);
+			new Interface(null);
 		}
 		
 	}
@@ -182,7 +186,7 @@ public class Launcher {
 			}
 	
 			// Launcher Interface
-			new Interface(config);
+			new InterfaceOld(config);
 	
 		}
 
