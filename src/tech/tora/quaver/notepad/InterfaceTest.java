@@ -92,7 +92,7 @@ public class InterfaceTest extends JFrame {
 		notebookTitle.setText("Notebookss");
 		notebookTitle.setFont(new Font("Helvetica", Font.BOLD, 14));
 		notebookTitle.setHorizontalAlignment(JLabel.CENTER);
-		notebookTitle.setBackground(new Color(200, 100, 0));
+		notebookTitle.setBackground(new Color(200, 200, 0));
 		notebookTitle.setPreferredSize(new Dimension(200, 30));
 		notebookTitle.setMinimumSize(new Dimension(200, 30));
 		notebookTitle.setMaximumSize(new Dimension(200, 30));
@@ -104,16 +104,12 @@ public class InterfaceTest extends JFrame {
 		notebooksList.addNode(n);
 		
 		notesList = new BasicList(300);
-		BasicListNode n2 = new BasicListNode(25, "0", "Notes", 
-				new Color(230, 230, 230), new Color(200, 200, 200), 
-				new Font("Helvetica", Font.BOLD, 14), new Color(0, 0, 0)) {};
-		notesList.addNode(n2);
 		
 	}
 
 	public void buildLayout() {
 
-		((BasicLayout) layout).notebooksTop.add(notebookTitle);
+		//((BasicLayout) layout).notebooksTop.add(notebookTitle);
 
 		((BasicLayout) layout).notebooksListContainer.add(notebooksList, BorderLayout.CENTER);
 		
@@ -143,9 +139,9 @@ public class InterfaceTest extends JFrame {
 		defaultTheme.themeName = "Default";
 		defaultTheme.fontColour = new ColourValue(40, 40, 40);
 		defaultTheme.wrapperFillColour = new ColourValue(0, 0, 0);
-		defaultTheme.notebookFillColour = new ColourValue(230, 30, 230);
+		defaultTheme.notebookFillColour = new ColourValue(230, 230, 230);
 		defaultTheme.notebookHoverColour = new ColourValue(210, 210, 210);
-		defaultTheme.noteFillColour = new ColourValue(30, 230, 230);
+		defaultTheme.noteFillColour = new ColourValue(230, 230, 230);
 		defaultTheme.noteHoverColour = new ColourValue(210, 210, 210);
 		defaultTheme.editFontColour = new ColourValue(40, 40, 40);
 		defaultTheme.editFillColour = new ColourValue(230, 230, 230);
