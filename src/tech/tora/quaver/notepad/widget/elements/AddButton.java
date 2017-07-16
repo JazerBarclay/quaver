@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.widget;
+package tech.tora.quaver.notepad.widget.elements;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

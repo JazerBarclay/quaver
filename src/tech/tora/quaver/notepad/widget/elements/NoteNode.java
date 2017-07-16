@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.widget;
+package tech.tora.quaver.notepad.widget.elements;
 
 import tech.tora.quaver.listold.SelectionList;
 import tech.tora.quaver.listold.SelectionListNode;
