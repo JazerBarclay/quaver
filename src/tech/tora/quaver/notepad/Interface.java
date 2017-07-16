@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
@@ -59,8 +61,10 @@ public class Interface extends JFrame {
 			config.name = "Default";
 			config.theme = "Default";
 			config.libraries = new String[]{};
+			System.out.println("New Build");
 		} else {
 			config = c;
+			System.out.println("Found Config");
 		}
 		initLayout();
 		buildLayout();
@@ -126,13 +130,54 @@ public class Interface extends JFrame {
 		}
 		setJMenuBar(layout.getMenu());
 		setContentPane(layout.getWrapper());
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		pack();
 		setTitle("Quaver : " + Launcher.buildID);
 		setVisible(true);
 
 		setSize(layout.getWidth(), layout.getHeight());
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				System.out.println("Hello There");
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				System.out.println("Mew");
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				System.out.println("Wee");
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				System.out.println("Deactivated");
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Handle close operation without saving on a new build
+				System.out.println("Bye");
+				Launcher.exit(0, "Close Button Request");
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// Do Nothing
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				System.out.println("Welcome Back");
+			}
+		});
+		
 	}
 
 	public Theme getDefaultTheme() {
