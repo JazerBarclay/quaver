@@ -30,6 +30,7 @@ public abstract class Layout {
 	/** Adds elements to each other to create layout **/
 	public abstract void buildFrame();
 	
+	/** Returns the menu bar **/
 	public abstract JMenuBar getMenu();
 
 	/** Default width set by the layout standard **/

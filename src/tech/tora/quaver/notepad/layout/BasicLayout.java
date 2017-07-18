@@ -4,16 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.widget.layout.PaneHorizontal;
 import tech.tora.quaver.notepad.widget.layout.PaneVertical;
 import tech.tora.quaver.theme.Theme;
@@ -31,21 +25,14 @@ public class BasicLayout extends Layout {
 	
 	public JPanel notebooksTop;
 	public JPanel notebooksListContainer;
-	private PaneHorizontal notebooksBot;
+	public PaneHorizontal notebooksBot;
 
-	private PaneHorizontal notesTop;
+	public PaneHorizontal notesTop;
 	public JPanel notesListContainer;
 	private PaneHorizontal notesBot;
 	
-	private JMenuBar topMenu;
-	private JMenu fileMenu;
-	private JMenu editMenu;
-	private JMenuItem newMenuItem;
-	private JMenuItem saveMenuItem;
-	private JMenuItem updateMenuItem;
-	private JMenuItem exitMenuItem;
-	private JMenuItem insertLinkMenuItem;
-	
+	public JMenuBar topMenu;
+
 	private static int notebooksWidth = 200, notesWidth = 300;
 	private static int notebooksTopHeight = 30, notebooksBotHeight = 30;
 	private static int notesTopHeight = 30, notesBotHeight = 30;
@@ -70,35 +57,7 @@ public class BasicLayout extends Layout {
 		
 		// Top Bar
 		topMenu = new JMenuBar();
-		fileMenu = new JMenu("File");
-		
-		newMenuItem = new JMenuItem("New Notebook");
-		
-		updateMenuItem = new JMenuItem("New Note");
-		
-		saveMenuItem = new JMenuItem("Save All");
-		
-		exitMenuItem = new JMenuItem("Exit");
-		exitMenuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Launcher.exit(0, "Shutdown request from top menu");
-			}
-		});
-		
-		fileMenu.add(newMenuItem);
-		fileMenu.add(updateMenuItem);
-		fileMenu.add(saveMenuItem);
-		fileMenu.add(exitMenuItem);
-		
-		editMenu = new JMenu("Edit");
-		insertLinkMenuItem = new JMenuItem("Insert Link");
-		
-		editMenu.add(insertLinkMenuItem);
-		
-	    topMenu.add(fileMenu);
-	    topMenu.add(editMenu);
-		
+
 		// Main Wrappers
 		wrapper = new JPanel(new BorderLayout());
 		wrapper.setBackground(new Color(100, 100, 100));

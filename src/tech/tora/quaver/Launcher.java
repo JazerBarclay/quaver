@@ -16,7 +16,7 @@ import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.InterfaceOld;
-import tech.tora.quaver.notepad.Interface;
+import tech.tora.quaver.notepad.InterfaceOld2;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
@@ -38,7 +38,38 @@ public class Launcher {
 	 *  Gets property values from properties, checks configuration, parses values
 	 */
 	public Launcher() {
+		
+		System.out.println("Start");
+		
+		initProperties();
+		
 		System.out.print("Launching " + projectName);
+		System.out.println(" M" + buildID);
+		System.out.println("OS: " + System.getProperty("os.name"));
+
+		if (System.getProperty("os.name").contains("Mac")) 
+			initMac();
+		initLookAndFeel();
+
+		if (fileExists("res" + pathSeparator + "config.json")) {
+			Configuration c = null;
+			try {
+				c = Configuration.readConfigJSON();
+			} catch (FileNotFoundException e) {
+				Logging.errorMessage(1, null, "Configuration Read Error", "Configuration file was not found", e);
+			} catch (IOException e) {
+				Logging.errorMessage(1, null, "Configuration Read Error", "Failed or interrupted I/O operations on configuration read", e);
+			} catch (ParseException e) {
+				Logging.errorMessage(1, null, "Configuration Read Error", "Failed to read config file", e);
+			}
+			new InterfaceOld2(c);
+		} else {
+			new InterfaceOld2(null);
+		}
+		
+	}
+	
+	private void initProperties() {
 		
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -69,12 +100,9 @@ public class Launcher {
 			}
 		}
 		
-		System.out.println(" v" + buildID);
-		System.out.println("OS: " + System.getProperty("os.name"));
-		
-		if (System.getProperty("os.name").contains("Mac")) {
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ImageRotator");
-		}
+	}
+	
+	private void initLookAndFeel() {
 		
 		try {
 			// Set cross-platform Java L&F (also called "Metal")
@@ -93,23 +121,11 @@ public class Launcher {
 		catch (IllegalAccessException e) {
 			// handle exception
 		}
-
-		if (fileExists("res" + pathSeparator + "config.json")) {
-			Configuration c = null;
-			try {
-				c = Configuration.readConfigJSON();
-			} catch (FileNotFoundException e) {
-				Logging.errorMessage(1, null, "Configuration Read Error", "Configuration file was not found", e);
-			} catch (IOException e) {
-				Logging.errorMessage(1, null, "Configuration Read Error", "Failed or interrupted I/O operations on configuration read", e);
-			} catch (ParseException e) {
-				Logging.errorMessage(1, null, "Configuration Read Error", "Failed to read config file", e);
-			}
-			new Interface(c);
-		} else {
-			new Interface(null);
-		}
-		
+	}
+	
+	private void initMac() {
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Quaver");
+		System.setProperty("apple.awt.fileDialogForDirectories", "true");
 	}
 
 		/**
