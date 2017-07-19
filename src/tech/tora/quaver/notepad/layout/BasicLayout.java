@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -21,7 +23,8 @@ public class BasicLayout extends Layout {
 	
 	private PaneVertical notebooksWrapper;
 	private PaneVertical notesWrapper;
-	private PaneVertical contentWrapper;
+	public PaneVertical contentWrapper;
+	public JPanel splitter;
 	
 	public JPanel notebooksTop;
 	public JPanel notebooksListContainer;
@@ -100,6 +103,9 @@ public class BasicLayout extends Layout {
 
 		// Content
 		contentWrapper = new PaneVertical(new Color(210, 210, 210));
+		
+		splitter = new JPanel(new GridLayout());
+		splitter.setOpaque(false);
 	}
 
 	@Override
@@ -118,6 +124,9 @@ public class BasicLayout extends Layout {
 		notesWrapper.getHeaderPane().add(notesTop);
 		notesWrapper.getCenterPane().add(notesListContainer);
 		notesWrapper.getFooterPane().add(notesBot);
+		
+		contentWrapper.getCenterPane().add(splitter, BorderLayout.CENTER);
+		
 	}
 
 	@Override

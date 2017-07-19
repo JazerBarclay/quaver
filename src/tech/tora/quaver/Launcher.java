@@ -17,6 +17,7 @@ import org.json.simple.parser.ParseException;
 import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.InterfaceOld;
 import tech.tora.quaver.notepad.InterfaceOld2;
+import tech.tora.quaver.notepad.Notepad;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
@@ -62,9 +63,9 @@ public class Launcher {
 			} catch (ParseException e) {
 				Logging.errorMessage(1, null, "Configuration Read Error", "Failed to read config file", e);
 			}
-			new InterfaceOld2(c);
+			new Notepad(c);
 		} else {
-			new InterfaceOld2(null);
+			new Notepad(null);
 		}
 		
 	}

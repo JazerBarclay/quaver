@@ -1,5 +1,8 @@
 package tech.tora.quaver.notepad.layout;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
@@ -7,12 +10,26 @@ import tech.tora.quaver.theme.Theme;
 
 public class PreviewLayout extends Layout {
 
+	public JMenuBar topMenu;
+	
+	private JPanel wrapper;
+	
 	public PreviewLayout(Theme t) {
 		super(t);
+		setDefaultWidth(800);
+		setDefaultHeight(1000);
 	}
 
 	@Override
 	public void initFrame(Theme t) {
+		if (System.getProperty("os.name").contains("Mac")) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		}
+		
+		topMenu = new JMenuBar();
+		
+		wrapper = new JPanel(new BorderLayout());
+		wrapper.setBackground(new Color(100, 100, 100));
 		
 	}
 
@@ -23,13 +40,12 @@ public class PreviewLayout extends Layout {
 
 	@Override
 	public JPanel getWrapper() {
-		// TODO Auto-generated method stub
-		return null;
+		return wrapper;
 	}
 
 	@Override
 	public JMenuBar getMenu() {
-		return null;
+		return topMenu;
 	}
 
 }
