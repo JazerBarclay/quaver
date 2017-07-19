@@ -207,8 +207,8 @@ public class InterfaceOld2 extends JFrame {
 
 	public void buildLayout() {
 
-		((BasicLayout) layout).topMenu.add(fileMenu);
-		((BasicLayout) layout).topMenu.add(editMenu);
+		layout.getMenu().add(fileMenu);
+		layout.getMenu().add(editMenu);
 		
 		((BasicLayout) layout).notebooksTop.add(notebookTitle);
 

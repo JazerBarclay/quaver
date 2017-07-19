@@ -9,10 +9,6 @@ import tech.tora.quaver.theme.Theme;
 
 public class CompactLayout extends Layout {
 	
-	public JMenuBar topMenu;
-
-	private JPanel wrapper;
-	
 	private JPanel leftWrapper;
 	private JPanel rightWrapper;
 	

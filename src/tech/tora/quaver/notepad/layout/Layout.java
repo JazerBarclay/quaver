@@ -15,10 +15,15 @@ public abstract class Layout {
 	private int width = -1, height = -1;
 	private int defaultWidth = 0, defaultHeight = 0;
 	
+	protected JMenuBar topMenu;
+	protected JPanel wrapper;
+	
 	// Creates the elements and builds the framework
 	public Layout(Theme theme) {
 		initFrame(theme);
 		buildFrame();
+		setDefaultWidth(800);
+		setDefaultHeight(600);
 	}
 	
 	/** Returns top level wrapper **/

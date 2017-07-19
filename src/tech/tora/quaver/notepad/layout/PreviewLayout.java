@@ -9,10 +9,6 @@ import javax.swing.JPanel;
 import tech.tora.quaver.theme.Theme;
 
 public class PreviewLayout extends Layout {
-
-	public JMenuBar topMenu;
-	
-	private JPanel wrapper;
 	
 	public PreviewLayout(Theme t) {
 		super(t);

@@ -15,9 +15,7 @@ import tech.tora.quaver.notepad.widget.layout.PaneVertical;
 import tech.tora.quaver.theme.Theme;
 
 public class BasicLayout extends Layout {
-	
-	private JPanel wrapper;
-	
+
 	private JPanel leftWrapper;
 	private JPanel rightWrapper;
 	
@@ -34,8 +32,6 @@ public class BasicLayout extends Layout {
 	public JPanel notesListContainer;
 	private PaneHorizontal notesBot;
 	
-	public JMenuBar topMenu;
-
 	private static int notebooksWidth = 200, notesWidth = 300;
 	private static int notebooksTopHeight = 30, notebooksBotHeight = 30;
 	private static int notesTopHeight = 30, notesBotHeight = 30;

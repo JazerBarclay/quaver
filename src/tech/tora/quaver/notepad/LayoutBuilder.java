@@ -36,15 +36,21 @@ public class LayoutBuilder {
 	private JMenu fileMenu;
 	private JMenu editMenu;
 	private JMenu viewMenu;
+	
+	// File
 	private JMenuItem newMenuItem;
 	private JMenuItem saveMenuItem;
 	private JMenuItem updateMenuItem;
 	private JMenuItem exitMenuItem;
+	
+	// Edit
 	private JMenuItem insertLinkMenuItem;
+	
 	private JMenuItem defaultSwitch;
 	private JMenuItem compactSwitch;
 	private JMenuItem previewSwitch;
 	
+	// View
 	private EditAreaThing editArea;
 	private PreviewAreaThing previewArea;
 	
@@ -138,12 +144,6 @@ public class LayoutBuilder {
 				+ "</head><body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
 				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview (pre alpha version 0.8)</p></body></html>");
 
-		
-		
-		// Add Top Bar
-		layout.getMenu().add(fileMenu);
-		layout.getMenu().add(editMenu);
-		layout.getMenu().add(viewMenu);
 		
 		// Add Title to Notebook Section
 		((BasicLayout) layout).notebooksTop.add(notebookTitle);
@@ -273,6 +273,11 @@ public class LayoutBuilder {
 		if (!(layout instanceof BasicLayout)) viewMenu.add(defaultSwitch);
 		if (!(layout instanceof CompactLayout)) viewMenu.add(compactSwitch);
 		if (!(layout instanceof PreviewLayout)) viewMenu.add(previewSwitch);
+		
+		// Add Top Bar
+		layout.getMenu().add(fileMenu);
+		layout.getMenu().add(editMenu);
+		layout.getMenu().add(viewMenu);
 		
 	}
 	
