@@ -9,9 +9,6 @@ import tech.tora.quaver.theme.Theme;
 
 public class CompactLayout extends Layout {
 	
-	private JPanel leftWrapper;
-	private JPanel rightWrapper;
-	
 	public CompactLayout(Theme t) {
 		super(t);
 		setDefaultWidth(1200);

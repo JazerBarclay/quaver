@@ -1,20 +1,29 @@
 package tech.tora.quaver.notepad;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 import javax.swing.JFrame;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
+import tech.tora.quaver.Launcher;
 import tech.tora.quaver.colour.ColourValue;
 import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.quaver.types.Note;
+import tech.tora.quaver.types.Notebook;
 
 public class Notepad {
 
 	public static JFrame window;
 	public static Configuration config;
 	public static LayoutBuilder layoutManager;
+
+	public LinkedHashMap<Integer, String> libraryArray;
+	public LinkedHashMap<String, Notebook> notebookArray;
+	public LinkedHashMap<String, Note> noteArray;
 	
 	public Theme theme;
 	
@@ -52,6 +61,51 @@ public class Notepad {
 		layoutManager = new LayoutBuilder(this);
 		layoutManager.buildBasicLayout();
 		
+	}
+	
+	public void getLibraries() {
+		int libCount = 0;
+		for (String lib : config.libraries) {
+			File f = new File(lib);
+			if (!f.isDirectory()) {
+				System.err.println("Library " + lib + " is not a directory");
+			} else if (!f.getAbsolutePath().endsWith(".qvlibrary")) {
+				System.err.println("Library " + lib + " ");
+			}
+			libraryArray.put(libCount, lib);
+		}
+	}
+	
+	public void getNotebooks() {
+		int notebookCount = 0;
+		
+		for (String lib : config.libraries) {
+			// Check contents of the library location
+			File[] libContents = new File(lib).listFiles();
+			for (File libF : libContents) {
+				if (isNotebook(libF)) {
+					System.out.println("Notebook Found: " + libF.getName());
+					File[] notebookContents = libF.listFiles();
+					for (File nbF : notebookContents) {
+						if (nbF.isDirectory() && nbF.getAbsolutePath().endsWith(".qvnote") && new File(nbF.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
+							notebookCount++;
+						}
+					}
+				}
+			}
+		}
+		
+		System.out.println(notebookCount);
+		
+	}
+	
+	private boolean isNotebook(File f) {
+		if (f.isDirectory() && 
+				f.getAbsolutePath().endsWith(".qvnotebook") && 
+				new File(f.getAbsolutePath()+Launcher.pathSeparator + "meta.json").exists()) {
+			return true;
+		}
+		return false;
 	}
 	
 	public Theme getDefaultTheme() {

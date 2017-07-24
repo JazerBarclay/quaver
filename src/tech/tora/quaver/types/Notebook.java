@@ -14,6 +14,8 @@ import tech.tora.quaver.Launcher;
 
 public class Notebook {
 	
+	public int noteCount = 0;
+	
 	public String path = "";
 	public String name = "", uuid = "";
 	
@@ -21,10 +23,10 @@ public class Notebook {
 		// Do Nothing
 	}
 	
-	public Notebook(String path, String name, String uuid) {
-		this.path = path;
-		this.name = name;
+	public Notebook(String uuid, String name, String path) {
 		this.uuid = uuid;
+		this.name = name;
+		this.path = path;
 	}
 	
 	public static void writeJSON(Notebook notebook) throws IOException {
@@ -32,10 +34,10 @@ public class Notebook {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void writeJSON(String name, String uuid, String path) throws IOException {
+	public static void writeJSON(String uuid, String name, String path) throws IOException {
 		JSONObject obj = new JSONObject();
-		obj.put("name", name);
 		obj.put("uuid", uuid);
+		obj.put("name", name);
 
 		try {
 			File f = new File(path + Launcher.pathSeparator + name + ".qvnotebook" + Launcher.pathSeparator + "meta.json");

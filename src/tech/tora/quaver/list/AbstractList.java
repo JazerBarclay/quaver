@@ -62,7 +62,7 @@ public abstract class AbstractList extends JPanel {
 		buildNodes();
 	}
 	
-	public void addNodeToList(AbstractListNode node) {
+	private void addNodeToList(AbstractListNode node) {
 		AbstractListNode dupe = null;
 		for (String key : nodes.keySet()) {
 			if (nodes.get(key).UUID.equals(node.UUID)) {

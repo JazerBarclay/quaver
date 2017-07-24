@@ -2,6 +2,7 @@ package tech.tora.quaver.notepad;
 
 import tech.tora.quaver.notepad.layout.Layout;
 import tech.tora.quaver.Launcher;
+import tech.tora.quaver.list.BasicClickListNode;
 import tech.tora.quaver.list.BasicList;
 import tech.tora.quaver.list.BasicListNode;
 import tech.tora.quaver.notepad.layout.BasicLayout;
@@ -20,6 +21,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.LinkedHashMap;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -96,7 +99,8 @@ public class LayoutBuilder {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				System.out.println("Add Notebook Clicked");
-			    Notepad.layoutManager.buildPreviewLayout();
+				if (notepad.newBuild) System.out.println("Get input window");
+				else System.out.println("Carry on");
 			}
 		};
 		
@@ -139,12 +143,15 @@ public class LayoutBuilder {
 		previewArea = new PreviewAreaThing() {
 			private static final long serialVersionUID = 1L;
 		};
+		String previewText = "<html><head><title>Quaver M" + Launcher.buildID + "</title></head>";
+		previewText += "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\"";
+		previewText += "<h1>Quaver Mark "+Launcher.buildID+"</h1><hr><br/>";
+		previewText += "<p>This is a test preview (Mark "+Launcher.buildID+")</p>";
+		previewText += "</body></html>";
 		
-		previewArea.setText("<html><head><title>" + "Quaver" + "</title>"
-				+ "</head><body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
-				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview (pre alpha version 0.8)</p></body></html>");
+		
+		previewArea.setText(previewText);
 
-		
 		// Add Title to Notebook Section
 		((BasicLayout) layout).notebooksTop.add(notebookTitle);
 
@@ -162,6 +169,38 @@ public class LayoutBuilder {
 		
 		// Build It
 		buildNewWindow(layout);
+		
+		if (!notepad.newBuild) {
+		
+			notepad.getNotebooks();
+		
+			int titleNodeID = 0;
+			int notebookCount = 0;
+			String activeKey = "";
+			BasicListNode parentNode = null;
+			LinkedHashMap<String, BasicClickListNode> nodes = new LinkedHashMap<>();
+			for (String key : notepad.notebookArray.keySet()) {
+				if (activeKey == null && parentNode == null) {
+					// First
+					activeKey = key;
+					parentNode = new BasicListNode(20, 
+							"" + titleNodeID, key, 
+							notepad.theme.notebookFillColour.getAsColor(), notepad.theme.notebookHoverColour.getAsColor(), 
+							new Font("Helvetica", Font.BOLD, 14), new Color(40, 40, 40)) {
+					};
+					titleNodeID++;
+				} else if (activeKey.equals(key)) {
+					// Add to current
+					
+				} else {
+					// Add to list and renew
+					
+				}
+				// Add last
+				notebooksList.addNode(parentNode);
+			}
+		}
+		
 		
 	}
 	
@@ -305,28 +344,28 @@ public class LayoutBuilder {
 			
 			@Override
 			public void windowOpened(WindowEvent e) {
-				System.out.println("Hello There");
+				//System.out.println("Hello There");
 			}
 			
 			@Override
 			public void windowIconified(WindowEvent e) {
-				System.out.println("Minimised");
+				//System.out.println("Minimised");
 			}
 			
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				System.out.println("Maximised");
+				//System.out.println("Maximised");
 			}
 			
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				System.out.println("Out of focus");
+				//System.out.println("Out of focus");
 			}
 			
 			@Override
 			public void windowClosing(WindowEvent e) {
 				// Handle close operation without saving on a new build
-				System.out.println("Bye");
+				//System.out.println("Bye");
 				Launcher.exit(0, "Close Button Request");
 			}
 			
@@ -337,7 +376,7 @@ public class LayoutBuilder {
 			
 			@Override
 			public void windowActivated(WindowEvent e) {
-				System.out.println("Focused");
+				//System.out.println("Focused");
 			}
 		});
 		

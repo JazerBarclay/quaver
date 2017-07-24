@@ -12,7 +12,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import tech.tora.quaver.notepad.InterfaceOld2;
 import tech.tora.quaver.notepad.widget.layout.PaneHorizontal;
 import tech.tora.quaver.notepad.widget.layout.PaneVertical;
 import tech.tora.quaver.theme.Theme;
@@ -39,6 +38,7 @@ public class LayoutConstruct {
 	private PaneHorizontal notesBot;
 
 //	private JLabel notebooksTitle; // This will be a button, not text
+	@SuppressWarnings("unused")
 	private JLabel notesTitle;
 	
 	private JMenuBar topMenu;
