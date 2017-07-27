@@ -126,6 +126,7 @@ public class Launcher {
 	private void initMac() {
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Quaver");
 		System.setProperty("apple.awt.fileDialogForDirectories", "true");
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
 	}
 
 		/**

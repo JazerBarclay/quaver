@@ -6,9 +6,10 @@ import java.awt.Color;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 
-public class PreviewLayout extends Layout {
+public class PreviewLayout extends LayoutOld {
 	
 	public PreviewLayout(Theme t) {
 		super(t);
@@ -42,6 +43,11 @@ public class PreviewLayout extends Layout {
 	@Override
 	public JMenuBar getMenu() {
 		return topMenu;
+	}
+
+	@Override
+	public void windowCloseAction() {
+		Launcher.exit(0, "Close requested by window");
 	}
 
 }

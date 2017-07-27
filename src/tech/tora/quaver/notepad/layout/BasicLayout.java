@@ -10,11 +10,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.widget.layout.PaneHorizontal;
 import tech.tora.quaver.notepad.widget.layout.PaneVertical;
 import tech.tora.quaver.theme.Theme;
 
-public class BasicLayout extends Layout {
+public class BasicLayout extends LayoutOld {
 
 	private JPanel leftWrapper;
 	private JPanel rightWrapper;
@@ -128,6 +129,11 @@ public class BasicLayout extends Layout {
 	@Override
 	public JMenuBar getMenu() {
 		return topMenu;
+	}
+
+	@Override
+	public void windowCloseAction() {
+		Launcher.exit(0, "Close Button Request");
 	}
 
 }

@@ -5,9 +5,10 @@ import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 
-public class CompactLayout extends Layout {
+public class CompactLayout extends LayoutOld {
 	
 	public CompactLayout(Theme t) {
 		super(t);
@@ -35,6 +36,11 @@ public class CompactLayout extends Layout {
 	@Override
 	public JMenuBar getMenu() {
 		return topMenu;
+	}
+
+	@Override
+	public void windowCloseAction() {
+		Launcher.exit(0, "Close requested by window");
 	}
 
 }

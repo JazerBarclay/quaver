@@ -1,13 +1,15 @@
 package tech.tora.quaver.notepad;
 
-import tech.tora.quaver.notepad.layout.Layout;
+import tech.tora.quaver.notepad.layout.LayoutOld;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.list.BasicClickListNode;
 import tech.tora.quaver.list.BasicList;
 import tech.tora.quaver.list.BasicListNode;
 import tech.tora.quaver.notepad.layout.BasicLayout;
 import tech.tora.quaver.notepad.layout.CompactLayout;
+import tech.tora.quaver.notepad.layout.Layout;
 import tech.tora.quaver.notepad.layout.PreviewLayout;
+import tech.tora.quaver.notepad.layout.TestLayout;
 import tech.tora.quaver.notepad.widget.elements.AddButton;
 import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
@@ -32,7 +34,7 @@ import javax.swing.WindowConstants;
 
 public class LayoutBuilder {
 
-	private Layout layout = null;
+	private LayoutOld layout = null;
 	
 	private Notepad notepad;
 
@@ -173,7 +175,7 @@ public class LayoutBuilder {
 		if (!notepad.newBuild) {
 		
 			notepad.getNotebooks();
-		
+
 			int titleNodeID = 0;
 			int notebookCount = 0;
 			String activeKey = "";
@@ -208,15 +210,25 @@ public class LayoutBuilder {
 		clearWindow();
 		layout = new CompactLayout(notepad.theme);
 		
-
-		
 		generateTopBar();
 		layout.getMenu().add(fileMenu);
 		layout.getMenu().add(editMenu);
 		layout.getMenu().add(viewMenu);
 		
-		
 		buildNewWindow(layout);
+	}
+	
+	public void buildTestLayout() {
+		clearWindow();
+		
+//		Layout l = new TestLayout(notepad.theme);
+//		generateTopBar();
+//		l.getMenu().add(fileMenu);
+//		l.getMenu().add(editMenu);
+//		l.getMenu().add(viewMenu);
+//		
+//		l.buildWindow("Title", "/icon1.png", false);
+		
 	}
 	
 	public void buildPreviewLayout() {
@@ -289,14 +301,14 @@ public class LayoutBuilder {
 		defaultSwitch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Notepad.layoutManager.buildBasicLayout();
+				buildBasicLayout();
 			}
 		});
 		compactSwitch = new JMenuItem("Compact Mode");
 		compactSwitch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			    Notepad.layoutManager.buildCompactLayout();
+				buildCompactLayout();
 			}
 		});
 		
@@ -305,7 +317,7 @@ public class LayoutBuilder {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			    Notepad.layoutManager.buildPreviewLayout();
+			    buildPreviewLayout();
 			}
 		});
 
@@ -320,7 +332,7 @@ public class LayoutBuilder {
 		
 	}
 	
-	private void buildNewWindow(Layout l) {
+	private void buildNewWindow(LayoutOld l) {
 		
 		Notepad.window = new JFrame();
 		

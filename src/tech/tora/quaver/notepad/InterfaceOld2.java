@@ -26,7 +26,7 @@ import tech.tora.quaver.list.BasicList;
 import tech.tora.quaver.list.BasicListNode;
 import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.layout.BasicLayout;
-import tech.tora.quaver.notepad.layout.Layout;
+import tech.tora.quaver.notepad.layout.LayoutOld;
 import tech.tora.quaver.notepad.widget.elements.AddButton;
 import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
@@ -45,7 +45,7 @@ public class InterfaceOld2 extends JFrame {
 
 	public boolean newBuild = false;
 
-	public Layout layout;
+	public LayoutOld layout;
 	public Theme theme;
 
 	private JMenu fileMenu;
