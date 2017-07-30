@@ -33,8 +33,7 @@ public class Notepad {
 	public Notepad(Configuration c) {
 		setupConfiguration(c);
 		
-		LayoutBuilder layoutManager = new LayoutBuilder(this);
-		layoutManager.buildBasicLayout();
+		
 		
 	}
 	

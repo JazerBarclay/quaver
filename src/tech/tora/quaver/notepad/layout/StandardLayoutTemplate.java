@@ -12,10 +12,11 @@ import javax.swing.JPanel;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.frame.AdvancedFrame;
+import tech.tora.tools.swing.layout.Layout;
 import tech.tora.tools.swing.panel.PaneHorizontal;
 import tech.tora.tools.swing.panel.PaneVertical;
 
-public abstract class StandardLayoutTemplate extends CoreLayout {
+public abstract class StandardLayoutTemplate extends Layout {
 
 	protected JPanel leftWrapper;
 	protected JPanel rightWrapper;
