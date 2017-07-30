@@ -13,13 +13,13 @@
 	<property name="res" value="${basedir}/res"/>
 	<property name="builds" value="${basedir}/builds"/>
 	<property name="currentBuild" value="${builds}/${current.project.name}-${current.build.release}.${current.build.major}.${current.build.minor}"/>
-	
+
 	<path id="main-classpath">
       <fileset dir="${lib}">
         <include name="**/*.jar"/>
       </fileset>
     </path>
-	
+
 	<target name="help">
 		<echo message="Active Targets:"/>
 		<echo message="   all      		Clean, rebuild and jar a new minor release"/>
@@ -29,32 +29,32 @@
 		<echo message="   major    		Compile and jar a new major release"/>
 		<echo message="   release  		Compile and jar a new full release"/>
 	</target>
-	
+
 	<!-- Main Targets -->
 	<target name="all" depends="clean,inc-minor,compile,jar"/>
 	<target name="major" depends="clean,inc-major,compile,jar"/>
 	<target name="release" depends="clean,inc-release,compile,jar,party"/>
-	
+
 	<!-- Update Targets -->
 	<target name="update">
 		<echo message="Updating properties reference"/>
 		<property file="${properties}" prefix="latest"/>
 		<property name="latestBuild" value="${builds}/${latest.project.name}-${latest.build.release}.${latest.build.major}.${latest.build.minor}"/>
 	</target>
-	
+
 	<target name="inc-minor">
 		<propertyfile  file="${properties}">
 			<entry key="build.minor" type="int" operation="+" value="1"/>
 		</propertyfile>
 	</target>
-	
+
 	<target name="inc-major">
 		<propertyfile  file="${properties}">
             <entry key="build.major" type="int" operation="+" value="1"/>
             <entry key="build.minor" type="int" value="0"/>
 		</propertyfile>
 	</target>
-	
+
 	<target name="inc-release">
 		<propertyfile  file="${properties}">
             <entry key="build.release" type="int" operation="+" value="1"/>
@@ -62,13 +62,13 @@
             <entry key="build.minor" type="int" value="0"/>
 		</propertyfile>
 	</target>
-	
+
 	<!-- Project Targets -->
 	<target name="clean" description="Delete bin" depends="">
 		<tstamp/>
 		<delete dir="bin" includeemptydirs="true"/>
 	</target>
-	
+
 	<target name="compile" depends="clean,update">
 		<mkdir dir="${bin}"/>
 		<mkdir dir="${res}"/>
@@ -77,24 +77,25 @@
 				<exclude name="**/*.gitignore"/>
 				<exclude name="config.json"/>
 				<exclude name="**/*.example"/>
+				<exclude name="**/.DS_Store"/>
 			</fileset>
 			<fileset dir="${lib}">
 				<exclude name="**/*.gitignore"/>
 			</fileset>
 		</copy>
-		
+
 		<propertyfile file="${bin}/${properties}">
 		  <entry key="project.name" value="${latest.project.name}"/>
 		  <entry key="build.release" value="${latest.build.release}"/>
 		  <entry key="build.major" value="${latest.build.major}"/>
 		  <entry key="build.minor" value="${latest.build.minor}"/>
 		</propertyfile>
-		
+
 		<javac includeantruntime="false" failonerror="true" srcdir="${src}" destdir="${bin}">
 			<classpath refid="main-classpath"/>
 		</javac>
 	</target>
-	
+
 	<target name="jar" depends="compile">
 		<mkdir dir="${builds}"/>
 		<jar destfile="${latestBuild}.jar" basedir="${bin}">
@@ -106,14 +107,14 @@
 			</manifest>
 		</jar>
 	</target>
-	
+
 	<target name="party" depends="update">
 		<echo message="Congratulations on the V${latest.build.release} release!"/>
 	</target>
-	
+
 	<target name="run" depends="update">
 		<echo message="Launching Version ${latest.build.release}.${latest.build.major}.${latest.build.minor}"/>
 		<java jar="${latestBuild}.jar" fork="true"/>
 	</target>
-	
+
 </project>
