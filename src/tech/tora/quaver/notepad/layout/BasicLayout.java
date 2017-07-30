@@ -11,9 +11,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.notepad.widget.layout.PaneHorizontal;
-import tech.tora.quaver.notepad.widget.layout.PaneVertical;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.tools.swing.panel.PaneHorizontal;
+import tech.tora.tools.swing.panel.PaneVertical;
 
 public class BasicLayout extends LayoutOld {
 

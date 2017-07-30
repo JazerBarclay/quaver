@@ -24,7 +24,7 @@ public class InsetsBorder implements javax.swing.border.Border {
 
 	@Override
 	public void paintBorder(Component arg0, Graphics arg1, int arg2, int arg3, int arg4, int arg5) {
-		// Do Nothing
+		
 	}
 
 }

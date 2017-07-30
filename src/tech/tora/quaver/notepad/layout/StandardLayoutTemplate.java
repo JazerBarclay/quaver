@@ -10,41 +10,41 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.notepad.widget.layout.PaneHorizontal;
-import tech.tora.quaver.notepad.widget.layout.PaneVertical;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.tools.swing.frame.AdvancedFrame;
+import tech.tora.tools.swing.panel.PaneHorizontal;
+import tech.tora.tools.swing.panel.PaneVertical;
 
-public abstract class TestLayout extends Layout {
+public abstract class StandardLayoutTemplate extends CoreLayout {
 
-	private JPanel leftWrapper;
-	private JPanel rightWrapper;
+	protected JPanel leftWrapper;
+	protected JPanel rightWrapper;
 	
-	private PaneVertical notebooksWrapper;
-	private PaneVertical notesWrapper;
-	private PaneVertical contentWrapper;
-	private JPanel splitter;
+	protected PaneVertical notebooksWrapper;
+	protected PaneVertical notesWrapper;
+	protected PaneVertical contentWrapper;
+	protected JPanel splitter;
 	
-	private JPanel notebooksTop;
-	private JPanel notebooksListContainer;
-	private PaneHorizontal notebooksBot;
+	protected JPanel notebooksTop;
+	protected JPanel notebooksListContainer;
+	protected PaneHorizontal notebooksBot;
 
-	private PaneHorizontal notesTop;
-	private JPanel notesListContainer;
-	private PaneHorizontal notesBot;
+	protected PaneHorizontal notesTop;
+	protected JPanel notesListContainer;
+	protected PaneHorizontal notesBot;
 	
 	private static int notebooksWidth = 200, notesWidth = 300;
 	private static int notebooksTopHeight = 30, notebooksBotHeight = 30;
 	private static int notesTopHeight = 30, notesBotHeight = 30;
 	
-	
-	public TestLayout(Theme theme) {
-		super(theme);
+	public StandardLayoutTemplate(AdvancedFrame parent, Theme theme) {
+		super(parent, theme);
 		setDefaultWidth(1600);
 		setDefaultHeight(800);
 	}
 
 	@Override
-	public void initFrame(Theme theme) {
+	public void buildFrame(Theme theme) {
 
 		// Main Wrappers
 		wrapper.setLayout(new BorderLayout());
@@ -94,7 +94,7 @@ public abstract class TestLayout extends Layout {
 	}
 
 	@Override
-	public void buildFrame(JPanel wrapperPanel) {
+	public void constructFrame(JPanel wrapperPanel) {
 		
 		wrapper.add(leftWrapper, BorderLayout.WEST);
 		wrapper.add(rightWrapper, BorderLayout.CENTER);
@@ -112,10 +112,6 @@ public abstract class TestLayout extends Layout {
 		notesWrapper.getFooterPane().add(notesBot);
 		
 		contentWrapper.getCenterPane().add(splitter, BorderLayout.CENTER);
-		
-	}
-
-	public void buildElements() {
 		
 	}
 

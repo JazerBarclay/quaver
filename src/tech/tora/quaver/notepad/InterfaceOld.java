@@ -44,8 +44,6 @@ public class InterfaceOld extends JFrame {
 	public LayoutBuilder layout;
 	public EditAreaThing editArea;
 	public PreviewAreaThing previewArea;
-
-	
 	
 	public static Notebook activeNotebook = null;
 	public static Note activeNote = null;

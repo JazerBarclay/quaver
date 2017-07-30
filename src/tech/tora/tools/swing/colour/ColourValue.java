@@ -1,4 +1,4 @@
-package tech.tora.quaver.colour;
+package tech.tora.tools.swing.colour;
 
 import java.awt.Color;
 

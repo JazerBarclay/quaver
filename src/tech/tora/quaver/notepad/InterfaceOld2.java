@@ -21,10 +21,6 @@ import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.colour.ColourValue;
-import tech.tora.quaver.list.BasicList;
-import tech.tora.quaver.list.BasicListNode;
-import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.notepad.layout.BasicLayout;
 import tech.tora.quaver.notepad.layout.LayoutOld;
 import tech.tora.quaver.notepad.widget.elements.AddButton;
@@ -33,6 +29,10 @@ import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
+import tech.tora.tools.swing.colour.ColourValue;
+import tech.tora.tools.swing.list.BasicList;
+import tech.tora.tools.swing.list.BasicListNode;
+import tech.tora.tools.system.log.Logging;
 
 public class InterfaceOld2 extends JFrame {
 

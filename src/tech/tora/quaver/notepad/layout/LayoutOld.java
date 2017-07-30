@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.log.Logging;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.tools.system.log.Logging;
 
 /**
  * Base class for interface layout

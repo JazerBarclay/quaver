@@ -2,17 +2,14 @@ package tech.tora.quaver.notepad;
 
 import tech.tora.quaver.notepad.layout.LayoutOld;
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.list.BasicClickListNode;
-import tech.tora.quaver.list.BasicList;
-import tech.tora.quaver.list.BasicListNode;
 import tech.tora.quaver.notepad.layout.BasicLayout;
-import tech.tora.quaver.notepad.layout.CompactLayout;
-import tech.tora.quaver.notepad.layout.Layout;
 import tech.tora.quaver.notepad.layout.PreviewLayout;
-import tech.tora.quaver.notepad.layout.TestLayout;
 import tech.tora.quaver.notepad.widget.elements.AddButton;
 import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
+import tech.tora.tools.swing.list.BasicClickListNode;
+import tech.tora.tools.swing.list.BasicList;
+import tech.tora.tools.swing.list.BasicListNode;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -207,15 +204,15 @@ public class LayoutBuilder {
 	}
 	
 	public void buildCompactLayout() {
-		clearWindow();
-		layout = new CompactLayout(notepad.theme);
-		
-		generateTopBar();
-		layout.getMenu().add(fileMenu);
-		layout.getMenu().add(editMenu);
-		layout.getMenu().add(viewMenu);
-		
-		buildNewWindow(layout);
+//		clearWindow();
+//		layout = new CompactLayout(notepad.theme);
+//		
+//		generateTopBar();
+//		layout.getMenu().add(fileMenu);
+//		layout.getMenu().add(editMenu);
+//		layout.getMenu().add(viewMenu);
+//		
+//		buildNewWindow(layout);
 	}
 	
 	public void buildTestLayout() {
@@ -322,7 +319,7 @@ public class LayoutBuilder {
 		});
 
 		if (!(layout instanceof BasicLayout)) viewMenu.add(defaultSwitch);
-		if (!(layout instanceof CompactLayout)) viewMenu.add(compactSwitch);
+//		if (!(layout instanceof CompactLayout)) viewMenu.add(compactSwitch);
 		if (!(layout instanceof PreviewLayout)) viewMenu.add(previewSwitch);
 		
 		// Add Top Bar

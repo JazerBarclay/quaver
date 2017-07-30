@@ -1,27 +1,20 @@
 package tech.tora.quaver.notepad;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.colour.ColourValue;
-import tech.tora.quaver.log.Logging;
-import tech.tora.quaver.notepad.layout.Layout;
-import tech.tora.quaver.notepad.layout.TestLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
+import tech.tora.tools.swing.colour.ColourValue;
+import tech.tora.tools.swing.layout.Layout;
+import tech.tora.tools.system.log.Logging;
 
 public class Notepad {
 
@@ -33,30 +26,19 @@ public class Notepad {
 	public LinkedHashMap<String, Notebook> notebookArray;
 	public LinkedHashMap<String, Note> noteArray;
 	
-	
-	private JMenu fileMenu;
-	private JMenu editMenu;
-	private JMenu viewMenu;
-	
-	// File
-	private JMenuItem newMenuItem;
-	private JMenuItem saveMenuItem;
-	private JMenuItem updateMenuItem;
-	private JMenuItem exitMenuItem;
-	
-	// Edit
-	private JMenuItem insertLinkMenuItem;
-	
-	private JMenuItem defaultSwitch;
-	private JMenuItem compactSwitch;
-	private JMenuItem previewSwitch;
-	
-	
 	public Theme theme;
 	
 	public boolean newBuild = false;
 	
 	public Notepad(Configuration c) {
+		setupConfiguration(c);
+		
+		LayoutBuilder layoutManager = new LayoutBuilder(this);
+		layoutManager.buildBasicLayout();
+		
+	}
+	
+	private void setupConfiguration(Configuration c) {
 		if (c == null) {
 			c = new Configuration();
 			newBuild = true;
@@ -84,105 +66,6 @@ public class Notepad {
 				}
 			}
 		}
-		
-//		layout = new TestLayout(theme) {
-//
-//			@Override
-//			public void buildTopBar(JMenuBar menu) {
-//
-//				fileMenu = new JMenu("File");
-//				
-//				newMenuItem = new JMenuItem("New Notebook");
-//				newMenuItem.addActionListener(new ActionListener() {
-//					
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-//						
-//					}
-//				});
-//				
-//				updateMenuItem = new JMenuItem("New Note");
-//				updateMenuItem.addActionListener(new ActionListener() {
-//					
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-//						
-//					}
-//				});
-//				
-//				saveMenuItem = new JMenuItem("Save All");
-//				saveMenuItem.addActionListener(new ActionListener() {
-//					
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-//						
-//					}
-//				});
-//				
-//				exitMenuItem = new JMenuItem("Exit");
-//				exitMenuItem.addActionListener(new ActionListener() {
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-//						Launcher.exit(0, "Shutdown request from top menu");
-//					}
-//				});
-//				
-//				fileMenu.add(newMenuItem);
-//				fileMenu.add(updateMenuItem);
-//				fileMenu.add(saveMenuItem);
-//				fileMenu.add(exitMenuItem);
-//				
-//
-//				editMenu = new JMenu("Edit");
-//				insertLinkMenuItem = new JMenuItem("Insert Link");
-//				
-//				editMenu.add(insertLinkMenuItem);
-//				
-//
-//				viewMenu = new JMenu("View");
-//				defaultSwitch = new JMenuItem("Default Mode");
-//				defaultSwitch.addActionListener(new ActionListener() {
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-////						Notepad.layoutManager.buildBasicLayout();
-//					}
-//				});
-//				compactSwitch = new JMenuItem("Compact Mode");
-//				compactSwitch.addActionListener(new ActionListener() {
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-//						
-//					}
-//				});
-//				
-//				previewSwitch = new JMenuItem("Preview Mode");
-//				previewSwitch.addActionListener(new ActionListener() {
-//					
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-////					    Notepad.layoutManager.buildPreviewLayout();
-//					}
-//				});
-//
-//				viewMenu.add(defaultSwitch);
-//				viewMenu.add(compactSwitch);
-//				viewMenu.add(previewSwitch);
-//				
-//				// Add Top Bar
-//				getMenu().add(fileMenu);
-//				getMenu().add(editMenu);
-//				getMenu().add(viewMenu);
-//				
-//			
-//			}
-//			
-//		};
-//		layout.buildWindow("Title", "/icon1.png", false);
-//		layout.showWindow(true);
-		
-		LayoutBuilder layoutManager = new LayoutBuilder(this);
-		layoutManager.buildBasicLayout();
-		
 	}
 	
 	public void getLibraries() {

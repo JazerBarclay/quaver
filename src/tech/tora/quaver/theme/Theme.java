@@ -9,7 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.colour.ColourValue;
+import tech.tora.tools.swing.colour.ColourValue;
 
 public class Theme {
 

@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.widget.layout;
+package tech.tora.tools.swing.panel;
 
 import java.awt.Component;
 import java.awt.Graphics;

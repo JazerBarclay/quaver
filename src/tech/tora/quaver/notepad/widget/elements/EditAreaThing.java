@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
-import tech.tora.quaver.notepad.widget.layout.InsetsBorder;
+import tech.tora.tools.swing.panel.InsetsBorder;
 
 public abstract class EditAreaThing extends JPanel implements KeyListener {
 

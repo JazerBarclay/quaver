@@ -1,4 +1,4 @@
-package tech.tora.quaver.log;
+package tech.tora.tools.system.log;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
