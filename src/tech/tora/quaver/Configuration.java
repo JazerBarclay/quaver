@@ -147,6 +147,7 @@ public class Configuration {
 	}
 
 	/**
+	 * Sets the theme
 	 * @param theme the theme to set
 	 */
 	public void setTheme(String theme) {
@@ -175,7 +176,7 @@ public class Configuration {
 	}
 
 	/**
-	 * @return librariesde
+	 * @return libraries
 	 */
 	public String[] getLibraries() {
 		return libraries;

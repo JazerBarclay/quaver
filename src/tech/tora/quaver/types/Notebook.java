@@ -5,34 +5,125 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Launcher;
+import tech.tora.tools.system.CustomUUID;
 
 public class Notebook {
+
+	/** Path to the notebook (not including the notebook folder) **/
+	private String path = "";
 	
-	public int noteCount = 0;
+	/** Name of the notebook (not including the extension) **/
+	private String name = "";
 	
-	public String path = "";
-	public String name = "", uuid = "";
+	/** UUID of the notebook (unique identifier of notebook) **/
+	private String uuid = "";
+
 	
+	/** Notebook extension (global notebook extension) **/
+	private static final String extension = ".qvnotebook";
+
+	/** Map of all notes in this notebook **/
+	private LinkedHashMap<String, Note> noteArray;
+
+	
+	/* ------------------------------------------------------ */
+	// Constructors and Initialisation
+	/* ------------------------------------------------------ */
+	
+	/**
+	 * Initialise the notebook without specifying the path or name
+	 */
 	public Notebook() {
-		// Do Nothing
+		init();
 	}
 	
+	/**
+	 * Initialises the notebook using a UUID, name and path
+	 * 
+	 * @param uuid
+	 * @param name
+	 * @param path
+	 */
 	public Notebook(String uuid, String name, String path) {
 		this.uuid = uuid;
 		this.name = name;
 		this.path = path;
+		init();
 	}
 	
+	private void init() {
+		noteArray = new LinkedHashMap<>();
+	}
+	
+
+	/* ------------------------------------------------------ */
+	// Core Methods
+	/* ------------------------------------------------------ */
+	
+	public static Notebook newNotebook(String name, Library parent) {
+		Notebook n = new Notebook();
+		n.setUUID(CustomUUID.generateTimestampUUID(name));
+		n.setName(name);
+		n.setPath(parent.getPath()+Launcher.pathSeparator+parent.getName()+Library.getExtension());
+		return n;
+	}
+	
+	/**
+	 * Checks if the notebook exists on the file system using 
+	 * the qualified path and notebook name
+	 * 
+	 * @param path
+	 * @param notebookName
+	 * @return existence of notebook
+	 */
+	public static boolean exists(String path, String notebookName) {
+		if (new File(path + Launcher.pathSeparator + notebookName + extension + Launcher.pathSeparator + "meta.json").exists()) return true;
+		return false;
+	}
+	
+	/**
+	 * Adds a note to the notebook
+	 * 
+	 * @param note
+	 * @return true if successful
+	 */
+	public boolean addNote(Note n) {
+		// If the key exists in the notebook map then fail it
+		for (String key : noteArray.keySet()) {
+			if (noteArray.get(key).getUUID().equals(n.getUUID())) return false;
+		}
+		// Add to map
+		noteArray.put(n.getUUID(), n);
+		return true;
+	}
+	
+	/**
+	 * Writes a meta JSON formatted document containing the notebook details
+	 * in the notebook's path and name specified
+	 * 
+	 * @param notebook
+	 * @throws IOException
+	 */
 	public static void writeJSON(Notebook notebook) throws IOException {
-		writeJSON(notebook.name, notebook.uuid, notebook.path);
+		writeJSON(notebook.uuid, notebook.name, notebook.path);
 	}
 	
+	/**
+	 * Writes a meta JSON formatted document containing the notebook details
+	 * in the path and name specified
+	 * 
+	 * @param uuid
+	 * @param name
+	 * @param path
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	public static void writeJSON(String uuid, String name, String path) throws IOException {
 		JSONObject obj = new JSONObject();
@@ -40,7 +131,7 @@ public class Notebook {
 		obj.put("name", name);
 
 		try {
-			File f = new File(path + Launcher.pathSeparator + name + ".qvnotebook" + Launcher.pathSeparator + "meta.json");
+			File f = new File(path + Launcher.pathSeparator + name + extension + Launcher.pathSeparator + "meta.json");
 			f.getParentFile().mkdirs();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,7 +139,7 @@ public class Notebook {
 			return;
 		}
 
-		try (FileWriter file = new FileWriter(path + Launcher.pathSeparator + name + ".qvnotebook" + Launcher.pathSeparator + "meta.json")) {
+		try (FileWriter file = new FileWriter(path + Launcher.pathSeparator + name + extension + Launcher.pathSeparator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -56,6 +147,15 @@ public class Notebook {
 		}
 	}
 
+	/**
+	 * Reads in the details from a meta JSON
+	 * 
+	 * @param path
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static Notebook readJSON(String path) throws FileNotFoundException, IOException, ParseException {
 		JSONParser parser = new JSONParser();
 
@@ -64,8 +164,82 @@ public class Notebook {
 
 		String id = (String) jsonNoteObject.get("uuid");
 		String name = (String) jsonNoteObject.get("name");
+		String dir = path;
 
-		return new Notebook(path, name, id);
+		return new Notebook(id, name, dir);
 	}
+	
+	
+	/* ------------------------------------------------------ */
+	// Getters and Setters
+	/* ------------------------------------------------------ */
+
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUUID(String uuid) {
+		this.uuid = uuid;
+	}
+
+	/**
+	 * @return the uuid
+	 */
+	public String getUUID() {
+		return uuid;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * @return the noteArray
+	 */
+	public LinkedHashMap<String, Note> getNoteArrayAsMap() {
+		return noteArray;
+	}
+	
+	public Note[] getNoteAsArray() {
+		Note[] nArray = new Note[getNoteCount()];
+		int i = 0;
+		for (String key : noteArray.keySet()) {
+			nArray[i] = noteArray.get(key);
+			i++;
+		}
+		return nArray;
+	}
+	
+	public int getNoteCount() {
+		return noteArray.size();
+	}
+	
+	public static String getExtension() {
+		return extension;
+	}
+	
 	
 }

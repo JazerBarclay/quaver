@@ -4,27 +4,30 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
+import tech.tora.quaver.notepad.layout.StandardLayout;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.colour.ColourValue;
+import tech.tora.tools.swing.frame.AdvancedFrame;
 import tech.tora.tools.swing.layout.Layout;
 import tech.tora.tools.system.log.Logging;
 
 public class Notepad {
 
-	public static JFrame window;
+	public static AdvancedFrame window;
 	public static Configuration config;
 	public static Layout layout;
 
-	public LinkedHashMap<Integer, String> libraryArray;
-	public LinkedHashMap<String, Notebook> notebookArray;
-	public LinkedHashMap<String, Note> noteArray;
+	public LinkedHashMap<String, Library> libraryArray = new LinkedHashMap<>();
 	
 	public Theme theme;
 	
@@ -32,32 +35,31 @@ public class Notepad {
 	
 	public Notepad(Configuration c) {
 		setupConfiguration(c);
-		
-		
-		
+		setupFrame();
+		window.setVisible(true);
 	}
+	
+	/* ------------------------------------------------------ */
+	// Initialisation
+	/* ------------------------------------------------------ */
 	
 	private void setupConfiguration(Configuration c) {
 		if (c == null) {
 			c = new Configuration();
 			newBuild = true;
-			config = new Configuration();
-			config.devmode = true;
-			config.name = "Default";
-			config.theme = "Default";
-			config.libraries = new String[]{};
+			config = new Configuration("Default", "Default", false);
 			System.out.println("New Build");
 		} else {
 			config = c;
 			System.out.println("Found Config");
 		}
 		
-		if (config.theme == null) theme = getDefaultTheme();
+		if (config.getTheme() == null) theme = getDefaultTheme();
 		else {
-			if (config.theme.equals("Default")) theme = getDefaultTheme();
+			if (config.getTheme().equals("Default")) theme = getDefaultTheme();
 			else {
 				try {
-					Theme.readThemeJSON(config.theme);
+					Theme.readThemeJSON(config.getTheme());
 				} catch (IOException e) {
 					Logging.errorMessage(1, null, "Read Theme Failed", "Cannot load theme from file", e);
 				} catch (ParseException e) {
@@ -65,25 +67,113 @@ public class Notepad {
 				}
 			}
 		}
+	} // setupConfiguration(Configuration c);
+	
+	/**
+	 * Initialise the frame for first time launch
+	 */
+	private void setupFrame() {
+		window = new AdvancedFrame() {
+			
+			/** * **/
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void openAction() {
+				layout.windowOpenAction();
+			}
+			
+			@Override
+			public void minimiseAction() {
+				layout.windowMinimiseAction();
+			}
+			
+			@Override
+			public void maximiseAction() {
+				layout.windowMaximiseAction();
+			}
+			
+			@Override
+			public void loseFocusAction() {
+				layout.windowLoseFocusAction();
+			}
+			
+			@Override
+			public void gainFocusAction() {
+				layout.windowGainFocusAction();
+			}
+			
+			@Override
+			public void closeAction() {
+				layout.windowCloseAction();
+			}
+		};
+		
+		setupLayout();
+		
+		window.setSize(layout.getDefaultWidth(), layout.getDefaultHeight());
+		window.setTitle(layout.getTitle());
+		window.updateContent(layout.getWrapper(), false);
+		window.updateMenu(layout.getMenu());
+		window.setLocationRelativeTo(null);
+		
+	} // setupFrame();
+	
+	
+	private void setupLayout() {
+		layout = new StandardLayout(window, theme) {
+			
+			@Override
+			public void constructTopBar(JMenuBar menu) {
+				constructMenuBar(menu);
+			}
+			
+		};
+		layout.setTitle("Test Quaver");
+		
+	} // setupLayout();
+
+	
+	/* ------------------------------------------------------ */
+	// Frame Management
+	/* ------------------------------------------------------ */
+
+	private void constructMenuBar(JMenuBar menu) {
+		JMenu file = new JMenu("File");
+		menu.add(file);
 	}
 	
+	public void switchLayout(Layout l) {
+		layout = l;
+		window.updateTitle(l.getTitle(), false);
+		window.updateFrameSize(l.getDefaultWidth(), layout.getDefaultHeight(), true);
+		window.updateMenu(l.getMenu(), false);
+		window.updateContent(l.getWrapper());
+	}
+
+	/* ------------------------------------------------------ */
+	// File System Management
+	/* ------------------------------------------------------ */
+	
+	/**
+	 * Touches all library locations and returns an array of failed library links
+	 */
+	public void touchLibraries() {
+		// TODO - Add a search for an ignore file under res/.libignore
+		
+	}
+	
+	/**
+	 * Get all libraries 
+	 */
 	public void getLibraries() {
-		int libCount = 0;
-		for (String lib : config.libraries) {
-			File f = new File(lib);
-			if (!f.isDirectory()) {
-				System.err.println("Library " + lib + " is not a directory");
-			} else if (!f.getAbsolutePath().endsWith(".qvlibrary")) {
-				System.err.println("Library " + lib + " ");
-			}
-			libraryArray.put(libCount, lib);
-		}
+		
 	}
 	
 	public void getNotebooks() {
 		int notebookCount = 0;
 		
-		for (String lib : config.libraries) {
+		for (String lib : config.getLibraries()) {
 			// Check contents of the library location
 			File[] libContents = new File(lib).listFiles();
 			for (File libF : libContents) {
@@ -100,7 +190,7 @@ public class Notepad {
 		}
 		
 		System.out.println(notebookCount);
-		
+	
 	}
 	
 	private boolean isNotebook(File f) {
@@ -111,6 +201,11 @@ public class Notepad {
 		}
 		return false;
 	}
+	
+
+	/* ------------------------------------------------------ */
+	// Defaults
+	/* ------------------------------------------------------ */
 	
 	public Theme getDefaultTheme() {
 		Theme defaultTheme = new Theme();
