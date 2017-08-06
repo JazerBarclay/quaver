@@ -9,4 +9,15 @@ public abstract class PreviewLayout extends PreviewLayoutTemplate {
 		super(parent, theme);
 	}
 
+	@Override
+	public void buildElements() {
+		
+	}
+
+	@Override
+	public void constructElements() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

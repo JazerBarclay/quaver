@@ -10,7 +10,8 @@ public abstract class PreviewLayoutTemplate extends Layout {
 
 	public PreviewLayoutTemplate(AdvancedFrame parent, Theme theme) {
 		super(parent, theme);
-		// TODO Auto-generated constructor stub
+		setDefaultWidth(800);
+		setDefaultHeight(600);
 	}
 
 	@Override
@@ -21,18 +22,6 @@ public abstract class PreviewLayoutTemplate extends Layout {
 
 	@Override
 	public void constructFrame(JPanel wrapperPanel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void buildElements() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void constructElements() {
 		// TODO Auto-generated method stub
 		
 	}
