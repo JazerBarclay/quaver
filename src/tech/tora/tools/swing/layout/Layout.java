@@ -7,6 +7,7 @@ import tech.tora.tools.swing.frame.AdvancedFrame;
 
 public abstract class Layout {
 
+	private String title;
 	private static int width = -1, height = -1;
 	private static int defaultWidth = 800, defaultHeight = 600;
 
@@ -18,10 +19,13 @@ public abstract class Layout {
 		this.parent = parent;
 		initVariables();
 		buildFrame(theme);
-		constructTopBar(topMenu);
 		constructFrame(wrapper);
+		buildElements();
+		constructElements();
+		constructTopBar(topMenu);
 	}
 
+	/** Initialise variables **/
 	private final void initVariables() {
 		topMenu = new JMenuBar();
 		wrapper = new JPanel();
@@ -103,6 +107,16 @@ public abstract class Layout {
 	/** Returns the active height of the layout **/
 	public int getHeight() {
 		return height;
+	};
+
+	/** Sets the layout title **/
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/** Returns the layout title **/
+	public String getTitle() {
+		return title;
 	};
 
 }
