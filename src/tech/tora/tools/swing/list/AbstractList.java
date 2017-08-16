@@ -19,7 +19,7 @@ public abstract class AbstractList extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public int width;
-	private LinkedHashMap<String, AbstractListNode> nodes = new LinkedHashMap<>();
+	protected LinkedHashMap<String, AbstractListNode> nodes = new LinkedHashMap<>();
 	
 	private JPanel containerPane = null;
 	private JScrollPane scrollPane;
@@ -36,14 +36,15 @@ public abstract class AbstractList extends JPanel {
 		
 		containerPane = new JPanel();
 		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
+//		containerPane.setOpaque(false);
 		
 		scrollPane = new JScrollPane(containerPane);
 //		scrollPane = new JScrollPane(containerPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		
-		this.setBackground(new Color(230, 230, 230));
+
+//		this.setBackground(new Color(230, 230, 230));
 		
 		this.add(scrollPane);
 	}

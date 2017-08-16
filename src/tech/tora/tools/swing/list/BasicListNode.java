@@ -8,36 +8,41 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import tech.tora.tools.swing.colour.ColourValue;
+
 public abstract class BasicListNode extends AbstractListNode {
 
 	private int height;
 	
 	protected JPanel wrapper, content;
 	
-	public Font titleFont;
-	public Color titleColour;
-	public Color fill, hover;
+	public boolean active = false;
 	
-	public BasicListNode(int height, String uuid, String title, Color fillColour, Color hoverColour, Font titleFont, Color titleColour) {
+	protected Font titleFont;
+	protected ColourValue titleColour;
+	protected ColourValue fill, hover;
+	protected int clickMod;
+	
+	public BasicListNode(int height, String uuid, String title, Color fillColour, Color hoverColour, Font titleFont, Color titleColour, int clickModifier) {
 		super(uuid, title);
 		this.height = height;
-		this.fill = fillColour;
-		this.hover = hoverColour;
+		this.fill = new ColourValue(fillColour.getRed(), fillColour.getGreen(), fillColour.getBlue());
+		this.hover = new ColourValue(hoverColour.getRed(), hoverColour.getGreen(), hoverColour.getBlue());
 		this.titleFont = titleFont;
-		this.titleColour = titleColour;
+		this.titleColour = new ColourValue(titleColour.getRed(), titleColour.getGreen(), titleColour.getBlue());
+		this.clickMod = clickModifier;
 	}
 
 	
 	@Override
 	public JPanel generateNode() {
-		standardGenerate();
-		return wrapper;
+		return standardGenerate();
 	}
 	
 	protected JPanel standardGenerate() {
 		JLabel title = new JLabel(this.title);
 		title.setFont(titleFont);
-		title.setForeground(titleColour);
+		title.setForeground(titleColour.getAsColor());
 		
 		wrapper = new JPanel();
 		wrapper.setLayout(new BorderLayout());
@@ -45,8 +50,7 @@ public abstract class BasicListNode extends AbstractListNode {
 		wrapper.setPreferredSize(new Dimension(getParentList().width, height));
 		wrapper.setMinimumSize(new Dimension(getParentList().width, height));
 		wrapper.setMaximumSize(new Dimension(getParentList().width, height));
-		wrapper.setBackground(fill);
-		wrapper.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(200, 200, 200)));
+		wrapper.setBackground(fill.getAsColor());
 		
 		content = new JPanel();
 		content.setLayout(new BorderLayout());
@@ -55,12 +59,17 @@ public abstract class BasicListNode extends AbstractListNode {
 		content.setPreferredSize(new Dimension(getParentList().width, height));
 		content.setMinimumSize(new Dimension(getParentList().width, height));
 		content.setMaximumSize(new Dimension(getParentList().width, height));
-		content.setBackground(fill);
+		content.setBackground(fill.getAsColor());
 		content.add(title, BorderLayout.CENTER);
 		
 		wrapper.add(content);
 		
 		return wrapper;
+	}
+	
+	public void setFillColour(Color c) {
+		wrapper.setBackground(c);
+		content.setBackground(c);
 	}
 
 }

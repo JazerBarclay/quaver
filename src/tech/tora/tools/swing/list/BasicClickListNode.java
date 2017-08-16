@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 public abstract class BasicClickListNode extends BasicListNode {
 
 	public BasicClickListNode(int height, String uuid, String title, Color fillColour, Color hoverColour,
-			Font titleFont, Color titleColour) {
-		super(height, uuid, title, fillColour, hoverColour, titleFont, titleColour);
+			Font titleFont, Color titleColour, int clickModifier) {
+		super(height, uuid, title, fillColour, hoverColour, titleFont, titleColour, clickModifier);
 	}
 	
 	public abstract void onClick();
@@ -40,15 +40,15 @@ public abstract class BasicClickListNode extends BasicListNode {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				wrapper.setBackground(fill);
-				content.setBackground(fill);
+				if (!active) setFillColour(fill.getAsColor());
+				else setFillColour(fill.addShade(clickMod, clickMod, clickMod));
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (true) {
-					wrapper.setBackground(hover);
-					content.setBackground(hover);
+					if (!active) setFillColour(hover.getAsColor());
+					else setFillColour(hover.addShade(clickMod, clickMod, clickMod));
 				}
 			}
 			
