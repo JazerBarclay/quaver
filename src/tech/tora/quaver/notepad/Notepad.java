@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
 import org.json.simple.parser.ParseException;
 
@@ -19,21 +20,28 @@ import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.colour.ColourValue;
 import tech.tora.tools.swing.frame.AdvancedFrame;
 import tech.tora.tools.swing.layout.Layout;
+import tech.tora.tools.swing.list.ClickListener;
 import tech.tora.tools.system.log.Logging;
 
+/**
+ * Contains all data management and checks. Configuration taken set to 
+ * @author Nythril
+ *
+ */
 public class Notepad {
 
-	public static AdvancedFrame window;
-	public static Configuration config;
-	public static Layout layout;
+	private static AdvancedFrame window;
+	private static Configuration config;
+	private static Layout layout;
 
-	public LinkedHashMap<String, Library> libraryArray = new LinkedHashMap<>();
+	private LinkedHashMap<String, Library> libraryArray = new LinkedHashMap<>();
 	
-	public Theme theme;
+	private Theme theme;
 	
-	public boolean newBuild = false;
+	private boolean newBuild = false;
 	
 	public Notepad(Configuration c) {
+		generateTestDataset();
 		setupConfiguration(c);
 		setupFrame();
 		window.setVisible(true);
@@ -45,9 +53,9 @@ public class Notepad {
 	
 	private void setupConfiguration(Configuration c) {
 		if (c == null) {
-			c = new Configuration();
+			c = new Configuration("Default", "Default", true);
 			newBuild = true;
-			config = new Configuration("Default", "Default", false);
+			config = c;
 			System.out.println("New Build");
 		} else {
 			config = c;
@@ -124,23 +132,76 @@ public class Notepad {
 		layout = new StandardLayout(window, theme) {
 			
 			@Override
-			public void constructTopBar(JMenuBar menu) {
-				constructMenuBar(menu);
+			public JMenuBar getMenu() {
+				return constructMenuBar();
 			}
 			
 		};
-		layout.setTitle("Test Quaver");
+		
+		for (String key : libraryArray.keySet()) {
+			((StandardLayout) layout).addLibraryNodeToList(libraryArray.get(key));
+			for (Notebook n : libraryArray.get(key).getNotebookAsArray()) {
+				((StandardLayout) layout).addNotebookNodeToList(n, new ClickListener() {
+					
+					@Override
+					public void onClick() {
+						System.out.println("Test External");
+					}
+				});
+			}
+		}
 		
 	} // setupLayout();
 
+	@SuppressWarnings("unused")
+	private void generateTestDataset() {
+		// Get from 
+		Library privLib = new Library("/users/jazer", "Private");
+		Library pubLib = new Library("/users/jazer", "Work");
+		
+		Notebook nb1 = Notebook.newNotebook("Exercise", privLib);
+		Notebook nb2 = Notebook.newNotebook("Music Playlist", privLib);
+		Notebook nb3 = Notebook.newNotebook("Java", pubLib);
+		Notebook nb4 = Notebook.newNotebook("Webdesign", pubLib);
+		Notebook nb5 = Notebook.newNotebook("TODO", pubLib);
+		
+		Note n1 = Note.newNote("Running Routes", nb1);
+		Note n2 = Note.newNote("Weights", nb1);
+		Note n3 = Note.newNote("Favourites", nb2);
+		Note n4 = Note.newNote("JFrame", nb3);
+		Note n5 = Note.newNote("JPanel", nb3);
+		Note n6 = Note.newNote("Exit Codes", nb3);
+		Note n7 = Note.newNote("HTML Core", nb4);
+		Note n8 = Note.newNote("Quaver", nb5);
+
+		nb1.addNote(n1);
+		nb1.addNote(n2);
+		nb2.addNote(n3);
+		nb3.addNote(n4);
+		nb3.addNote(n5);
+		nb3.addNote(n6);
+		nb4.addNote(n7);
+		nb5.addNote(n8);
+		
+		privLib.addNotebook(nb1);
+		privLib.addNotebook(nb2);
+		pubLib.addNotebook(nb3);
+		pubLib.addNotebook(nb4);
+		pubLib.addNotebook(nb5);
+
+		libraryArray.put(privLib.getName(), privLib);
+		libraryArray.put(pubLib.getName(), pubLib);
+	}
 	
 	/* ------------------------------------------------------ */
 	// Frame Management
 	/* ------------------------------------------------------ */
 
-	private void constructMenuBar(JMenuBar menu) {
+	private JMenuBar constructMenuBar() {
+		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
 		menu.add(file);
+		return menu;
 	}
 	
 	public void switchLayout(Layout l) {
