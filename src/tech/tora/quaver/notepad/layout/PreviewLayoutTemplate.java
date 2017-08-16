@@ -4,28 +4,30 @@ import javax.swing.JPanel;
 
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.frame.AdvancedFrame;
-import tech.tora.tools.swing.layout.Layout;
 
-public abstract class PreviewLayoutTemplate extends Layout {
+public abstract class PreviewLayoutTemplate extends ListLayout {
 
 	public PreviewLayoutTemplate(AdvancedFrame parent, Theme theme) {
-		super(parent, theme);
+		super(theme);
 		setDefaultWidth(800);
 		setDefaultHeight(600);
 	}
 
 	@Override
-	public void buildFrame(Theme theme) {
-		// TODO Auto-generated method stub
-		
+	public JPanel buildFrame(Theme theme) {
+		return null;
 	}
 
 	@Override
-	public void constructFrame(JPanel wrapperPanel) {
+	public JPanel constructFrame(JPanel wrapper) {
 		// TODO Auto-generated method stub
-		
+		return wrapper;
 	}
 
+	/* ------------------------------------------------------ */
+	// Frame Action Management
+	/* ------------------------------------------------------ */
+	
 	@Override
 	public void windowOpenAction() {
 		// TODO Auto-generated method stub

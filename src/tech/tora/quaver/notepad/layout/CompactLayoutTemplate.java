@@ -5,22 +5,22 @@ import javax.swing.JPanel;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.frame.AdvancedFrame;
-import tech.tora.tools.swing.layout.Layout;
 
-public abstract class CompactLayoutTemplate extends Layout {
+public abstract class CompactLayoutTemplate extends ListLayout {
 	
 	public CompactLayoutTemplate(AdvancedFrame parent, Theme theme) {
-		super(parent, theme);
+		super(theme);
 	}
 
 	@Override
-	public void buildFrame(Theme theme) {
-		
+	public JPanel buildFrame(Theme theme) {
+		JPanel wrapper = new JPanel();
+		return wrapper;
 	}
 
 	@Override
-	public void constructFrame(JPanel wrapperPanel) {
-		
+	public JPanel constructFrame(JPanel wrapper) {
+		return wrapper;
 	}
 	
 	

@@ -5,20 +5,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JLabel;
-
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.widget.elements.AddButton;
 import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.frame.AdvancedFrame;
+import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicList;
 import tech.tora.tools.swing.list.BasicListNode;
+import tech.tora.tools.swing.list.ClickListener;
 
+/**
+ * Standard layout for the notepad
+ * @author Nythril
+ */
 public abstract class StandardLayout extends StandardLayoutTemplate {
 	
 	public JLabel notebookTitle;
@@ -40,7 +45,7 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 	}
 
 	@Override
-	public void buildElements() {
+	public void buildElements(Theme theme) {
 		notebookTitle = new JLabel();
 		notebookTitle.setText("Quaver M" + Launcher.buildID);
 		notebookTitle.setFont(new Font("Helvetica", Font.BOLD, 14));
@@ -51,12 +56,10 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		notebookTitle.setMaximumSize(new Dimension(200, 30));
 		
 		notebooksList = new BasicList(200);
-		BasicListNode n = new BasicListNode(25, "0", "Notebooks", 
-				new Color(230, 230, 230), new Color(200, 200, 200), 
-				new Font("Helvetica", Font.BOLD, 14), new Color(0, 0, 0)) {};
-		notebooksList.addNode(n);
+		notebooksList.setBackground(theme.notebookFillColour.getAsColor());
 		
 		notesList = new BasicList(300);
+		notesList.setBackground(theme.noteFillColour.getAsColor());
 		
 		btnAddNotebook = new AddButton() {
 			
@@ -116,8 +119,8 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		notebooksTop.add(notebookTitle);
 
 		// Add Lists
-		notebooksListContainer.add(notebooksList, BorderLayout.CENTER);
-		notesListContainer.add(notesList, BorderLayout.CENTER);
+		notebooksListContainer.add(notebooksList);
+		notesListContainer.add(notesList);
 		
 		// Add Buttons
 		notebooksBot.getLeftPane().add(btnAddNotebook, BorderLayout.WEST);
@@ -127,5 +130,81 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		splitter.add(previewArea);
 		
 	}
+	
+	@Override
+	public void addLibraryNodeToList(Library lib) {
+		BasicListNode node = new BasicListNode(28, lib.getPath()+Launcher.pathSeparator+lib.getName(), lib.getName(), 
+		theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
+		new Font("Helvetica", Font.BOLD, 14), theme.fontColour.getAsColor(), -20) {};
+		notebooksList.addNode(node);
+	}
+	
+	@Override
+	public void addNotebookNodeToList(Notebook notebook, ClickListener clickEvent) {
+		notebooksList.addNode(new BasicClickListNode(25, 
+			notebook.getUUID(), "  " + notebook.getName(), 
+			theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
+			new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
+				@Override
+				public void onClick() {
+					notebooksList.onClick(this);
+					clickEvent.onClick();
+				}
+		});
+	}
+	
+	@Override
+	public void addNoteNodeToList(Note noteb) {
+		
+	}
+	
+//	@Override
+//	public void populateMenus(LinkedHashMap<String, Library> libraries) {
+//		
+//	}
+//	
+//	public LinkedHashMap<String, Library> getData() {
+//		Library l;
+//		for (String key :  libraryArray.keySet()) {
+//			l = libraryArray.get(key);
+//			if (config.isDevmode()) System.out.println("(" + l.getNotebookCount() + ") " + l.getName() + ": " + l.getPath());
+//			addLibrary(l);
+//		}
+//		return libraryArray;
+//	}
+//	
+//	private void addLibrary(Library lib) {
+//		BasicListNode node = new BasicListNode(28, lib.getPath()+Launcher.pathSeparator+lib.getName(), lib.getName(), 
+//			theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
+//			new Font("Helvetica", Font.BOLD, 14), theme.fontColour.getAsColor()) {};
+//		notebooksList.addNode(node);
+//		for (Notebook nb : lib.getNotebookAsArray()) {
+//			if (config.isDevmode()) System.out.println("|-- (" + nb.getNoteCount() + ") " + nb.getName() + ": " + nb.getUUID() + " : " + nb.getPath());
+//			addNotebook(nb);
+//		}
+//	}
+//	
+//	private void addNotebook(Notebook notebook) {
+//		notebooksList.addNode(new BasicClickListNode(25, 
+//				notebook.getUUID(), "  " + notebook.getName(), 
+//				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
+//				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor()) {
+//			
+//			@Override
+//			public void onClick() {
+//				System.out.println("Test");
+//			}
+//			
+//		});
+//		for (Note n : notebook.getNoteAsArray()) {
+//			if (config.isDevmode()) System.out.println("    |--(" + n.getCells().length + ") " + n.getTitle() + ": " + n.getUUID() + " : " + n.getPath());
+//			addNote(n);
+//		}
+//	}
+//	
+//	private void addNote(Note note) {
+//		
+//	}
+	
 
 }
