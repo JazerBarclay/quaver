@@ -21,10 +21,11 @@ public abstract class PreviewAreaThing extends JPanel {
 		preview = new JEditorPane();
 		preview.setMargin(new Insets(0, 0, 0, 0));
 		preview.setAutoscrolls(false);
+		preview.setEditable(false);
 		preview.setContentType("text/html");
 		
 		JScrollPane previewScroll = new JScrollPane(preview, 
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		
@@ -39,6 +40,7 @@ public abstract class PreviewAreaThing extends JPanel {
 		preview.setText(s);
 	}
 
+	@Deprecated
 	public void appendText(String s) {
 		preview.setText(preview.getText() + s);
 	}

@@ -40,7 +40,7 @@ public abstract class EditAreaThing extends JPanel implements KeyListener {
 //		caretPosition.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		
 		scrollPane = new JScrollPane(textArea, 
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBorder(new InsetsBorder(new Insets(0, 0, 0, 0)));
 		
