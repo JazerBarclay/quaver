@@ -14,7 +14,6 @@ import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
-import tech.tora.tools.swing.frame.AdvancedFrame;
 import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicList;
 import tech.tora.tools.swing.list.BasicListNode;
@@ -40,8 +39,8 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 	public static Notebook activeNotebook = null;
 	public static Note activeNote = null;
 	
-	public StandardLayout(AdvancedFrame parent, Theme theme) {
-		super(parent, theme);
+	public StandardLayout(Theme theme) {
+		super(theme);
 	}
 
 	@Override
@@ -108,9 +107,17 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 			
 		};
 		
+		editArea.setText("# Welcome to Quaver\nThis is a test preview (Mark " + Launcher.buildRelease + "." + Launcher.buildMajor + " r" + Launcher.buildMinor +  ")");
+		
+		
+		
 		previewArea = new PreviewAreaThing() {
 			private static final long serialVersionUID = 1L;
 		};
+		
+		previewArea.setText("<html><head><title>" + "Quaver" + "</title>"
+				+ "</head><body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
+				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview (Mark " + Launcher.buildRelease + "." + Launcher.buildMajor + " r" + Launcher.buildMinor +  ")</p></body></html>");
 		
 	}
 

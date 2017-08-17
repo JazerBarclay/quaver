@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.tools.swing.frame.AdvancedFrame;
 import tech.tora.tools.swing.panel.PaneHorizontal;
 import tech.tora.tools.swing.panel.PaneVertical;
 
@@ -40,7 +39,7 @@ public abstract class StandardLayoutTemplate extends ListLayout {
 	private static int notebooksTopHeight = 30, notebooksBotHeight = 30;
 	private static int notesTopHeight = 30, notesBotHeight = 30;
 	
-	public StandardLayoutTemplate(AdvancedFrame parent, Theme theme) {
+	public StandardLayoutTemplate(Theme theme) {
 		super(theme);
 		setDefaultWidth(1600);
 		setDefaultHeight(800);
