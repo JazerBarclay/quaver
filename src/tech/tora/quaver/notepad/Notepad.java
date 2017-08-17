@@ -6,8 +6,6 @@ import java.util.LinkedHashMap;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
@@ -41,7 +39,7 @@ public class Notepad {
 	private boolean newBuild = false;
 	
 	public Notepad(Configuration c) {
-		generateTestDataset();
+//		generateTestDataset();
 		setupConfiguration(c);
 		setupFrame();
 		window.setVisible(true);
@@ -129,7 +127,7 @@ public class Notepad {
 	
 	
 	private void setupLayout() {
-		layout = new StandardLayout(window, theme) {
+		layout = new StandardLayout(theme) {
 			
 			@Override
 			public JMenuBar getMenu() {
