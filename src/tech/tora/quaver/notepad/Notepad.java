@@ -41,23 +41,26 @@ public class Notepad {
 	private boolean newBuild = false;
 	
 	public Notepad(Configuration c) {
-		generateTestDataset();
 		setupConfiguration(c);
 		setupFrame();
 		window.setVisible(true);
 		
 		if (newBuild) {
 			int createNewConfig = JOptionPane.showConfirmDialog(window, "This is a new build. Would you like to create a configuration file now?", "First Time Setup", JOptionPane.OK_CANCEL_OPTION);
-			if (createNewConfig == 0) {
-				if (createConfigFile()) {
-					newBuild = false;
-				}
-			} else {
+			if (createNewConfig == 0)
+				if (createConfigFile()) newBuild = false;
+				else System.out.println("Failed to generate");
+			else {
 				JOptionPane.showMessageDialog(window, 
 						"This is now running in trial mode. All changes made to any documents will not be saved. Please relaunch to run first time setup after trial.", 
 						"Trial Mode Activated", JOptionPane.INFORMATION_MESSAGE);
+				generateTestDataset();
+				populateLists();
+				
 			}
+			
 		}
+		
 	}
 	
 	/* ------------------------------------------------------ */
@@ -155,7 +158,6 @@ public class Notepad {
 			((StandardLayout) layout).addLibraryNodeToList(libraryArray.get(key));
 			for (Notebook n : libraryArray.get(key).getNotebookAsArray()) {
 				((StandardLayout) layout).addNotebookNodeToList(n, new ClickListener() {
-					
 					@Override
 					public void onClick() {
 						System.out.println("Test External");
@@ -166,7 +168,6 @@ public class Notepad {
 		
 	} // setupLayout();
 
-	@SuppressWarnings("unused")
 	private void generateTestDataset() {
 		// Get from 
 		Library sketch = new Library("/users/jazer", "Default");
@@ -213,6 +214,28 @@ public class Notepad {
 		libraryArray.put(sketch.getName(), sketch);
 		libraryArray.put(privLib.getName(), privLib);
 		libraryArray.put(pubLib.getName(), pubLib);
+		
+		
+		
+	}
+	
+	private void populateLists() {
+		
+		for (String key : libraryArray.keySet()) {
+			((StandardLayout) layout).addLibraryNodeToList(libraryArray.get(key));
+			for (Notebook n : libraryArray.get(key).getNotebookAsArray()) {
+				((StandardLayout) layout).addNotebookNodeToList(n, new ClickListener() {
+					
+					@Override
+					public void onClick() {
+						System.out.println("Test External");
+					}
+				});
+			}
+		}
+		
+		window.revalidate();
+		
 	}
 	
 	/* ------------------------------------------------------ */
@@ -244,7 +267,7 @@ public class Notepad {
 	 * Touches all library locations and returns an array of failed library links
 	 */
 	public void touchLibraries() {
-		// TODO - Add a search for an ignore file under res/.libignore
+		
 		
 	}
 	
@@ -256,25 +279,19 @@ public class Notepad {
 	}
 	
 	public void getNotebooks() {
-		int notebookCount = 0;
 		
 		for (String lib : config.getLibraries()) {
-			// Check contents of the library location
-			File[] libContents = new File(lib).listFiles();
-			for (File libF : libContents) {
+			for (File libF : new File(lib).listFiles()) {
 				if (isNotebook(libF)) {
-					System.out.println("Notebook Found: " + libF.getName());
-					File[] notebookContents = libF.listFiles();
-					for (File nbF : notebookContents) {
-						if (nbF.isDirectory() && nbF.getAbsolutePath().endsWith(".qvnote") && new File(nbF.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
-							notebookCount++;
-						}
-					}
-				}
-			}
+					if (config.isDevmode()) System.out.println("Notebook Found: " + libF.getName());
+					for (File nbF : libF.listFiles()) {
+						if (isNote(nbF)) {
+							
+						} // is note check
+					} // notebook dir contents loop
+				} // is notebook check
+			} // library contents loop
 		}
-		
-		System.out.println(notebookCount);
 	
 	}
 	
@@ -282,6 +299,15 @@ public class Notepad {
 		if (f.isDirectory() && 
 				f.getAbsolutePath().endsWith(".qvnotebook") && 
 				new File(f.getAbsolutePath()+Launcher.pathSeparator + "meta.json").exists()) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isNote(File f) {
+		if (f.isDirectory() && 
+				f.getAbsolutePath().endsWith(".qvnote") && 
+				new File(f.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
 			return true;
 		}
 		return false;
