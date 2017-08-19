@@ -1,12 +1,18 @@
 package tech.tora.quaver.notepad.layout;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
+import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.frame.AdvancedFrame;
 
-public abstract class PreviewLayoutTemplate extends ListLayout {
+public abstract class PreviewLayoutTemplate extends QuaverLayout {
 
+	protected JPanel splitter;
+	
 	public PreviewLayoutTemplate(AdvancedFrame parent, Theme theme) {
 		super(theme);
 		setDefaultWidth(800);
@@ -15,12 +21,15 @@ public abstract class PreviewLayoutTemplate extends ListLayout {
 
 	@Override
 	public JPanel buildFrame(Theme theme) {
-		return null;
+		JPanel wrapper = new JPanel();
+		wrapper.setLayout(new BorderLayout());
+		wrapper.setBackground(new Color(100, 100, 100));
+		return wrapper;
 	}
 
 	@Override
 	public JPanel constructFrame(JPanel wrapper) {
-		// TODO Auto-generated method stub
+		wrapper.add(splitter, BorderLayout.CENTER);
 		return wrapper;
 	}
 
@@ -30,38 +39,32 @@ public abstract class PreviewLayoutTemplate extends ListLayout {
 	
 	@Override
 	public void windowOpenAction() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Greetings");
 	}
 
 	@Override
 	public void windowCloseAction() {
-		// TODO Auto-generated method stub
-		
+		Launcher.exit(0, "Close requested from Preview Layout Window");
 	}
 
 	@Override
 	public void windowMinimiseAction() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Minimised");
 	}
 
 	@Override
 	public void windowMaximiseAction() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Maximise");
 	}
 
 	@Override
 	public void windowGainFocusAction() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Focused");
 	}
 
 	@Override
 	public void windowLoseFocusAction() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("LoS");
 	}
 
 }
