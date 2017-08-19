@@ -7,10 +7,12 @@ import java.io.InputStream;
 import java.util.Properties;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileSystemView;
 
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.notepad.Notepad;
+import tech.tora.quaver.notepad.NotepadOld;
 import tech.tora.tools.system.log.Logging;
 
 public class Launcher {
@@ -30,6 +32,12 @@ public class Launcher {
 	 *  Gets property values from properties, checks configuration, parses values
 	 */
 	public Launcher() {
+		System.out.print("Root: ");
+		System.out.println(FileSystemView.getFileSystemView().getRoots()[0]);
+		System.out.print("Home: ");
+		System.out.println(FileSystemView.getFileSystemView().getHomeDirectory());
+		System.out.print("Local: ");
+		System.out.println(System.getProperty("user.dir"));
 		
 		// Read project properties file
 		initProperties();
