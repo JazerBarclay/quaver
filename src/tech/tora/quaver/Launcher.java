@@ -12,7 +12,6 @@ import javax.swing.filechooser.FileSystemView;
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.notepad.Notepad;
-import tech.tora.quaver.notepad.NotepadOld;
 import tech.tora.tools.system.log.Logging;
 
 public class Launcher {
