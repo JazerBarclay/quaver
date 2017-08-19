@@ -36,9 +36,6 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 	public EditAreaThing editArea;
 	public PreviewAreaThing previewArea;
 	
-	public static Notebook activeNotebook = null;
-	public static Note activeNote = null;
-	
 	public StandardLayout(Theme theme) {
 		super(theme);
 	}
@@ -138,7 +135,6 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		
 	}
 	
-	@Override
 	public void addLibraryNodeToList(Library lib) {
 		BasicListNode node = new BasicListNode(28, lib.getPath()+Launcher.pathSeparator+lib.getName(), lib.getName(), 
 		theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
@@ -147,7 +143,6 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		notebooksList.revalidate();
 	}
 	
-	@Override
 	public void addNotebookNodeToList(Notebook notebook, ClickListener clickEvent) {
 		notebooksList.addNode(new BasicClickListNode(25, 
 			notebook.getUUID(), "  " + notebook.getName(), 
@@ -162,59 +157,10 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		notebooksList.revalidate();
 	}
 	
-	@Override
 	public void addNoteNodeToList(Note noteb) {
 		// Do Here
 		notesList.revalidate();
 	}
-	
-//	@Override
-//	public void populateMenus(LinkedHashMap<String, Library> libraries) {
-//		
-//	}
-//	
-//	public LinkedHashMap<String, Library> getData() {
-//		Library l;
-//		for (String key :  libraryArray.keySet()) {
-//			l = libraryArray.get(key);
-//			if (config.isDevmode()) System.out.println("(" + l.getNotebookCount() + ") " + l.getName() + ": " + l.getPath());
-//			addLibrary(l);
-//		}
-//		return libraryArray;
-//	}
-//	
-//	private void addLibrary(Library lib) {
-//		BasicListNode node = new BasicListNode(28, lib.getPath()+Launcher.pathSeparator+lib.getName(), lib.getName(), 
-//			theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
-//			new Font("Helvetica", Font.BOLD, 14), theme.fontColour.getAsColor()) {};
-//		notebooksList.addNode(node);
-//		for (Notebook nb : lib.getNotebookAsArray()) {
-//			if (config.isDevmode()) System.out.println("|-- (" + nb.getNoteCount() + ") " + nb.getName() + ": " + nb.getUUID() + " : " + nb.getPath());
-//			addNotebook(nb);
-//		}
-//	}
-//	
-//	private void addNotebook(Notebook notebook) {
-//		notebooksList.addNode(new BasicClickListNode(25, 
-//				notebook.getUUID(), "  " + notebook.getName(), 
-//				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-//				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor()) {
-//			
-//			@Override
-//			public void onClick() {
-//				System.out.println("Test");
-//			}
-//			
-//		});
-//		for (Note n : notebook.getNoteAsArray()) {
-//			if (config.isDevmode()) System.out.println("    |--(" + n.getCells().length + ") " + n.getTitle() + ": " + n.getUUID() + " : " + n.getPath());
-//			addNote(n);
-//		}
-//	}
-//	
-//	private void addNote(Note note) {
-//		
-//	}
 	
 
 }

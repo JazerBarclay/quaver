@@ -17,7 +17,7 @@ import tech.tora.tools.swing.panel.PaneVertical;
  * Template of the standard layout. Frame created here for all elements to be added to.
  * @author Nythril
  */
-public abstract class StandardLayoutTemplate extends ListLayout {
+public abstract class StandardLayoutTemplate extends QuaverLayout {
 
 	protected JPanel leftWrapper;
 	protected JPanel rightWrapper;
@@ -129,7 +129,7 @@ public abstract class StandardLayoutTemplate extends ListLayout {
 
 	@Override
 	public void windowCloseAction() {
-		Launcher.exit(0, "Close requested from Test Layout Window");
+		Launcher.exit(0, "Close requested from Standard Layout Window");
 	}
 
 	@Override
