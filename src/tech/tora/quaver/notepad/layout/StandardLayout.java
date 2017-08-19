@@ -144,6 +144,7 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
 		new Font("Helvetica", Font.BOLD, 14), theme.fontColour.getAsColor(), -20) {};
 		notebooksList.addNode(node);
+		notebooksList.revalidate();
 	}
 	
 	@Override
@@ -158,11 +159,13 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 					clickEvent.onClick();
 				}
 		});
+		notebooksList.revalidate();
 	}
 	
 	@Override
 	public void addNoteNodeToList(Note noteb) {
-		
+		// Do Here
+		notesList.revalidate();
 	}
 	
 //	@Override
