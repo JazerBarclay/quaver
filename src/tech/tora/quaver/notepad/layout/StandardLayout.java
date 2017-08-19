@@ -11,13 +11,7 @@ import tech.tora.quaver.notepad.widget.elements.AddButton;
 import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.quaver.types.Library;
-import tech.tora.quaver.types.Note;
-import tech.tora.quaver.types.Notebook;
-import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicList;
-import tech.tora.tools.swing.list.BasicListNode;
-import tech.tora.tools.swing.list.ClickListener;
 
 /**
  * Standard layout for the notepad
@@ -135,32 +129,32 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		
 	}
 	
-	public void addLibraryNodeToList(Library lib) {
-		BasicListNode node = new BasicListNode(28, lib.getPath()+Launcher.pathSeparator+lib.getName(), lib.getName(), 
-		theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
-		new Font("Helvetica", Font.BOLD, 14), theme.fontColour.getAsColor(), -20) {};
-		notebooksList.addNode(node);
-		notebooksList.revalidate();
-	}
-	
-	public void addNotebookNodeToList(Notebook notebook, ClickListener clickEvent) {
-		notebooksList.addNode(new BasicClickListNode(25, 
-			notebook.getUUID(), "  " + notebook.getName(), 
-			theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-			new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
-				@Override
-				public void onClick() {
-					notebooksList.onClick(this);
-					clickEvent.onClick();
-				}
-		});
-		notebooksList.revalidate();
-	}
-	
-	public void addNoteNodeToList(Note noteb) {
-		// Do Here
-		notesList.revalidate();
-	}
+//	public void addLibraryNodeToList(Library lib) {
+//		BasicListNode node = new BasicListNode(28, lib.getPath()+Launcher.pathSeparator+lib.getName(), lib.getName(), 
+//		theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
+//		new Font("Helvetica", Font.BOLD, 14), theme.fontColour.getAsColor(), -20) {};
+//		notebooksList.addNode(node);
+//		notebooksList.revalidate();
+//	}
+//	
+//	public void addNotebookNodeToList(Notebook notebook, ClickListener clickEvent) {
+//		notebooksList.addNode(new BasicClickListNode(25, 
+//			notebook.getUUID(), "  " + notebook.getName(), 
+//			theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
+//			new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
+//				@Override
+//				public void onClick() {
+//					notebooksList.onClick(this);
+//					clickEvent.onClick();
+//				}
+//		});
+//		notebooksList.revalidate();
+//	}
+//	
+//	public void addNoteNodeToList(Note noteb) {
+//		// Do Here
+//		notesList.revalidate();
+//	}
 	
 
 }

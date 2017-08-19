@@ -2,18 +2,18 @@ package tech.tora.quaver.notepad.layout;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.tools.swing.frame.AdvancedFrame;
 
 public abstract class PreviewLayoutTemplate extends QuaverLayout {
 
 	protected JPanel splitter;
 	
-	public PreviewLayoutTemplate(AdvancedFrame parent, Theme theme) {
+	public PreviewLayoutTemplate(Theme theme) {
 		super(theme);
 		setDefaultWidth(800);
 		setDefaultHeight(600);
@@ -29,6 +29,7 @@ public abstract class PreviewLayoutTemplate extends QuaverLayout {
 
 	@Override
 	public JPanel constructFrame(JPanel wrapper) {
+		splitter = new JPanel(new GridLayout());
 		wrapper.add(splitter, BorderLayout.CENTER);
 		return wrapper;
 	}

@@ -3,14 +3,13 @@ package tech.tora.quaver.notepad.layout;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.tools.swing.frame.AdvancedFrame;
 
 public abstract class PreviewLayout extends PreviewLayoutTemplate {
 
 	public PreviewAreaThing previewArea;
 	
-	public PreviewLayout(AdvancedFrame parent, Theme theme) {
-		super(parent, theme);
+	public PreviewLayout(Theme theme) {
+		super(theme);
 	}
 
 	@Override

@@ -3,18 +3,18 @@ package tech.tora.quaver.notepad.screen;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
+import tech.tora.quaver.Configuration;
 import tech.tora.quaver.notepad.layout.PreviewLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
-import tech.tora.tools.swing.frame.AdvancedFrame;
 
 public class PreviewScreen extends PreviewLayout {
 
-	public PreviewScreen(AdvancedFrame parent, Theme theme) {
-		super(parent, theme);
+	public PreviewScreen(Configuration config, Theme theme) {
+		super(theme);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class PreviewScreen extends PreviewLayout {
 
 	@Override
 	public String getEditText() {
-		return null;
+		return "";
 	}
 
 	@Override
