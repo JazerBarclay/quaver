@@ -15,9 +15,6 @@ import tech.tora.quaver.notepad.layout.QuaverLayout;
 import tech.tora.quaver.notepad.screen.PreviewScreen;
 import tech.tora.quaver.notepad.screen.StandardScreen;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.quaver.types.Library;
-import tech.tora.quaver.types.Note;
-import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.colour.ColourValue;
 import tech.tora.tools.swing.frame.AdvancedFrame;
 
@@ -33,9 +30,6 @@ public class Notepad {
 	
 	// Active Values
 	private static QuaverLayout activeLayout;
-	private static Library activeLibrary = null;
-	private static Notebook activeNotebook = null;
-	private static Note activeNote = null;
 	
 	public Notepad(Configuration configuration) {
 		if (configuration == null) {
@@ -130,7 +124,15 @@ public class Notepad {
 
 		activeLayout = layout;
 		
+		window.setVisible(false);
 		
+		window.setSize(activeLayout.getDefaultWidth(), activeLayout.getDefaultHeight());
+		window.setTitle(activeLayout.getTitle());
+		window.updateContent(activeLayout.getWrapper(), false);
+		window.updateMenu(activeLayout.getMenu());
+		window.setLocationRelativeTo(null);
+		
+		window.setVisible(true);
 		
 	}
 	
@@ -157,6 +159,13 @@ public class Notepad {
 			}
 		});
 		JMenuItem compactView = new JMenuItem("Switch to Compact Layout");
+		compactView.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
 		JMenuItem previewView = new JMenuItem("Switch to Preview Layout");
 		previewView.addActionListener(new ActionListener() {
 			@Override
