@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+
 import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
@@ -39,10 +41,23 @@ public class Notepad {
 	private boolean newBuild = false;
 	
 	public Notepad(Configuration c) {
-//		generateTestDataset();
+		generateTestDataset();
 		setupConfiguration(c);
 		setupFrame();
 		window.setVisible(true);
+		
+		if (newBuild) {
+			int createNewConfig = JOptionPane.showConfirmDialog(window, "This is a new build. Would you like to create a configuration file now?", "First Time Setup", JOptionPane.OK_CANCEL_OPTION);
+			if (createNewConfig == 0) {
+				if (createConfigFile()) {
+					newBuild = false;
+				}
+			} else {
+				JOptionPane.showMessageDialog(window, 
+						"This is now running in trial mode. All changes made to any documents will not be saved. Please relaunch to run first time setup after trial.", 
+						"Trial Mode Activated", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
 	}
 	
 	/* ------------------------------------------------------ */
@@ -154,6 +169,7 @@ public class Notepad {
 	@SuppressWarnings("unused")
 	private void generateTestDataset() {
 		// Get from 
+		Library sketch = new Library("/users/jazer", "Default");
 		Library privLib = new Library("/users/jazer", "Private");
 		Library pubLib = new Library("/users/jazer", "Work");
 		
@@ -162,6 +178,8 @@ public class Notepad {
 		Notebook nb3 = Notebook.newNotebook("Java", pubLib);
 		Notebook nb4 = Notebook.newNotebook("Webdesign", pubLib);
 		Notebook nb5 = Notebook.newNotebook("TODO", pubLib);
+		Notebook nb6 = Notebook.newNotebook("Quaver Wiki", sketch);
+		Notebook nb7 = Notebook.newNotebook("Sketchbook", sketch);
 		
 		Note n1 = Note.newNote("Running Routes", nb1);
 		Note n2 = Note.newNote("Weights", nb1);
@@ -171,6 +189,8 @@ public class Notepad {
 		Note n6 = Note.newNote("Exit Codes", nb3);
 		Note n7 = Note.newNote("HTML Core", nb4);
 		Note n8 = Note.newNote("Quaver", nb5);
+		Note n9 = Note.newNote("Getting Started", nb6);
+		Note n10 = Note.newNote("Note 1", nb7);
 
 		nb1.addNote(n1);
 		nb1.addNote(n2);
@@ -180,13 +200,17 @@ public class Notepad {
 		nb3.addNote(n6);
 		nb4.addNote(n7);
 		nb5.addNote(n8);
+		nb6.addNote(n9);
+		nb7.addNote(n10);
 		
 		privLib.addNotebook(nb1);
 		privLib.addNotebook(nb2);
 		pubLib.addNotebook(nb3);
 		pubLib.addNotebook(nb4);
 		pubLib.addNotebook(nb5);
+		sketch.addNotebook(nb6);
 
+		libraryArray.put(sketch.getName(), sketch);
 		libraryArray.put(privLib.getName(), privLib);
 		libraryArray.put(pubLib.getName(), pubLib);
 	}
@@ -198,7 +222,9 @@ public class Notepad {
 	private JMenuBar constructMenuBar() {
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
+		JMenu view = new JMenu("View");
 		menu.add(file);
+		menu.add(view);
 		return menu;
 	}
 	
@@ -261,6 +287,17 @@ public class Notepad {
 		return false;
 	}
 	
+	private boolean createConfigFile() {
+		try {
+			Configuration.writeConfigJSON(config);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Failed to create the configuration\n" + e, "Failed configuration", JOptionPane.ERROR_MESSAGE);
+			Launcher.exit(1, "Failed to create configuration file");
+			return false;
+		}
+	}
 
 	/* ------------------------------------------------------ */
 	// Defaults
