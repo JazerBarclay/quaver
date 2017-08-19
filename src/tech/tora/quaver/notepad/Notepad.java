@@ -1,5 +1,7 @@
 package tech.tora.quaver.notepad;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JMenu;
@@ -10,6 +12,7 @@ import javax.swing.JOptionPane;
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.layout.QuaverLayout;
+import tech.tora.quaver.notepad.screen.PreviewScreen;
 import tech.tora.quaver.notepad.screen.StandardScreen;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Library;
@@ -126,6 +129,9 @@ public class Notepad {
 		layout.setActiveNote(activeLayout.getActiveNote());
 
 		activeLayout = layout;
+		
+		
+		
 	}
 	
 	private JMenuBar generateCustomMenuBar() {
@@ -144,8 +150,20 @@ public class Notepad {
 		file.add(newNote);
 
 		JMenuItem defaultView = new JMenuItem("Switch to Default Layout");
+		defaultView.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeLayout(new StandardScreen(config, theme));
+			}
+		});
 		JMenuItem compactView = new JMenuItem("Switch to Compact Layout");
 		JMenuItem previewView = new JMenuItem("Switch to Preview Layout");
+		previewView.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeLayout(new PreviewScreen(config, theme));
+			}
+		});
 
 		view.add(defaultView);
 		view.add(compactView);
