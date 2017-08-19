@@ -140,6 +140,11 @@ public class Launcher {
 		new Launcher();
 	}
 
+	/**
+	 * Terminate runtime
+	 * @param status - ( 0 - Success, 1 - Failed )
+	 * @param reason - Cause of termination
+	 */
 	public static void exit(int status, String reason) {
 		System.err.println("Exiting: " + reason);
 		System.exit(status);
