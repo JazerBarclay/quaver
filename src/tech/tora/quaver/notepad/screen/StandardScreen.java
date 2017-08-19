@@ -1,0 +1,158 @@
+package tech.tora.quaver.notepad.screen;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+
+import tech.tora.quaver.Configuration;
+import tech.tora.quaver.notepad.layout.StandardLayout;
+import tech.tora.quaver.theme.Theme;
+import tech.tora.quaver.types.Cell;
+import tech.tora.quaver.types.Library;
+import tech.tora.quaver.types.Note;
+import tech.tora.quaver.types.Notebook;
+
+public class StandardScreen extends StandardLayout {
+
+	public StandardScreen(Configuration config, Theme theme) {
+		super(theme);
+	}
+
+	@Override
+	public void addLibrary(Library library) {
+		
+	}
+
+	@Override
+	public void addNotebook(Notebook notebook) {
+		
+	}
+
+	@Override
+	public void addNote(Note note) {
+		
+	}
+
+	@Override
+	public void editLibrary(Library library) {
+		
+	}
+
+	@Override
+	public void editNotebook(Notebook notebook) {
+		
+	}
+
+	@Override
+	public void editNote(Note note) {
+
+	}
+
+	@Override
+	public void removeLibrary(Library library) {
+
+	}
+
+	@Override
+	public void removeNotebook(Notebook notebook) {
+
+	}
+
+	@Override
+	public void removeNote(Note note) {
+
+	}
+
+	@Override
+	public boolean saveLibrary(Library library) {
+		return false;
+	}
+
+	@Override
+	public boolean saveNotebook(Notebook notebook) {
+		return false;
+	}
+
+	@Override
+	public boolean saveNote(Note note) {
+		return false;
+	}
+
+	@Override
+	public boolean deleteLibrary(Library library) {
+		return false;
+	}
+
+	@Override
+	public boolean deleteNotebook(Notebook notebook) {
+		return false;
+	}
+
+	@Override
+	public boolean deleteNote(Note note) {
+		return false;
+	}
+
+	@Override
+	public Library getActiveLibrary() {
+		return null;
+	}
+
+	@Override
+	public Notebook getActiveNotebook() {
+		return null;
+	}
+
+	@Override
+	public Note getActiveNote() {
+		return null;
+	}
+
+	@Override
+	public void setEditText(String text) {
+		editArea.setText(text);
+	}
+
+	@Override
+	public String getEditText() {
+		return editArea.getText();
+	}
+
+	@Override
+	public void clearEditText() {
+		
+	}
+
+	@Override
+	public void updatePreview(Cell[] cells) {
+		
+	}
+
+	@Override
+	public void updatePreview(String notes) {
+		
+	}
+
+	@Override
+	public JMenuBar getMenu() {
+		JMenuBar menu = new JMenuBar();
+		JMenu menuItem = new JMenu("File");
+		menu.add(menuItem);
+		return menu;
+	}
+
+	@Override
+	public void setActiveLibrary(Library library) {
+		
+	}
+
+	@Override
+	public void setActiveNotebook(Notebook notebook) {
+		
+	}
+
+	@Override
+	public void setActiveNote(Note note) {
+
+	}
+	
+}
