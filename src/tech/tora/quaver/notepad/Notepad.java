@@ -1,52 +1,56 @@
 package tech.tora.quaver.notepad;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
-import org.json.simple.parser.ParseException;
 
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
-import tech.tora.quaver.notepad.layout.StandardLayout;
+import tech.tora.quaver.notepad.layout.QuaverLayout;
+import tech.tora.quaver.notepad.screen.StandardScreen;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.colour.ColourValue;
 import tech.tora.tools.swing.frame.AdvancedFrame;
-import tech.tora.tools.swing.layout.Layout;
-import tech.tora.tools.swing.list.ClickListener;
-import tech.tora.tools.system.log.Logging;
 
-/**
- * Contains all data management and checks. Configuration taken set to 
- * @author Nythril
- *
- */
 public class Notepad {
 
+	// Flags
+	private static boolean newBuild = true;
+	
+	// Running Values
 	private static AdvancedFrame window;
 	private static Configuration config;
-	private static Layout layout;
-
-	private LinkedHashMap<String, Library> libraryArray = new LinkedHashMap<>();
+	private static Theme theme;
 	
-	private Theme theme;
+	// Active Values
+	private static QuaverLayout activeLayout;
+	private static Library activeLibrary = null;
+	private static Notebook activeNotebook = null;
+	private static Note activeNote = null;
 	
-	private boolean newBuild = false;
-	
-	public Notepad(Configuration c) {
-		setupConfiguration(c);
-		setupFrame();
+	public Notepad(Configuration configuration) {
+		if (configuration == null) {
+			configuration = new Configuration("Default", "Default", true);
+			newBuild = true;
+		} else {
+			newBuild = false;
+		}
+		
+		theme = getDefaultTheme();
+		config = configuration;
+		
+		activeLayout = setupInitialLayout();
+		window = setupWindow();
 		window.setVisible(true);
 		
 		if (newBuild) {
-			int createNewConfig = JOptionPane.showConfirmDialog(window, "This is a new build. Would you like to create a configuration file now?", "First Time Setup", JOptionPane.OK_CANCEL_OPTION);
+			int createNewConfig = JOptionPane.showConfirmDialog(window, "This is a new build. Would you like to create a configuration file now?"+"\n If not, this runtime will launch in trial mode.", "First Time Setup", JOptionPane.OK_CANCEL_OPTION);
 			if (createNewConfig == 0)
 				if (createConfigFile()) newBuild = false;
 				else System.out.println("Failed to generate");
@@ -54,263 +58,104 @@ public class Notepad {
 				JOptionPane.showMessageDialog(window, 
 						"This is now running in trial mode. All changes made to any documents will not be saved."+"\nPlease relaunch to run first time setup after trial.", 
 						"Trial Mode Activated", JOptionPane.INFORMATION_MESSAGE);
-				generateTestDataset();
-				populateLists();
-				
 			}
-			
 		}
+		
 		
 	}
 	
-	/* ------------------------------------------------------ */
-	// Initialisation
-	/* ------------------------------------------------------ */
-	
-	private void setupConfiguration(Configuration c) {
-		if (c == null) {
-			c = new Configuration("Default", "Default", true);
-			newBuild = true;
-			config = c;
-			System.out.println("New Build");
-		} else {
-			config = c;
-			System.out.println("Found Config");
-		}
-		
-		if (config.getTheme() == null) theme = getDefaultTheme();
-		else {
-			if (config.getTheme().equals("Default")) theme = getDefaultTheme();
-			else {
-				try {
-					Theme.readThemeJSON(config.getTheme());
-				} catch (IOException e) {
-					Logging.errorMessage(1, null, "Read Theme Failed", "Cannot load theme from file", e);
-				} catch (ParseException e) {
-					Logging.errorMessage(1, null, "Read Theme Failed", "Cannot load theme from file", e);
-				}
+	private QuaverLayout setupInitialLayout() {
+		StandardScreen layout = new StandardScreen(config, theme) {
+			@Override
+			public JMenuBar getMenu() {	
+				return generateCustomMenuBar();
 			}
-		}
-	} // setupConfiguration(Configuration c);
+		};
+		return layout;
+	}
 	
-	/**
-	 * Initialise the frame for first time launch
-	 */
-	private void setupFrame() {
-		window = new AdvancedFrame() {
+	private AdvancedFrame setupWindow() {
+		AdvancedFrame frame = new AdvancedFrame() {
 			
-			/** * **/
+			/****/
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void openAction() {
-				layout.windowOpenAction();
+				activeLayout.windowOpenAction();
 			}
 			
 			@Override
 			public void minimiseAction() {
-				layout.windowMinimiseAction();
+				activeLayout.windowMinimiseAction();
 			}
 			
 			@Override
 			public void maximiseAction() {
-				layout.windowMaximiseAction();
+				activeLayout.windowMaximiseAction();
 			}
 			
 			@Override
 			public void loseFocusAction() {
-				layout.windowLoseFocusAction();
+				activeLayout.windowLoseFocusAction();
 			}
 			
 			@Override
 			public void gainFocusAction() {
-				layout.windowGainFocusAction();
+				activeLayout.windowGainFocusAction();
 			}
 			
 			@Override
 			public void closeAction() {
-				layout.windowCloseAction();
+				activeLayout.windowCloseAction();
 			}
 		};
 		
-		setupLayout();
+		frame.setSize(activeLayout.getDefaultWidth(), activeLayout.getDefaultHeight());
+		frame.setTitle(activeLayout.getTitle());
+		frame.updateContent(activeLayout.getWrapper(), false);
+		frame.updateMenu(activeLayout.getMenu());
+		frame.setLocationRelativeTo(null);
 		
-		window.setSize(layout.getDefaultWidth(), layout.getDefaultHeight());
-		window.setTitle(layout.getTitle());
-		window.updateContent(layout.getWrapper(), false);
-		window.updateMenu(layout.getMenu());
-		window.setLocationRelativeTo(null);
-		
-	} // setupFrame();
-	
-	
-	private void setupLayout() {
-		layout = new StandardLayout(theme) {
-			
-			@Override
-			public JMenuBar getMenu() {
-				return constructMenuBar();
-			}
-			
-		};
-		
-		for (String key : libraryArray.keySet()) {
-			((StandardLayout) layout).addLibraryNodeToList(libraryArray.get(key));
-			for (Notebook n : libraryArray.get(key).getNotebookAsArray()) {
-				((StandardLayout) layout).addNotebookNodeToList(n, new ClickListener() {
-					@Override
-					public void onClick() {
-						System.out.println("Test External");
-					}
-				});
-			}
-		}
-		
-	} // setupLayout();
-
-	private void generateTestDataset() {
-		// Get from 
-		Library sketch = new Library("/users/jazer", "Default");
-		Library privLib = new Library("/users/jazer", "Private");
-		Library pubLib = new Library("/users/jazer", "Work");
-		
-		Notebook nb1 = Notebook.newNotebook("Exercise", privLib);
-		Notebook nb2 = Notebook.newNotebook("Music Playlist", privLib);
-		Notebook nb3 = Notebook.newNotebook("Java", pubLib);
-		Notebook nb4 = Notebook.newNotebook("Webdesign", pubLib);
-		Notebook nb5 = Notebook.newNotebook("TODO", pubLib);
-		Notebook nb6 = Notebook.newNotebook("Quaver Wiki", sketch);
-		Notebook nb7 = Notebook.newNotebook("Sketchbook", sketch);
-		
-		Note n1 = Note.newNote("Running Routes", nb1);
-		Note n2 = Note.newNote("Weights", nb1);
-		Note n3 = Note.newNote("Favourites", nb2);
-		Note n4 = Note.newNote("JFrame", nb3);
-		Note n5 = Note.newNote("JPanel", nb3);
-		Note n6 = Note.newNote("Exit Codes", nb3);
-		Note n7 = Note.newNote("HTML Core", nb4);
-		Note n8 = Note.newNote("Quaver", nb5);
-		Note n9 = Note.newNote("Getting Started", nb6);
-		Note n10 = Note.newNote("Note 1", nb7);
-
-		nb1.addNote(n1);
-		nb1.addNote(n2);
-		nb2.addNote(n3);
-		nb3.addNote(n4);
-		nb3.addNote(n5);
-		nb3.addNote(n6);
-		nb4.addNote(n7);
-		nb5.addNote(n8);
-		nb6.addNote(n9);
-		nb7.addNote(n10);
-		
-		privLib.addNotebook(nb1);
-		privLib.addNotebook(nb2);
-		pubLib.addNotebook(nb3);
-		pubLib.addNotebook(nb4);
-		pubLib.addNotebook(nb5);
-		sketch.addNotebook(nb6);
-
-		libraryArray.put(sketch.getName(), sketch);
-		libraryArray.put(privLib.getName(), privLib);
-		libraryArray.put(pubLib.getName(), pubLib);
-		
-		
-		
+		return frame;
 	}
 	
-	private void populateLists() {
-		
-		for (String key : libraryArray.keySet()) {
-			((StandardLayout) layout).addLibraryNodeToList(libraryArray.get(key));
-			for (Notebook n : libraryArray.get(key).getNotebookAsArray()) {
-				((StandardLayout) layout).addNotebookNodeToList(n, new ClickListener() {
-					
-					@Override
-					public void onClick() {
-						System.out.println("Test External");
-					}
-				});
-			}
-		}
-		
-		window.revalidate();
-		
+	private void changeLayout(QuaverLayout layout) {
+		layout.setActiveLibrary(activeLayout.getActiveLibrary());		
+		layout.setActiveNotebook(activeLayout.getActiveNotebook());		
+		layout.setActiveNote(activeLayout.getActiveNote());
+
+		activeLayout = layout;
 	}
 	
-	/* ------------------------------------------------------ */
-	// Frame Management
-	/* ------------------------------------------------------ */
-
-	private JMenuBar constructMenuBar() {
+	private JMenuBar generateCustomMenuBar() {
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
+		JMenu edit = new JMenu("Edit");
 		JMenu view = new JMenu("View");
-		menu.add(file);
-		menu.add(view);
-		return menu;
-	}
-	
-	public void switchLayout(Layout l) {
-		layout = l;
-		window.updateTitle(l.getTitle(), false);
-		window.updateFrameSize(l.getDefaultWidth(), layout.getDefaultHeight(), true);
-		window.updateMenu(l.getMenu(), false);
-		window.updateContent(l.getWrapper());
-	}
+		JMenu window = new JMenu("Window");
 
-	/* ------------------------------------------------------ */
-	// File System Management
-	/* ------------------------------------------------------ */
-	
-	/**
-	 * Touches all library locations and returns an array of failed library links
-	 */
-	public void touchLibraries() {
+		JMenuItem newLibrary = new JMenuItem("Create New Library");
+		JMenuItem newNotebook = new JMenuItem("Create New Notebook");
+		JMenuItem newNote = new JMenuItem("Create New Note");
 		
+		file.add(newLibrary);
+		file.add(newNotebook);
+		file.add(newNote);
+
+		JMenuItem defaultView = new JMenuItem("Switch to Default Layout");
+		JMenuItem compactView = new JMenuItem("Switch to Compact Layout");
+		JMenuItem previewView = new JMenuItem("Switch to Preview Layout");
+
+		view.add(defaultView);
+		view.add(compactView);
+		view.add(previewView);
 		
-	}
-	
-	/**
-	 * Get all libraries 
-	 */
-	public void getLibraries() {
-		
-	}
-	
-	public void getNotebooks() {
-		
-		for (String lib : config.getLibraries()) {
-			for (File libF : new File(lib).listFiles()) {
-				if (isNotebook(libF)) {
-					if (config.isDevmode()) System.out.println("Notebook Found: " + libF.getName());
-					for (File nbF : libF.listFiles()) {
-						if (isNote(nbF)) {
-							
-						} // is note check
-					} // notebook dir contents loop
-				} // is notebook check
-			} // library contents loop
-		}
-	
-	}
-	
-	private boolean isNotebook(File f) {
-		if (f.isDirectory() && 
-				f.getAbsolutePath().endsWith(".qvnotebook") && 
-				new File(f.getAbsolutePath()+Launcher.pathSeparator + "meta.json").exists()) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean isNote(File f) {
-		if (f.isDirectory() && 
-				f.getAbsolutePath().endsWith(".qvnote") && 
-				new File(f.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
-			return true;
-		}
-		return false;
+		menu.add(file);
+		menu.add(edit);
+		menu.add(view);
+		menu.add(window);
+		return menu;
 	}
 	
 	private boolean createConfigFile() {
@@ -324,7 +169,7 @@ public class Notepad {
 			return false;
 		}
 	}
-
+	
 	/* ------------------------------------------------------ */
 	// Defaults
 	/* ------------------------------------------------------ */
