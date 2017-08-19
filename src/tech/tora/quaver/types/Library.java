@@ -17,8 +17,8 @@ public class Library {
 	/** Library extension (global library extension) **/
 	private static final String extension = ".qvlibrary";
 
-	/** Map of all notebooks in this library **/
-	private LinkedHashMap<String, Notebook> notebookArray;
+//	/** Map of all notebooks in this library **/
+//	private LinkedHashMap<String, Notebook> notebookArray;
 	
 	
 	/* ------------------------------------------------------ */
@@ -45,7 +45,7 @@ public class Library {
 	}
 	
 	private void init() {
-		notebookArray = new LinkedHashMap<>();
+//		notebookArray = new LinkedHashMap<>();
 	}
 	
 
@@ -65,36 +65,36 @@ public class Library {
 		return false;
 	}
 	
-	/**
-	 * Adds a notebook to the library
-	 * 
-	 * @param notebook
-	 * @return true if add successful
-	 */
-	public boolean addNotebook(Notebook n) {
-		// If the key exists in the notebook map then fail it
-		for (String key : notebookArray.keySet()) {
-			if (notebookArray.get(key).getUUID().equals(n.getUUID())) return false;
-		}
-		// Add to map
-		notebookArray.put(n.getUUID(), n);
-		return true;
-	}
-
-	/**
-	 * Returns the notebooks as a Notebook array
-	 * 
-	 * @return notebookArray
-	 */
-	public Notebook[] getNotebookAsArray() {
-		Notebook[] nbArray = new Notebook[getNotebookCount()];
-		int i = 0;
-		for (String key : notebookArray.keySet()) {
-			nbArray[i] = notebookArray.get(key);
-			i++;
-		}
-		return nbArray;
-	}
+//	/**
+//	 * Adds a notebook to the library
+//	 * 
+//	 * @param notebook
+//	 * @return true if add successful
+//	 */
+//	public boolean addNotebook(Notebook n) {
+//		// If the key exists in the notebook map then fail it
+//		for (String key : notebookArray.keySet()) {
+//			if (notebookArray.get(key).getUUID().equals(n.getUUID())) return false;
+//		}
+//		// Add to map
+//		notebookArray.put(n.getUUID(), n);
+//		return true;
+//	}
+//
+//	/**
+//	 * Returns the notebooks as a Notebook array
+//	 * 
+//	 * @return notebookArray
+//	 */
+//	public Notebook[] getNotebookAsArray() {
+//		Notebook[] nbArray = new Notebook[getNotebookCount()];
+//		int i = 0;
+//		for (String key : notebookArray.keySet()) {
+//			nbArray[i] = notebookArray.get(key);
+//			i++;
+//		}
+//		return nbArray;
+//	}
 	
 	
 	/* ------------------------------------------------------ */
@@ -137,14 +137,14 @@ public class Library {
 		return this.name;
 	}
 	
-	/**
-	 * Returns the number of notebooks stored in this library set
-	 * 
-	 * @return notebookCount
-	 */
-	public int getNotebookCount() {
-		return notebookArray.size();
-	}
+//	/**
+//	 * Returns the number of notebooks stored in this library set
+//	 * 
+//	 * @return notebookCount
+//	 */
+//	public int getNotebookCount() {
+//		return notebookArray.size();
+//	}
 	
 	public static String getExtension() {
 		return extension;

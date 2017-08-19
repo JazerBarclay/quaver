@@ -29,8 +29,8 @@ public class Notebook {
 	/** Notebook extension (global notebook extension) **/
 	private static final String extension = ".qvnotebook";
 
-	/** Map of all notes in this notebook **/
-	private LinkedHashMap<String, Note> noteArray;
+//	/** Map of all notes in this notebook **/
+//	private LinkedHashMap<String, Note> noteArray;
 
 	
 	/* ------------------------------------------------------ */
@@ -59,7 +59,21 @@ public class Notebook {
 	}
 	
 	private void init() {
-		noteArray = new LinkedHashMap<>();
+//		noteArray = new LinkedHashMap<>();
+	}
+
+	
+	/* ------------------------------------------------------ */
+	// Static Methods
+	/* ------------------------------------------------------ */
+	
+	public static boolean isNotebook(File f) {
+		if (f.isDirectory() && 
+				f.getAbsolutePath().endsWith(".qvnotebook") && 
+				new File(f.getAbsolutePath()+Launcher.pathSeparator + "meta.json").exists()) {
+			return true;
+		}
+		return false;
 	}
 	
 
@@ -88,21 +102,21 @@ public class Notebook {
 		return false;
 	}
 	
-	/**
-	 * Adds a note to the notebook
-	 * 
-	 * @param note
-	 * @return true if successful
-	 */
-	public boolean addNote(Note n) {
-		// If the key exists in the notebook map then fail it
-		for (String key : noteArray.keySet()) {
-			if (noteArray.get(key).getUUID().equals(n.getUUID())) return false;
-		}
-		// Add to map
-		noteArray.put(n.getUUID(), n);
-		return true;
-	}
+//	/**
+//	 * Adds a note to the notebook
+//	 * 
+//	 * @param note
+//	 * @return true if successful
+//	 */
+//	public boolean addNote(Note n) {
+//		// If the key exists in the notebook map then fail it
+//		for (String key : noteArray.keySet()) {
+//			if (noteArray.get(key).getUUID().equals(n.getUUID())) return false;
+//		}
+//		// Add to map
+//		noteArray.put(n.getUUID(), n);
+//		return true;
+//	}
 	
 	/**
 	 * Writes a meta JSON formatted document containing the notebook details
@@ -216,26 +230,26 @@ public class Notebook {
 		return path;
 	}
 
-	/**
-	 * @return the noteArray
-	 */
-	public LinkedHashMap<String, Note> getNoteArrayAsMap() {
-		return noteArray;
-	}
-	
-	public Note[] getNoteAsArray() {
-		Note[] nArray = new Note[getNoteCount()];
-		int i = 0;
-		for (String key : noteArray.keySet()) {
-			nArray[i] = noteArray.get(key);
-			i++;
-		}
-		return nArray;
-	}
-	
-	public int getNoteCount() {
-		return noteArray.size();
-	}
+//	/**
+//	 * @return the noteArray
+//	 */
+//	public LinkedHashMap<String, Note> getNoteArrayAsMap() {
+//		return noteArray;
+//	}
+//	
+//	public Note[] getNoteAsArray() {
+//		Note[] nArray = new Note[getNoteCount()];
+//		int i = 0;
+//		for (String key : noteArray.keySet()) {
+//			nArray[i] = noteArray.get(key);
+//			i++;
+//		}
+//		return nArray;
+//	}
+//	
+//	public int getNoteCount() {
+//		return noteArray.size();
+//	}
 	
 	public static String getExtension() {
 		return extension;

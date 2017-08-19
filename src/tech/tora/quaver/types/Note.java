@@ -77,6 +77,20 @@ public class Note {
 	
 	
 	/* ------------------------------------------------------ */
+	// Static Methods
+	/* ------------------------------------------------------ */
+
+	public static boolean isNote(File f) {
+		if (f.isDirectory() && 
+				f.getAbsolutePath().endsWith(extension) && 
+				new File(f.getAbsolutePath()+Launcher.pathSeparator+extension).exists()) {
+			return true;
+		}
+		return false;
+	}
+	
+	
+	/* ------------------------------------------------------ */
 	// Core Methods
 	/* ------------------------------------------------------ */
 
