@@ -155,7 +155,12 @@ public class Notepad {
 		defaultView.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changeLayout(new StandardScreen(config, theme));
+				changeLayout(new StandardScreen(config, theme) {
+					@Override
+					public JMenuBar getMenu() {	
+						return generateCustomMenuBar();
+					}
+				});
 			}
 		});
 		JMenuItem compactView = new JMenuItem("Switch to Compact Layout");
@@ -170,7 +175,12 @@ public class Notepad {
 		previewView.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changeLayout(new PreviewScreen(config, theme));
+				changeLayout(new PreviewScreen(config, theme) {
+					@Override
+					public JMenuBar getMenu() {	
+						return generateCustomMenuBar();
+					}
+				});
 			}
 		});
 
