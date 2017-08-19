@@ -52,7 +52,7 @@ public class Notepad {
 				else System.out.println("Failed to generate");
 			else {
 				JOptionPane.showMessageDialog(window, 
-						"This is now running in trial mode. All changes made to any documents will not be saved. Please relaunch to run first time setup after trial.", 
+						"This is now running in trial mode. All changes made to any documents will not be saved."+"\nPlease relaunch to run first time setup after trial.", 
 						"Trial Mode Activated", JOptionPane.INFORMATION_MESSAGE);
 				generateTestDataset();
 				populateLists();
