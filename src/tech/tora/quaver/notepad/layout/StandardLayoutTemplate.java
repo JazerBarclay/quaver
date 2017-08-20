@@ -63,6 +63,7 @@ public abstract class StandardLayoutTemplate extends QuaverLayout {
 		notebooksWrapper = new PaneVertical(theme.notebookFillColour.getAsColor());
 		
 		notesWrapper = new PaneVertical(theme.noteFillColour.getAsColor());
+		notesWrapper.setPreferredSize(new Dimension(300, 0));
 
 		notebooksTop = new JPanel(new BorderLayout());
 //		notebooksTop.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, theme.borderColour.getAsColor()));
