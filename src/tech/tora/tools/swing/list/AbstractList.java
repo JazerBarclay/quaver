@@ -112,5 +112,12 @@ public abstract class AbstractList extends JPanel {
 		super.setBackground(c);
 		if (containerPane != null) containerPane.setBackground(c);
 	}
+	
+	public void clear() {
+		for (String key : getNodeKeys()) {
+			removeNode(key);
+		}
+		buildNodes();
+	}
 
 }
