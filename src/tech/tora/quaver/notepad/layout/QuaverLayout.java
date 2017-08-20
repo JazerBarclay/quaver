@@ -23,6 +23,8 @@ public abstract class QuaverLayout extends Layout {
 		buildElements(theme);
 		constructElements();
 	}
+
+	
 	
 	/* ------------------------------------------------------ */
 	// Layout Generation
@@ -165,6 +167,10 @@ public abstract class QuaverLayout extends Layout {
 	 */
 	public abstract Library getActiveLibrary();
 	
+	/**
+	 * Set the active library
+	 * @param library
+	 */
 	public abstract void setActiveLibrary(Library library);
 	
 	/**
@@ -173,6 +179,10 @@ public abstract class QuaverLayout extends Layout {
 	 */
 	public abstract Notebook getActiveNotebook();
 	
+	/**
+	 * Sets the active notebook
+	 * @param notebook
+	 */
 	public abstract void setActiveNotebook(Notebook notebook);
 	
 	/**
@@ -181,6 +191,10 @@ public abstract class QuaverLayout extends Layout {
 	 */
 	public abstract Note getActiveNote();
 	
+	/**
+	 * Sets the active note
+	 * @param note
+	 */
 	public abstract void setActiveNote(Note note);
 	
 	/* ------------------------------------------------------ */
