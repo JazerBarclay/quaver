@@ -32,7 +32,7 @@ public class Launcher {
 	 */
 	public Launcher() {
 		System.out.print("Root: ");
-		System.out.println(FileSystemView.getFileSystemView().getRoots()[0]);
+		System.out.println(File.listRoots()[0]);
 		System.out.print("Home: ");
 		System.out.println(FileSystemView.getFileSystemView().getHomeDirectory());
 		System.out.print("Local: ");
