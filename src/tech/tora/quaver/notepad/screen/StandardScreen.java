@@ -134,17 +134,17 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public Library getActiveLibrary() {
-		return null;
+		return activeLibrary;
 	}
 
 	@Override
 	public Notebook getActiveNotebook() {
-		return null;
+		return activeNotebook;
 	}
 
 	@Override
 	public Note getActiveNote() {
-		return null;
+		return activeNote;
 	}
 
 	@Override
