@@ -114,9 +114,7 @@ public abstract class AbstractList extends JPanel {
 	}
 	
 	public void clear() {
-		for (String key : getNodeKeys()) {
-			removeNode(key);
-		}
+		nodes = new LinkedHashMap<>();
 		buildNodes();
 	}
 
