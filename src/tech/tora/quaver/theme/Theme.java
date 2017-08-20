@@ -90,4 +90,21 @@ public class Theme {
 		return t;
 	}
 	
+	public static Theme getDefault() {
+		Theme defaultTheme = new Theme();
+		defaultTheme.themeName = "Default";
+		defaultTheme.fontColour = new ColourValue(40, 40, 40);
+		defaultTheme.wrapperFillColour = new ColourValue(0, 0, 0);
+		defaultTheme.notebookFillColour = new ColourValue(230, 230, 230);
+		defaultTheme.notebookHoverColour = new ColourValue(210, 210, 210);
+		defaultTheme.noteFillColour = new ColourValue(230, 230, 230);
+		defaultTheme.noteHoverColour = new ColourValue(210, 210, 210);
+		defaultTheme.editFontColour = new ColourValue(40, 40, 40);
+		defaultTheme.editFillColour = new ColourValue(230, 230, 230);
+		defaultTheme.previewFontColour = new ColourValue(242, 242, 242);
+		defaultTheme.previewFillColour = new ColourValue(57, 63, 75);
+		defaultTheme.borderColour = new ColourValue(140, 140, 140);
+		return defaultTheme;
+	}
+	
 }
