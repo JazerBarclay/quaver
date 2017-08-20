@@ -3,7 +3,7 @@ package tech.tora.quaver.notepad;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
+import java.util.LinkedHashMap;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -15,8 +15,11 @@ import tech.tora.quaver.notepad.layout.QuaverLayout;
 import tech.tora.quaver.notepad.screen.PreviewScreen;
 import tech.tora.quaver.notepad.screen.StandardScreen;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.quaver.types.Library;
+import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.colour.ColourValue;
 import tech.tora.tools.swing.frame.AdvancedFrame;
+import tech.tora.tools.system.CustomUUID;
 
 public class Notepad {
 
@@ -27,6 +30,8 @@ public class Notepad {
 	private static AdvancedFrame window;
 	private static Configuration config;
 	private static Theme theme;
+
+	private static LinkedHashMap<String, Library> libraries = new LinkedHashMap<String, Library>();
 	
 	// Active Values
 	private static QuaverLayout activeLayout;
@@ -55,8 +60,10 @@ public class Notepad {
 				JOptionPane.showMessageDialog(window, 
 						"This is now running in trial mode. All changes made to any documents will not be saved."+"\nPlease relaunch to run first time setup after trial.", 
 						"Trial Mode Activated", JOptionPane.INFORMATION_MESSAGE);
+				generateTestData();
 			}
 		}
+		
 		
 		
 	}
@@ -143,9 +150,28 @@ public class Notepad {
 		JMenu view = new JMenu("View");
 		JMenu window = new JMenu("Window");
 
-		JMenuItem newLibrary = new JMenuItem("Create New Library");
-		JMenuItem newNotebook = new JMenuItem("Create New Notebook");
-		JMenuItem newNote = new JMenuItem("Create New Note");
+		JMenuItem newLibrary = new JMenuItem("Add New Library");
+		newLibrary.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		JMenuItem newNotebook = new JMenuItem("Add New Notebook");
+		newNotebook.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		JMenuItem newNote = new JMenuItem("Add New Note");
+		newNote.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		
 		file.add(newLibrary);
 		file.add(newNotebook);
@@ -184,15 +210,26 @@ public class Notepad {
 			}
 		});
 
-		view.add(defaultView);
+		if (!(activeLayout instanceof StandardScreen)) view.add(defaultView);
 		view.add(compactView);
-		view.add(previewView);
+		if (!(activeLayout instanceof PreviewScreen)) view.add(previewView);
 		
 		menu.add(file);
 		menu.add(edit);
 		menu.add(view);
 		menu.add(window);
 		return menu;
+	}
+	
+	private void generateTestData() {
+		
+		Library lib = new Library("/", "Default");
+		
+		activeLayout.addLibrary(new Library("/", "Default"));
+		activeLayout.addNotebook(new Notebook(CustomUUID.generateTimestampUUID("Wiki Guide"), "Wiki Guide", "/Hello/"));
+		activeLayout.addNotebook(new Notebook(CustomUUID.generateTimestampUUID("Sketchbook"), "Sketchbook", "/Hello/"));
+		
+		
 	}
 	
 	private boolean createConfigFile() {
@@ -206,6 +243,7 @@ public class Notepad {
 			return false;
 		}
 	}
+	
 	
 	/* ------------------------------------------------------ */
 	// Defaults
