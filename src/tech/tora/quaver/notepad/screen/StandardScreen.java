@@ -14,7 +14,6 @@ import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicListNode;
-import tech.tora.tools.swing.list.ClickListener;
 
 public class StandardScreen extends StandardLayout {
 
@@ -36,38 +35,39 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public void addNotebook(Notebook notebook) {
-		ClickListener clickEvent = new ClickListener() {
-			@Override
-			public void onClick() {
-				System.out.println("Test");
-			}
-		};
 		notebooksList.addNode(new BasicClickListNode(25, notebook.getUUID(), "   " + notebook.getName(), 
 				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -10) {
+				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
 			@Override
 			public void onClick() {
 				notebooksList.onClick(this);
-				clickEvent.onClick();
+				setActiveLibrary(notebook.getParent());
+				setActiveNotebook(notebook);
+				setActiveNote(null);
+				
+				notesList.clear();
+				editArea.setText("");
+				updatePreview("");
+				
+				for (Note n : notebook.getNoteAsArray()) {
+					addNote(n);
+				}
+				
 			}
 		});
 	}
 
 	@Override
 	public void addNote(Note note) {
-		ClickListener clickEvent = new ClickListener() {
-			@Override
-			public void onClick() {
-				System.out.println("Test2");
-			}
-		};
 		notesList.addNode(new BasicClickListNode(40, note.getUUID(), note.getTitle(), 
 				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -10) {
+				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
 			@Override
 			public void onClick() {
 				notesList.onClick(this);
-				clickEvent.onClick();
+				
+				
+				
 			}
 		});
 	}
