@@ -6,7 +6,7 @@ import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.frame.AdvancedFrame;
 
-public abstract class CompactLayoutTemplate extends ListLayout {
+public abstract class CompactLayoutTemplate extends QuaverLayout {
 	
 	public CompactLayoutTemplate(AdvancedFrame parent, Theme theme) {
 		super(theme);
