@@ -76,6 +76,7 @@ public class Library {
 		for (String key : notebookArray.keySet()) {
 			if (notebookArray.get(key).getUUID().equals(n.getUUID())) return false;
 		}
+		n.setParent(this);
 		// Add to map
 		notebookArray.put(n.getUUID(), n);
 		return true;

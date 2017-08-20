@@ -16,6 +16,8 @@ import tech.tora.tools.system.CustomUUID;
 
 public class Notebook {
 
+	private Library parent = null;
+	
 	/** Path to the notebook (not including the notebook folder) **/
 	private String path = "";
 	
@@ -113,6 +115,7 @@ public class Notebook {
 		for (String key : noteArray.keySet()) {
 			if (noteArray.get(key).getUUID().equals(n.getUUID())) return false;
 		}
+		n.setParent(this);
 		// Add to map
 		noteArray.put(n.getUUID(), n);
 		return true;
@@ -229,7 +232,15 @@ public class Notebook {
 	public String getPath() {
 		return path;
 	}
+	
+	public void setParent(Library parent) {
+		this.parent = parent;
+	}
 
+	public Library getParent() {
+		return parent;
+	}
+	
 	/**
 	 * @return the noteArray
 	 */

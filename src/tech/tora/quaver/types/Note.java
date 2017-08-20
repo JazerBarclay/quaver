@@ -14,6 +14,8 @@ import tech.tora.quaver.Launcher;
 import tech.tora.tools.system.CustomUUID;
 
 public class Note {
+	
+	private Notebook parent = null;
 
 	/** Path to the note (not including the note folder itself) **/
 	private String path = "";
@@ -83,7 +85,8 @@ public class Note {
 	public static boolean isNote(File f) {
 		if (f.isDirectory() && 
 				f.getAbsolutePath().endsWith(extension) && 
-				new File(f.getAbsolutePath()+Launcher.pathSeparator+extension).exists()) {
+				new File(f.getAbsolutePath()+Launcher.pathSeparator+"content.json").exists() &&
+				new File(f.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
 			return true;
 		}
 		return false;
@@ -360,6 +363,14 @@ public class Note {
 
 	public static String getExtension() {
 		return extension;
+	}
+	
+	public void setParent(Notebook parent) {
+		this.parent = parent;
+	}
+	
+	public Notebook getParent() {
+		return parent;
 	}
 	
 }
