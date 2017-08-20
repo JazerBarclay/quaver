@@ -8,6 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileSystemView;
 
 import tech.tora.quaver.Configuration;
 import tech.tora.quaver.Launcher;
@@ -19,7 +20,6 @@ import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.colour.ColourValue;
 import tech.tora.tools.swing.frame.AdvancedFrame;
-import tech.tora.tools.system.CustomUUID;
 
 public class Notepad {
 
@@ -46,6 +46,11 @@ public class Notepad {
 		
 		theme = getDefaultTheme();
 		config = configuration;
+		
+		// get data if not new build
+		if (!newBuild) {
+			// get data
+		}
 		
 		activeLayout = setupInitialLayout();
 		window = setupWindow();
@@ -146,10 +151,15 @@ public class Notepad {
 	private JMenuBar generateCustomMenuBar() {
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
+		JMenu open = new JMenu("Open");
 		JMenu edit = new JMenu("Edit");
 		JMenu view = new JMenu("View");
 		JMenu window = new JMenu("Window");
 
+		/*
+		 * FILE OPTIONS
+		 */
+		
 		JMenuItem newLibrary = new JMenuItem("Add New Library");
 		newLibrary.addActionListener(new ActionListener() {
 			@Override
@@ -177,6 +187,10 @@ public class Notepad {
 		file.add(newNotebook);
 		file.add(newNote);
 
+		/*
+		 * VIEW OPTIONS
+		 */
+		
 		JMenuItem defaultView = new JMenuItem("Switch to Default Layout");
 		defaultView.addActionListener(new ActionListener() {
 			@Override
@@ -193,7 +207,7 @@ public class Notepad {
 		compactView.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				System.out.println("Currently Unavailabe");
 			}
 		});
 		
@@ -213,8 +227,11 @@ public class Notepad {
 		if (!(activeLayout instanceof StandardScreen)) view.add(defaultView);
 		view.add(compactView);
 		if (!(activeLayout instanceof PreviewScreen)) view.add(previewView);
+
 		
+		// Add all top level items
 		menu.add(file);
+		menu.add(open);
 		menu.add(edit);
 		menu.add(view);
 		menu.add(window);
@@ -223,12 +240,13 @@ public class Notepad {
 	
 	private void generateTestData() {
 		
-		Library lib = new Library("/", "Default");
+		Library lib = new Library(FileSystemView.getFileSystemView().getHomeDirectory().toString(), "Default");
+
+		Notebook nb1 = Notebook.newNotebook("Wiki Guide", lib);
+		Notebook nb2 = Notebook.newNotebook("Sketchbook", lib);
 		
-		activeLayout.addLibrary(new Library("/", "Default"));
-		activeLayout.addNotebook(new Notebook(CustomUUID.generateTimestampUUID("Wiki Guide"), "Wiki Guide", "/Hello/"));
-		activeLayout.addNotebook(new Notebook(CustomUUID.generateTimestampUUID("Sketchbook"), "Sketchbook", "/Hello/"));
-		
+		lib.addNotebook(nb1);
+		lib.addNotebook(nb2);
 		
 	}
 	
