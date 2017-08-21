@@ -10,6 +10,7 @@ import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.widget.elements.AddButton;
 import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
+import tech.tora.quaver.notepad.widget.list.NotebookList;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.list.BasicList;
 
@@ -21,7 +22,7 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 	
 	public JLabel notebookTitle;
 
-	public BasicList notebooksList;
+	public NotebookList notebooksList;
 	public BasicList notesList;
 
 	public AddButton btnAddNotebook;
@@ -45,7 +46,9 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		notebookTitle.setMinimumSize(new Dimension(200, 30));
 		notebookTitle.setMaximumSize(new Dimension(200, 30));
 		
-		notebooksList = new BasicList(200);
+		notebooksList = new NotebookList(200, "Helvetica", theme.notebookFillColour.getAsColor(), 
+				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
+				theme.fontColour.getAsColor());
 		notebooksList.setBackground(theme.notebookFillColour.getAsColor());
 		
 		notesList = new BasicList(300);

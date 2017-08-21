@@ -14,6 +14,7 @@ import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicListNode;
+import tech.tora.tools.swing.list.ClickListener;
 
 public class StandardScreen extends StandardLayout {
 
@@ -35,12 +36,12 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public void addNotebook(Notebook notebook) {
-		notebooksList.addNode(new BasicClickListNode(25, notebook.getUUID(), "   " + notebook.getName(), 
-				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
+		
+		notebooksList.addNotebookNode("/icon1.png", notebook.getUUID(), "   " + notebook.getName(), 
+				"" + notebook.getNoteAsArray().length, new ClickListener() {
+			
 			@Override
 			public void onClick() {
-				notebooksList.onClick(this);
 				setActiveLibrary(notebook.getParent());
 				setActiveNotebook(notebook);
 				setActiveNote(null);
@@ -52,9 +53,30 @@ public class StandardScreen extends StandardLayout {
 				for (Note n : notebook.getNoteAsArray()) {
 					addNote(n);
 				}
-				
 			}
 		});
+		
+//		notebooksList.addNode(new BasicClickListNode(25, notebook.getUUID(), "   " + notebook.getName(), 
+//				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
+//				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
+//			@Override
+//			public void onClick() {
+//				notebooksList.onClick(this);
+//				setActiveLibrary(notebook.getParent());
+//				setActiveNotebook(notebook);
+//				setActiveNote(null);
+//				
+//				notesList.clear();
+//				editArea.setText("");
+//				updatePreview("");
+//				
+//				for (Note n : notebook.getNoteAsArray()) {
+//					addNote(n);
+//				}
+//				
+//			}
+//		});
+		
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public abstract class BasicClickListNode extends BasicListNode {
 	
 	@Override
 	public JPanel generateNode() {
-		standardGenerate();
+		wrapper = standardGenerate();
 		setupClick();
 		return wrapper;
 	}
@@ -35,7 +35,7 @@ public abstract class BasicClickListNode extends BasicListNode {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// Do Nothing
+				onClick();
 			}
 			
 			@Override
@@ -54,7 +54,7 @@ public abstract class BasicClickListNode extends BasicListNode {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				onClick();
+//				
 			}
 		});
 		

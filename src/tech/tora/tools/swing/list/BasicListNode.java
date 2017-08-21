@@ -14,7 +14,7 @@ public abstract class BasicListNode extends AbstractListNode {
 
 	private int height;
 	
-	protected JPanel wrapper, content;
+	public JPanel wrapper = new JPanel();
 	
 	public boolean active = false;
 	
@@ -44,7 +44,7 @@ public abstract class BasicListNode extends AbstractListNode {
 		title.setFont(titleFont);
 		title.setForeground(titleColour.getAsColor());
 		
-		wrapper = new JPanel();
+		JPanel wrapper = new JPanel();
 		wrapper.setLayout(new BorderLayout());
 		wrapper.setSize(new Dimension(getParentList().width, height));
 		wrapper.setPreferredSize(new Dimension(getParentList().width, height));
@@ -52,14 +52,14 @@ public abstract class BasicListNode extends AbstractListNode {
 		wrapper.setMaximumSize(new Dimension(getParentList().width, height));
 		wrapper.setBackground(fill.getAsColor());
 		
-		content = new JPanel();
+		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
 		content.setBorder(BorderFactory.createEmptyBorder(2, 10, 0, 10));
 		content.setSize(getParentList().width, height);
 		content.setPreferredSize(new Dimension(getParentList().width, height));
 		content.setMinimumSize(new Dimension(getParentList().width, height));
 		content.setMaximumSize(new Dimension(getParentList().width, height));
-		content.setBackground(fill.getAsColor());
+		content.setOpaque(false);
 		content.add(title, BorderLayout.CENTER);
 		
 		wrapper.add(content);
@@ -69,7 +69,6 @@ public abstract class BasicListNode extends AbstractListNode {
 	
 	public void setFillColour(Color c) {
 		wrapper.setBackground(c);
-		content.setBackground(c);
 	}
 
 }

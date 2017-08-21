@@ -42,6 +42,7 @@ public class Notepad {
 	private static QuaverLayout activeLayout;
 
 	public Notepad(Configuration configuration) {
+		// Check parsed configuration settings
 		if (configuration == null) {
 			configuration = new Configuration("Default", "Default", true);
 			newBuild = true;
@@ -49,20 +50,24 @@ public class Notepad {
 			newBuild = false;
 		}
 
-		// Update when themes are saving and loading
+		// TODO - Update when themes are saving and loading
 		theme = Theme.getDefault();
 
+		// Set the local static configuration for future use
 		config = configuration;
 
-		// get data if not new build
+		// Get data if not a new build
 		if (!newBuild) {
 			getLibraries();
 		}
 
+		// Setup the active layout
 		activeLayout = setupInitialLayout();
+		// Setup the window for the layout
 		window = setupWindow();
 		window.setVisible(true);
 
+		// If new build, prompt to create configuration file
 		if (newBuild) {
 			int createNewConfig = JOptionPane.showConfirmDialog(window, "This is a new build. Would you like to create a configuration file now?"+"\n If not, this runtime will launch in trial mode.", "First Time Setup", JOptionPane.OK_CANCEL_OPTION);
 			if (createNewConfig == 0)
