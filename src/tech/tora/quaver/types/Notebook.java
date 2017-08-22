@@ -100,7 +100,7 @@ public class Notebook {
 	 * @return existence of notebook
 	 */
 	public static boolean exists(String path, String notebookName) {
-		if (new File(path + Launcher.pathSeparator + notebookName + extension + Launcher.pathSeparator + "meta.json").exists()) return true;
+		if (new File(path + Launcher.pathSeparator +  "meta.json").exists()) return true;
 		return false;
 	}
 	
@@ -148,7 +148,7 @@ public class Notebook {
 		obj.put("name", name);
 
 		try {
-			File f = new File(path + Launcher.pathSeparator + name + extension + Launcher.pathSeparator + "meta.json");
+			File f = new File(path + Launcher.pathSeparator + "meta.json");
 			f.getParentFile().mkdirs();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,7 +156,7 @@ public class Notebook {
 			return;
 		}
 
-		try (FileWriter file = new FileWriter(path + Launcher.pathSeparator + name + extension + Launcher.pathSeparator + "meta.json")) {
+		try (FileWriter file = new FileWriter(path + Launcher.pathSeparator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
