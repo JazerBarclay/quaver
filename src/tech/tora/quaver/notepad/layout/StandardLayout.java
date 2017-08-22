@@ -92,6 +92,7 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 			@Override
 			public void onChange() {
 				
+				saveNote(getActiveNote());
 			}
 			
 			@Override
@@ -131,33 +132,6 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		splitter.add(previewArea);
 		
 	}
-	
-//	public void addLibraryNodeToList(Library lib) {
-//		BasicListNode node = new BasicListNode(28, lib.getPath()+Launcher.pathSeparator+lib.getName(), lib.getName(), 
-//		theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
-//		new Font("Helvetica", Font.BOLD, 14), theme.fontColour.getAsColor(), -20) {};
-//		notebooksList.addNode(node);
-//		notebooksList.revalidate();
-//	}
-//	
-//	public void addNotebookNodeToList(Notebook notebook, ClickListener clickEvent) {
-//		notebooksList.addNode(new BasicClickListNode(25, 
-//			notebook.getUUID(), "  " + notebook.getName(), 
-//			theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-//			new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
-//				@Override
-//				public void onClick() {
-//					notebooksList.onClick(this);
-//					clickEvent.onClick();
-//				}
-//		});
-//		notebooksList.revalidate();
-//	}
-//	
-//	public void addNoteNodeToList(Note noteb) {
-//		// Do Here
-//		notesList.revalidate();
-//	}
 	
 
 }

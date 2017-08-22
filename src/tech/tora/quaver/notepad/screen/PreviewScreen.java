@@ -13,6 +13,10 @@ import tech.tora.quaver.types.Notebook;
 
 public class PreviewScreen extends PreviewLayout {
 
+	private Library activeLibrary = null;
+	private Notebook activeNotebook = null;
+	private Note activeNote = null;
+	
 	public PreviewScreen(Configuration config, Theme theme) {
 		super(theme);
 	}
@@ -94,32 +98,32 @@ public class PreviewScreen extends PreviewLayout {
 
 	@Override
 	public Library getActiveLibrary() {
-		return null;
+		return activeLibrary;
 	}
 
 	@Override
 	public void setActiveLibrary(Library library) {
-		
+		this.activeLibrary = library;
 	}
 
 	@Override
 	public Notebook getActiveNotebook() {
-		return null;
+		return activeNotebook;
 	}
 
 	@Override
 	public void setActiveNotebook(Notebook notebook) {
-		
+		this.activeNotebook = notebook;
 	}
 
 	@Override
 	public Note getActiveNote() {
-		return null;
+		return activeNote;
 	}
 
 	@Override
 	public void setActiveNote(Note note) {
-		
+		this.activeNote = note;
 	}
 
 	@Override

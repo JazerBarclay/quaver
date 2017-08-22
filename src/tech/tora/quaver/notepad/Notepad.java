@@ -152,9 +152,10 @@ public class Notepad {
 	/* ------------------------------------------------------ */
 
 	private void changeLayout(QuaverLayout layout) {
-		layout.setActiveLibrary(activeLayout.getActiveLibrary());		
-		layout.setActiveNotebook(activeLayout.getActiveNotebook());		
-		layout.setActiveNote(activeLayout.getActiveNote());
+		
+		Library activeLibrary = activeLayout.getActiveLibrary();
+		Notebook activeNotebook = activeLayout.getActiveNotebook();
+		Note activeNote = activeLayout.getActiveNote();
 
 		activeLayout = layout;
 
@@ -169,6 +170,10 @@ public class Notepad {
 		window.setVisible(true);
 
 		populateLists();
+		
+		layout.setActiveLibrary(activeLibrary);		
+		layout.setActiveNotebook(activeNotebook);		
+		layout.setActiveNote(activeNote);
 
 	}
 
@@ -337,7 +342,7 @@ public class Notepad {
 			File library1 = new File(lib);
 			if (library1.exists() && library1.getAbsolutePath().endsWith(Library.getExtension())) {
 				aLib = new Library(library1.getParentFile().getAbsolutePath(), library1.getName().substring(0, library1.getName().length() - Library.getExtension().length()));
-				System.out.println(aLib.getPath() + " : " + aLib.getName());
+//				System.out.println(aLib.getPath() + " : " + aLib.getName());
 				libraries.put(aLib.getPath() + Launcher.pathSeparator + aLib.getName(), aLib);
 				for (File libF : library1.listFiles()) {
 					if (Notebook.isNotebook(libF)) {
@@ -352,15 +357,15 @@ public class Notepad {
 									aNb.addNote(aN);
 								}
 							} else {
-								System.out.println(nbF.getAbsolutePath() + " is not a vaild note");
+//								System.out.println(nbF.getAbsolutePath() + " is not a vaild note");
 							}
 						}
 					} else {
-						System.out.println(libF.getAbsolutePath() + " is not a vaild notebook");
+//						System.out.println(libF.getAbsolutePath() + " is not a vaild notebook");
 					}
 				}
 			} else {
-				System.out.println(library1.getAbsolutePath() + " is not a valid library");
+//				System.out.println(library1.getAbsolutePath() + " is not a valid library");
 			}
 		}
 		

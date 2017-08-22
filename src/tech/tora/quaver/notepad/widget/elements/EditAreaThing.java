@@ -91,4 +91,8 @@ public abstract class EditAreaThing extends JPanel implements KeyListener {
 		return textArea.getText();
 	}
 	
+	public void setCaratPos(int pos) {
+		textArea.setCaretPosition(pos);
+	}
+	
 }

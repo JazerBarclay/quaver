@@ -1,14 +1,17 @@
 package tech.tora.quaver.notepad.screen;
 
 import java.awt.Font;
+import java.io.IOException;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import tech.tora.quaver.Configuration;
+import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.layout.StandardLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
+import tech.tora.quaver.types.CellType;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
@@ -56,27 +59,6 @@ public class StandardScreen extends StandardLayout {
 			}
 		});
 		
-//		notebooksList.addNode(new BasicClickListNode(25, notebook.getUUID(), "   " + notebook.getName(), 
-//				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-//				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
-//			@Override
-//			public void onClick() {
-//				notebooksList.onClick(this);
-//				setActiveLibrary(notebook.getParent());
-//				setActiveNotebook(notebook);
-//				setActiveNote(null);
-//				
-//				notesList.clear();
-//				editArea.setText("");
-//				updatePreview("");
-//				
-//				for (Note n : notebook.getNoteAsArray()) {
-//					addNote(n);
-//				}
-//				
-//			}
-//		});
-		
 	}
 
 	@Override
@@ -88,9 +70,21 @@ public class StandardScreen extends StandardLayout {
 			public void onClick() {
 				notesList.onClick(this);
 				
+				setActiveNote(note);
 				
+				String text = "";
+				for (Cell c : note.getCells()) {
+					text+=("[~" + c.type + "~]");
+					text+="\n";
+					if (c.type.equals(CellType.CODE.type)) text+=("{~" + c.language + "~}");
+					text+="\n";
+					text+=c.data;
+				}
+			
+				setEditText(text);
 				
 			}
+			
 		});
 	}
 
@@ -136,6 +130,13 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public boolean saveNote(Note note) {
+		try {
+			Note.writeContentJSON(note);
+			Note.writeMetaJSON(note);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -172,6 +173,7 @@ public class StandardScreen extends StandardLayout {
 	@Override
 	public void setEditText(String text) {
 		editArea.setText(text);
+		editArea.setCaratPos(0);
 	}
 
 	@Override
@@ -206,16 +208,55 @@ public class StandardScreen extends StandardLayout {
 	@Override
 	public void setActiveLibrary(Library library) {
 		this.activeLibrary = library;
+		// go through list and run active library click method
+		if (library == null) return;
+		for (String key : notebooksList.getNodeKeys()) {
+			if (notebooksList.getNodes().get(key).UUID.equals(library.getPath() + Launcher.pathSeparator + library.getName())) {
+				System.out.println("ACTIVE: " + library.getName());
+			}
+		}
 	}
 
 	@Override
 	public void setActiveNotebook(Notebook notebook) {
 		this.activeNotebook = notebook;
+		if (notebook == null) return;
+		for (String key : notebooksList.getNodeKeys()) {
+			if (notebooksList.getNodes().get(key).UUID.equals(notebook.getUUID())) {
+				notebooksList.onClick((BasicListNode)notebooksList.getNodes().get(key));
+				notesList.clear();
+				editArea.setText("");
+				updatePreview("");
+				
+				for (Note n : notebook.getNoteAsArray()) {
+					addNote(n);
+				}
+				
+			}
+		}
 	}
 
 	@Override
 	public void setActiveNote(Note note) {
 		this.activeNote = note;
+		if (note == null) return;
+		// go through notes list and run active notes click method
+		for (String key : notesList.getNodeKeys()) {
+			if (notesList.getNodes().get(key).UUID.equals(note.getUUID())) {
+				notesList.onClick((BasicListNode)notesList.getNodes().get(key));
+				
+				String text = "";
+				for (Cell c : note.getCells()) {
+					text+=("[~" + c.type + "~]");
+					text+="\n";
+					if (c.type.equals(CellType.CODE.type)) text+=("{~" + c.language + "~}");
+					text+="\n";
+					text+=c.data;
+				}
+				setEditText(text);
+
+			}
+		}
 	}
 	
 }
