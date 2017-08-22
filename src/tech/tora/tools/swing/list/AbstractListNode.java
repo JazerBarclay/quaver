@@ -10,8 +10,6 @@ public abstract class AbstractListNode {
 	private AbstractListNode parentNode;
 	private AbstractList parentList;
 	
-	public JPanel nodeLook = null;
-	
 	public abstract JPanel generateNode();
 	
 	public AbstractListNode(String uuid, String title) {

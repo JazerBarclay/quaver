@@ -24,7 +24,7 @@ public abstract class AbstractList extends JPanel {
 	private JPanel containerPane = null;
 	private JScrollPane scrollPane;
 	
-	public abstract void manageDuplicateNode(AbstractListNode original, AbstractListNode newNode);
+	public abstract boolean manageDuplicateNode(AbstractListNode original, AbstractListNode newNode);
 	
 	public AbstractList(int width) {
 		this.width = width;
@@ -33,18 +33,17 @@ public abstract class AbstractList extends JPanel {
 	
 	public void generateLayout() {
 		setLayout(new BorderLayout());
+		setOpaque(false);
 		
 		containerPane = new JPanel();
 		containerPane.setLayout(new BoxLayout(containerPane, BoxLayout.Y_AXIS));
-//		containerPane.setOpaque(false);
 		
 		scrollPane = new JScrollPane(containerPane);
 //		scrollPane = new JScrollPane(containerPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-//		this.setBackground(new Color(230, 230, 230));
 		
 		this.add(scrollPane);
 	}
@@ -52,7 +51,7 @@ public abstract class AbstractList extends JPanel {
 	private void buildNodes() {
 		containerPane.removeAll();
 		for (String k : nodes.keySet()) {
-			containerPane.add(nodes.get(k).nodeLook);
+			containerPane.add(nodes.get(k).generateNode());
 		}
 		containerPane.revalidate();
 		containerPane.repaint();
@@ -76,7 +75,6 @@ public abstract class AbstractList extends JPanel {
 		} else {
 			node.setParentList(this);
 			nodes.put(node.UUID, node);
-			node.nodeLook = node.generateNode();
 		}
 	}
 
@@ -89,14 +87,16 @@ public abstract class AbstractList extends JPanel {
 		buildNodes();
 	}
 
-	protected void renameAndSaveDuplicate(AbstractListNode newNode, String newuuid, String newTitle) {
+	protected boolean renameAndSaveDuplicate(AbstractListNode newNode, String newuuid, String newTitle) {
 		newNode.UUID = newuuid;
 		newNode.title = newTitle;
 		addNode(newNode);
+		return true;
 	}
 
-	protected void overwriteDuplicate(AbstractListNode originalNode, AbstractListNode newNode) {
+	protected boolean overwriteDuplicate(AbstractListNode originalNode, AbstractListNode newNode) {
 		nodes.replace(originalNode.UUID, newNode);
+		return true;
 	}
 	
 	public LinkedHashMap<String, AbstractListNode> getNodes() {
@@ -109,7 +109,6 @@ public abstract class AbstractList extends JPanel {
 
 	@Override
 	public void setBackground(Color c) {
-		super.setBackground(c);
 		if (containerPane != null) containerPane.setBackground(c);
 	}
 	

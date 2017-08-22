@@ -38,7 +38,6 @@ public class NotebookList extends BasicList {
 				clickEvent.onClick();
 			}
 		};
-		System.out.println(node.UUID + " : " +  node.title);
 		addNode(node);
 	}
 

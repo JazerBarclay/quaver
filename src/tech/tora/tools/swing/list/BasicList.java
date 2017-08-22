@@ -12,9 +12,10 @@ public class BasicList extends AbstractList {
 	}
 
 	@Override
-	public void manageDuplicateNode(AbstractListNode original, AbstractListNode newNode) {
+	public boolean manageDuplicateNode(AbstractListNode original, AbstractListNode newNode) {
 		renameAndSaveDuplicate(newNode, newNode.UUID + "_1", newNode.title + "_1");
 //		overwriteDuplicate(original, newNode);
+		return true;
 	}
 	
 	public void onClick(BasicListNode nodeClicked) {
