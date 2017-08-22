@@ -139,13 +139,13 @@ public class Note {
 		}
 
 		obj.put("cells", cells);
-
-		if (!new File(note.path + Launcher.pathSeparator + note.uuid + extension).exists()) {
-			if (!new File(note.path + Launcher.pathSeparator + note.uuid + extension).mkdirs()) 
-				throw new IOException("Failed to create path " + note.path + Launcher.pathSeparator + note.uuid + extension);
+		
+		if (!new File(note.path).exists()) {
+			if (!new File(note.path).mkdirs()) 
+				throw new IOException("Failed to create path " + note.path);
 		}
 
-		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + extension + Launcher.pathSeparator + "content.json")) {
+		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + "content.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -175,12 +175,12 @@ public class Note {
 
 		obj.put("tags", tags);
 
-		if (!new File(note.path + Launcher.pathSeparator + note.uuid + extension).exists()) {
-			if (!new File(note.path + Launcher.pathSeparator + note.uuid + extension).mkdirs()) 
-				throw new IOException("Failed to create path " + note.path + Launcher.pathSeparator + note.uuid + extension);
+		if (!new File(note.path).exists()) {
+			if (!new File(note.path).mkdirs()) 
+				throw new IOException("Failed to create path " + note.path);
 		}
 
-		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + note.uuid + extension + Launcher.pathSeparator + "meta.json")) {
+		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
