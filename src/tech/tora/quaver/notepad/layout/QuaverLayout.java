@@ -2,7 +2,6 @@ package tech.tora.quaver.notepad.layout;
 
 import javax.swing.JPanel;
 
-import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
@@ -242,7 +241,7 @@ public abstract class QuaverLayout extends Layout {
 
 	@Override
 	public String getTitle() {
-		return getName() + " : M" + Launcher.buildID;
+		return getName();
 	}
 
 	@Override

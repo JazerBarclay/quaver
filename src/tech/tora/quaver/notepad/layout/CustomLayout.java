@@ -2,7 +2,6 @@ package tech.tora.quaver.notepad.layout;
 
 import javax.swing.JPanel;
 
-import tech.tora.quaver.Launcher;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.layout.Layout;
 
@@ -65,7 +64,7 @@ public abstract class CustomLayout extends Layout {
 
 	@Override
 	public String getTitle() {
-		return getName() + " : M" + Launcher.buildID;
+		return getName();
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package tech.tora.quaver.notepad.screen;
 
 import java.awt.Font;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JMenu;
@@ -183,7 +184,8 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public void clearEditText() {
-		
+		setEditText("");
+		updatePreview("");
 	}
 
 	@Override
@@ -211,7 +213,7 @@ public class StandardScreen extends StandardLayout {
 		// go through list and run active library click method
 		if (library == null) return;
 		for (String key : notebooksList.getNodeKeys()) {
-			if (notebooksList.getNodes().get(key).UUID.equals(library.getPath() + Launcher.pathSeparator + library.getName())) {
+			if (notebooksList.getNodes().get(key).UUID.equals(library.getPath() + File.separator + library.getName())) {
 				System.out.println("ACTIVE: " + library.getName());
 			}
 		}

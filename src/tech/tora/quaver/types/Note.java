@@ -85,8 +85,8 @@ public class Note {
 	public static boolean isNote(File f) {
 		if (f.isDirectory() && 
 				f.getAbsolutePath().endsWith(extension) && 
-				new File(f.getAbsolutePath()+Launcher.pathSeparator+"content.json").exists() &&
-				new File(f.getAbsolutePath()+Launcher.pathSeparator+"meta.json").exists()) {
+				new File(f.getAbsolutePath()+File.separator+"content.json").exists() &&
+				new File(f.getAbsolutePath()+File.separator+"meta.json").exists()) {
 			return true;
 		}
 		return false;
@@ -111,7 +111,7 @@ public class Note {
 		n.setTitle(name);
 		n.setCreatedAt(System.currentTimeMillis() / 1000L);
 		n.setUpdatedAt(System.currentTimeMillis() / 1000L);
-		n.setPath(parent.getPath() + Launcher.pathSeparator + parent.getName() + Notebook.getExtension());
+		n.setPath(parent.getPath() + File.separator + parent.getName() + Notebook.getExtension());
 		return n;
 	}
 	
@@ -145,7 +145,7 @@ public class Note {
 				throw new IOException("Failed to create path " + note.path);
 		}
 
-		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + "content.json")) {
+		try (FileWriter file = new FileWriter(note.path + File.separator + "content.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -180,7 +180,7 @@ public class Note {
 				throw new IOException("Failed to create path " + note.path);
 		}
 
-		try (FileWriter file = new FileWriter(note.path + Launcher.pathSeparator + "meta.json")) {
+		try (FileWriter file = new FileWriter(note.path + File.separator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -199,7 +199,7 @@ public class Note {
 	public static Note readContentsJSON(String path) throws ParseException, IOException {
 		JSONParser parser = new JSONParser();
 
-		Object obj = parser.parse(new FileReader(path + Launcher.pathSeparator + "content.json"));
+		Object obj = parser.parse(new FileReader(path + File.separator + "content.json"));
 		JSONObject jsonNoteObject = (JSONObject) obj;
 
 		String title = (String) jsonNoteObject.get("title");
@@ -233,7 +233,7 @@ public class Note {
 	public static Note readMetaJSON(String path) throws ParseException, IOException {
 		JSONParser parser = new JSONParser();
 
-		Object obj = parser.parse(new FileReader(path + Launcher.pathSeparator + "meta.json"));
+		Object obj = parser.parse(new FileReader(path + File.separator + "meta.json"));
 		JSONObject jsonNoteObject = (JSONObject) obj;
 
 		String title = (String) jsonNoteObject.get("title");
@@ -371,6 +371,15 @@ public class Note {
 	
 	public Notebook getParent() {
 		return parent;
+	}
+	
+	public void clearCells() {
+		cells = new Cell[] {};
+	}
+	
+	public static Cell[] stringToCells() {
+		Cell[] c = new Cell[] {};
+		return new Cell[] {};
 	}
 	
 }

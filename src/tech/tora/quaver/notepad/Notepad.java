@@ -41,25 +41,17 @@ public class Notepad {
 	// Active Values
 	private static QuaverLayout activeLayout;
 
-	public Notepad(Configuration configuration) {
-		// Check parsed configuration settings
+	public Notepad(Configuration configuration, int release, int major, int minor) {
 		if (configuration == null) {
 			configuration = new Configuration("Default", "Default", true);
 			newBuild = true;
-		} else {
-			newBuild = false;
-		}
+		} else newBuild = false;
 
-		// TODO - Update when themes are saving and loading
-		theme = Theme.getDefault();
-
-		// Set the local static configuration for future use
 		config = configuration;
+		theme = Theme.getDefault(); // TODO - Update when themes are saving and loading
 
 		// Get data if not a new build
-		if (!newBuild) {
-			getLibraries();
-		}
+		if (!newBuild) getLibraries();
 
 		// Setup the active layout
 		activeLayout = setupInitialLayout();
@@ -313,7 +305,7 @@ public class Notepad {
 		lib.addNotebook(nb1);
 		lib.addNotebook(nb2);
 
-		libraries.put(lib.getPath()+Launcher.pathSeparator+lib.getName(), lib);
+		libraries.put(lib.getPath()+File.separator+lib.getName(), lib);
 	}
 
 
@@ -343,7 +335,7 @@ public class Notepad {
 			if (library1.exists() && library1.getAbsolutePath().endsWith(Library.getExtension())) {
 				aLib = new Library(library1.getParentFile().getAbsolutePath(), library1.getName().substring(0, library1.getName().length() - Library.getExtension().length()));
 //				System.out.println(aLib.getPath() + " : " + aLib.getName());
-				libraries.put(aLib.getPath() + Launcher.pathSeparator + aLib.getName(), aLib);
+				libraries.put(aLib.getPath() + File.separator + aLib.getName(), aLib);
 				for (File libF : library1.listFiles()) {
 					if (Notebook.isNotebook(libF)) {
 						aNb = readNotebook(libF.getAbsolutePath());

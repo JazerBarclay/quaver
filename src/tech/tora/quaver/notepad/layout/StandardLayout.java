@@ -12,6 +12,7 @@ import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.notepad.widget.list.NotebookList;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.quaver.types.Cell;
 import tech.tora.tools.swing.list.BasicList;
 
 /**
@@ -38,7 +39,7 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 	@Override
 	public void buildElements(Theme theme) {
 		notebookTitle = new JLabel();
-		notebookTitle.setText("Quaver M" + Launcher.buildID);
+		notebookTitle.setText("Quaver");
 		notebookTitle.setFont(new Font("Helvetica", Font.BOLD, 14));
 		notebookTitle.setHorizontalAlignment(JLabel.CENTER);
 		notebookTitle.setBackground(new Color(200, 200, 0));
@@ -91,6 +92,12 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 			
 			@Override
 			public void onChange() {
+				String s = getEditText();
+//				getActiveNote().clearCells();
+				
+//				for () {
+//					
+//				}
 				
 				saveNote(getActiveNote());
 			}
@@ -102,7 +109,7 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 			
 		};
 		
-		editArea.setText("# Welcome to Quaver\nThis is a test preview (Mark " + Launcher.buildRelease + "." + Launcher.buildMajor + " r" + Launcher.buildMinor +  ")");
+		editArea.setText("# Welcome to Quaver\nThis is a test preview ([insert build value here])");
 		
 		
 		
@@ -112,7 +119,7 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 		
 		previewArea.setText("<html><head><title>" + "Quaver" + "</title>"
 				+ "</head><body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
-				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview (Mark " + Launcher.buildRelease + "." + Launcher.buildMajor + " r" + Launcher.buildMinor +  ")</p></body></html>");
+				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview ([insert build value here])</p></body></html>");
 		
 	}
 

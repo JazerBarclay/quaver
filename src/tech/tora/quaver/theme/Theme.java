@@ -13,7 +13,7 @@ import tech.tora.tools.swing.colour.ColourValue;
 
 public class Theme {
 
-	private static String location = "res" + Launcher.pathSeparator + "themes";
+	private static String location = "res" + File.separator + "themes";
 	
 	public String themeName = null;
 	public ColourValue fontColour = null;
@@ -51,7 +51,7 @@ public class Theme {
 
 		if (!new File(location).exists()) if (!new File(location).mkdirs()) throw new IOException("Res directory could not be created");
 		
-		try (FileWriter file = new FileWriter(location + Launcher.pathSeparator + t.themeName + ".json")) {
+		try (FileWriter file = new FileWriter(location + File.separator + t.themeName + ".json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -71,7 +71,7 @@ public class Theme {
 		JSONParser parser = new JSONParser();
 		Theme t = new Theme();
 
-		Object obj = parser.parse(new FileReader("res" + Launcher.pathSeparator + themeName + ".json"));
+		Object obj = parser.parse(new FileReader("res" + File.separator + themeName + ".json"));
 
 		JSONObject jsonObject = (JSONObject) obj;
 

@@ -61,7 +61,7 @@ public class Library {
 	 * @return
 	 */
 	public static boolean exists(String path, String libraryName) {
-		if (new File(path + Launcher.pathSeparator + libraryName + extension).exists()) return true;
+		if (new File(path + File.separator + libraryName + extension).exists()) return true;
 		return false;
 	}
 	

@@ -72,7 +72,7 @@ public class Notebook {
 	public static boolean isNotebook(File f) {
 		if (f.isDirectory() && 
 				f.getAbsolutePath().endsWith(".qvnotebook") && 
-				new File(f.getAbsolutePath()+Launcher.pathSeparator + "meta.json").exists()) {
+				new File(f.getAbsolutePath()+File.separator + "meta.json").exists()) {
 			return true;
 		}
 		return false;
@@ -87,7 +87,7 @@ public class Notebook {
 		Notebook n = new Notebook();
 		n.setUUID(CustomUUID.generateTimestampUUID(name));
 		n.setName(name);
-		n.setPath(parent.getPath()+Launcher.pathSeparator+parent.getName()+Library.getExtension());
+		n.setPath(parent.getPath()+File.separator+parent.getName()+Library.getExtension());
 		return n;
 	}
 	
@@ -100,7 +100,7 @@ public class Notebook {
 	 * @return existence of notebook
 	 */
 	public static boolean exists(String path, String notebookName) {
-		if (new File(path + Launcher.pathSeparator +  "meta.json").exists()) return true;
+		if (new File(path + File.separator +  "meta.json").exists()) return true;
 		return false;
 	}
 	
@@ -148,7 +148,7 @@ public class Notebook {
 		obj.put("name", name);
 
 		try {
-			File f = new File(path + Launcher.pathSeparator + "meta.json");
+			File f = new File(path + File.separator + "meta.json");
 			f.getParentFile().mkdirs();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,7 +156,7 @@ public class Notebook {
 			return;
 		}
 
-		try (FileWriter file = new FileWriter(path + Launcher.pathSeparator + "meta.json")) {
+		try (FileWriter file = new FileWriter(path + File.separator + "meta.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -176,7 +176,7 @@ public class Notebook {
 	public static Notebook readJSON(String path) throws FileNotFoundException, IOException, ParseException {
 		JSONParser parser = new JSONParser();
 
-		Object obj = parser.parse(new FileReader(path + Launcher.pathSeparator + "meta.json"));
+		Object obj = parser.parse(new FileReader(path + File.separator + "meta.json"));
 		JSONObject jsonNoteObject = (JSONObject) obj;
 
 		String id = (String) jsonNoteObject.get("uuid");

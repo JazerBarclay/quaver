@@ -83,7 +83,7 @@ public class Configuration {
 
 		if (!new File("res").exists()) if (!new File("res").mkdirs()) throw new IOException("Res directory could not be created");
 		
-		try (FileWriter file = new FileWriter("res" + Launcher.pathSeparator + "config.json")) {
+		try (FileWriter file = new FileWriter("res" + File.separator + "config.json")) {
 			file.write(obj.toJSONString());
 			file.flush();
 			System.out.println("\nSuccessfully Copied JSON Object to File...");
@@ -104,7 +104,7 @@ public class Configuration {
 		JSONParser parser = new JSONParser();
 		Configuration config = new Configuration();
 
-		Object obj = parser.parse(new FileReader("res" + Launcher.pathSeparator + "config.json"));
+		Object obj = parser.parse(new FileReader("res" + File.separator + "config.json"));
 
 		JSONObject jsonObject = (JSONObject) obj;
 
