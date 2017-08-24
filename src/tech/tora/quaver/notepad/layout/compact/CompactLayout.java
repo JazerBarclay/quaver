@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.layout;
+package tech.tora.quaver.notepad.layout.compact;
 
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.frame.AdvancedFrame;

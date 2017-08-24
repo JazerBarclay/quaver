@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.layout;
+package tech.tora.quaver.notepad.layout.preview;
 
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.theme.Theme;

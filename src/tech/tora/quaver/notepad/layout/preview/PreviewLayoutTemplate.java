@@ -1,29 +1,40 @@
-package tech.tora.quaver.notepad.layout;
+package tech.tora.quaver.notepad.layout.preview;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
+import tech.tora.quaver.notepad.layout.QuaverLayout;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.tools.swing.frame.AdvancedFrame;
 
-public abstract class CompactLayoutTemplate extends QuaverLayout {
+public abstract class PreviewLayoutTemplate extends QuaverLayout {
+
+	protected JPanel splitter;
 	
-	public CompactLayoutTemplate(AdvancedFrame parent, Theme theme) {
+	public PreviewLayoutTemplate(Theme theme) {
 		super(theme);
+		setDefaultWidth(800);
+		setDefaultHeight(600);
 	}
 
 	@Override
 	public JPanel buildFrame(Theme theme) {
 		JPanel wrapper = new JPanel();
+		wrapper.setLayout(new BorderLayout());
+		wrapper.setBackground(new Color(100, 100, 100));
 		return wrapper;
 	}
 
 	@Override
 	public JPanel constructFrame(JPanel wrapper) {
+		splitter = new JPanel(new GridLayout());
+		wrapper.add(splitter, BorderLayout.CENTER);
 		return wrapper;
 	}
-	
-	
+
 	/* ------------------------------------------------------ */
 	// Frame Action Management
 	/* ------------------------------------------------------ */
@@ -35,7 +46,7 @@ public abstract class CompactLayoutTemplate extends QuaverLayout {
 
 	@Override
 	public void windowCloseAction() {
-		Launcher.exit(0, "Close requested from Compact Layout Window");
+		Launcher.exit(0, "Close requested from Preview Layout Window");
 	}
 
 	@Override
@@ -57,5 +68,5 @@ public abstract class CompactLayoutTemplate extends QuaverLayout {
 	public void windowLoseFocusAction() {
 		System.out.println("LoS");
 	}
-	
+
 }

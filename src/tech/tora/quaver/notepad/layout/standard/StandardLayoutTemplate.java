@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.layout;
+package tech.tora.quaver.notepad.layout.standard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
+import tech.tora.quaver.notepad.layout.QuaverLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.panel.PaneHorizontal;
 import tech.tora.tools.swing.panel.PaneVertical;

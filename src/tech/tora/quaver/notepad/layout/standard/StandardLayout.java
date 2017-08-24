@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.layout;
+package tech.tora.quaver.notepad.layout.standard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

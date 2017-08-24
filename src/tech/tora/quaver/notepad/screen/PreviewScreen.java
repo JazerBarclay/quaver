@@ -4,7 +4,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import tech.tora.quaver.Configuration;
-import tech.tora.quaver.notepad.layout.PreviewLayout;
+import tech.tora.quaver.notepad.layout.preview.PreviewLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;

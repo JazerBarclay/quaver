@@ -8,8 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import tech.tora.quaver.Configuration;
-import tech.tora.quaver.Launcher;
-import tech.tora.quaver.notepad.layout.StandardLayout;
+import tech.tora.quaver.notepad.layout.standard.StandardLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.CellType;
