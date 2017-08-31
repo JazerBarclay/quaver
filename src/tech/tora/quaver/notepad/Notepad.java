@@ -10,7 +10,6 @@ import java.util.LinkedHashMap;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 
 import org.json.simple.parser.ParseException;
@@ -26,7 +25,10 @@ import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
+import tech.tora.tools.swing.Notify;
 import tech.tora.tools.swing.frame.AdvancedFrame;
+import tech.tora.tools.system.log.Analytic;
+import tech.tora.tools.system.log.Logging;
 
 public class Notepad {
 
@@ -43,7 +45,8 @@ public class Notepad {
 	private static QuaverLayout activeLayout;
 
 	public Notepad(Configuration configuration, Build build) {
-		
+		Analytic a = new Analytic();
+		a.startTimer();
 		if (configuration == null) {
 			configuration = new Configuration("Default", "Default", true);
 			newBuild = true;
@@ -54,12 +57,6 @@ public class Notepad {
 		Notepad.theme = Theme.getDefault(); // TODO - Update when themes are saving and loading
 
 		if (!newBuild) getLibraries();
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
 		activeLayout = setupInitialLayout();
 		window = setupWindow();
@@ -68,28 +65,22 @@ public class Notepad {
 		// If new build, prompt to create configuration file
 		if (newBuild) {
 			int createNewConfig = 
-					JOptionPane.showConfirmDialog(
-							window, 
-							"This is a new build. Would you like to create a configuration file now?"
-							+"\n If not, this runtime will launch in trial mode.", 
-							"First Time Setup", 
-							JOptionPane.OK_CANCEL_OPTION);
+					Notify.confirm(window, "First Time Setup",
+						"This is a new build. Would you like to create a configuration file now?"
+								+"\n If not, this runtime will launch in trial mode.");
 			if (createNewConfig == 0)
 				if (createConfigFile()) newBuild = false;
 				else System.out.println("Failed to generate");
 			else {
 				generateTestData();
-				JOptionPane.showMessageDialog(
-						window, 
-						"This is now running in trial mode. All changes made to any documents will not be saved."
-						+"\nPlease relaunch to run first time setup after trial.", 
-						"Trial Mode Activated", 
-						JOptionPane.INFORMATION_MESSAGE);
+				Notify.info(window, "Trial Mode Activated", 
+					"This is now running in trial mode. All changes made to any documents will not be saved."
+						+"\nPlease relaunch to run first time setup after trial.");
 			}
 		}
 		
 		populateLists();
-
+		System.out.println("Load Time: " + a.lapTimer() + "ms");
 	}
 	
 	private boolean createConfigFile() {
@@ -97,13 +88,7 @@ public class Notepad {
 			Configuration.writeConfigJSON(config);
 			return true;
 		} catch (IOException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(
-					null, 
-					"Failed to create the configuration\n" + e, 
-					"Failed configuration", 
-					JOptionPane.ERROR_MESSAGE);
-			Launcher.exit(1, "Failed to create configuration file");
+			Logging.error(1, "Failed configuration", "Failed to create the configuration\n", e);
 			return false;
 		}
 	}
@@ -292,6 +277,9 @@ public class Notepad {
 		Library activeLibrary = activeLayout.getActiveLibrary();
 		Notebook activeNotebook = activeLayout.getActiveNotebook();
 		Note activeNote = activeLayout.getActiveNote();
+		
+		String currentText = activeLayout.getEditText();
+		String currentTitle = activeLayout.getEditTitle();
 
 		activeLayout = layout;
 
@@ -310,6 +298,9 @@ public class Notepad {
 		layout.setActiveLibrary(activeLibrary);		
 		layout.setActiveNotebook(activeNotebook);		
 		layout.setActiveNote(activeNote);
+		
+		if (layout instanceof PreviewScreen) layout.updatePreview(currentTitle, currentText);
+		
 	}
 
 	private JMenuBar generateCustomMenuBar() {
