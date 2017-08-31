@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.template.QuaverTemplate;
-import tech.tora.quaver.notepad.template.StandardTemplate;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
