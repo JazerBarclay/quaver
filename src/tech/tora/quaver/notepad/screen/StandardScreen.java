@@ -4,11 +4,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-
-import tech.tora.quaver.Configuration;
-import tech.tora.quaver.notepad.layout.standard.StandardLayout;
+import tech.tora.quaver.notepad.layout.StandardLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.CellType;
@@ -25,21 +21,20 @@ public class StandardScreen extends StandardLayout {
 	private Notebook activeNotebook = null;
 	private Note activeNote = null;
 	
-	public StandardScreen(Configuration config, Theme theme) {
-		super(theme);
+	public StandardScreen(Theme theme, String projectName, int release, int major, int minor) {
+		super(theme, projectName, release, major, minor);
 	}
 
 	@Override
-	public void addLibrary(Library library) {
+	public void addLibraryToList(Library library) {
 		notebooksList.addNode(new BasicListNode(20, library.getPath() + library.getName(), library.getName(), 
-				theme.notebookFillColour.addShade(-15, -15, -15), theme.notebookHoverColour.getAsColor(), 
-				new Font("Helvetica", Font.BOLD, 10), theme.fontColour.getAsColor(), 0) {
+				getTheme().notebookFillColour.addShade(-15, -15, -15), getTheme().notebookHoverColour.getAsColor(), 
+				new Font("Helvetica", Font.BOLD, 10), getTheme().fontColour.getAsColor(), 0) {
 		});
 	}
 
 	@Override
-	public void addNotebook(Notebook notebook) {
-		
+	public void addNotebookToList(Notebook notebook) {
 		notebooksList.addNotebookNode("/icon1.png", notebook.getUUID(), "   " + notebook.getName(), 
 				"" + notebook.getNoteAsArray().length, new ClickListener() {
 			
@@ -54,18 +49,17 @@ public class StandardScreen extends StandardLayout {
 				updatePreview("");
 				
 				for (Note n : notebook.getNoteAsArray()) {
-					addNote(n);
+					addNoteToList(n);
 				}
 			}
 		});
-		
 	}
 
 	@Override
-	public void addNote(Note note) {
+	public void addNoteToList(Note note) {
 		notesList.addNode(new BasicClickListNode(40, note.getUUID(), note.getTitle(), 
-				theme.notebookFillColour.getAsColor(), theme.notebookHoverColour.getAsColor(), 
-				new Font("Helvetica", Font.BOLD, 12), theme.fontColour.getAsColor(), -20) {
+				getTheme().notebookFillColour.getAsColor(), getTheme().notebookHoverColour.getAsColor(), 
+				new Font("Helvetica", Font.BOLD, 12), getTheme().fontColour.getAsColor(), -20) {
 			@Override
 			public void onClick() {
 				notesList.onClick(this);
@@ -89,47 +83,47 @@ public class StandardScreen extends StandardLayout {
 	}
 
 	@Override
-	public void editLibrary(Library library) {
-		
-	}
-
-	@Override
-	public void editNotebook(Notebook notebook) {
-		
-	}
-
-	@Override
-	public void editNote(Note note) {
+	public void editLibraryInList(Library library) {
 
 	}
 
 	@Override
-	public void removeLibrary(Library library) {
+	public void editNotebookInList(Notebook notebook) {
 
 	}
 
 	@Override
-	public void removeNotebook(Notebook notebook) {
+	public void editNoteInList(Note note) {
 
 	}
 
 	@Override
-	public void removeNote(Note note) {
+	public void removeLibraryFromList(Library library) {
 
 	}
 
 	@Override
-	public boolean saveLibrary(Library library) {
+	public void removeNotebookFromList(Notebook notebook) {
+
+	}
+
+	@Override
+	public void removeNoteFromList(Note note) {
+
+	}
+
+	@Override
+	public boolean saveLibraryToSystem(Library library) {
 		return false;
 	}
 
 	@Override
-	public boolean saveNotebook(Notebook notebook) {
+	public boolean saveNotebookToSystem(Notebook notebook) {
 		return false;
 	}
 
 	@Override
-	public boolean saveNote(Note note) {
+	public boolean saveNoteToSystem(Note note) {
 		try {
 			Note.writeContentJSON(note);
 			Note.writeMetaJSON(note);
@@ -141,69 +135,26 @@ public class StandardScreen extends StandardLayout {
 	}
 
 	@Override
-	public boolean deleteLibrary(Library library) {
+	public boolean deleteLibraryFromSystem(Library library) {
 		return false;
 	}
 
 	@Override
-	public boolean deleteNotebook(Notebook notebook) {
+	public boolean deleteNotebookToSystem(Notebook notebook) {
 		return false;
 	}
 
 	@Override
-	public boolean deleteNote(Note note) {
+	public boolean deleteNoteToSystem(Note note) {
 		return false;
 	}
+	
 
+	// Actives
+	
 	@Override
 	public Library getActiveLibrary() {
 		return activeLibrary;
-	}
-
-	@Override
-	public Notebook getActiveNotebook() {
-		return activeNotebook;
-	}
-
-	@Override
-	public Note getActiveNote() {
-		return activeNote;
-	}
-
-	@Override
-	public void setEditText(String text) {
-		editArea.setText(text);
-		editArea.setCaratPos(0);
-	}
-
-	@Override
-	public String getEditText() {
-		return editArea.getText();
-	}
-
-	@Override
-	public void clearEditText() {
-		setEditText("");
-		updatePreview("");
-	}
-
-	@Override
-	@Deprecated
-	public void updatePreview(Cell[] cells) {
-		// Do Nothing
-	}
-
-	@Override
-	public void updatePreview(String notes) {
-		previewArea.setText(notes);
-	}
-
-	@Override
-	public JMenuBar getMenu() {
-		JMenuBar menu = new JMenuBar();
-		JMenu menuItem = new JMenu("File");
-		menu.add(menuItem);
-		return menu;
 	}
 
 	@Override
@@ -219,6 +170,11 @@ public class StandardScreen extends StandardLayout {
 	}
 
 	@Override
+	public Notebook getActiveNotebook() {
+		return activeNotebook;
+	}
+
+	@Override
 	public void setActiveNotebook(Notebook notebook) {
 		this.activeNotebook = notebook;
 		if (notebook == null) return;
@@ -230,11 +186,16 @@ public class StandardScreen extends StandardLayout {
 				updatePreview("");
 				
 				for (Note n : notebook.getNoteAsArray()) {
-					addNote(n);
+					addNoteToList(n);
 				}
 				
 			}
 		}
+	}
+
+	@Override
+	public Note getActiveNote() {
+		return activeNote;
 	}
 
 	@Override
@@ -259,5 +220,34 @@ public class StandardScreen extends StandardLayout {
 			}
 		}
 	}
+
+	// Edits
 	
+	@Override
+	public void setEditText(String text) {
+		editArea.setText(text);
+		editArea.setCaratPos(0);
+	}
+
+	@Override
+	public String getEditText() {
+		return editArea.getText();
+	}
+
+	@Override
+	public void clearEditText() {
+		setEditText("");
+		updatePreview("");
+	}
+
+	@Override
+	public void updatePreview(Cell[] cells) {
+		
+	}
+
+	@Override
+	public void updatePreview(String notes) {
+		
+	}
+
 }

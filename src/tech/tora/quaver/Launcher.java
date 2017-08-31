@@ -36,9 +36,9 @@ public class Launcher {
 			} catch (ParseException e) {
 				Logging.errorMessage(1, null, "Configuration Read Error", "Failed to read config file", e);
 			}
-			new Notepad(c, build.release(), build.major(), build.minor());
+			new Notepad(c, build);
 		} else {
-			new Notepad(null, build.release(), build.major(), build.minor());
+			new Notepad(null, build);
 		}
 
 	}

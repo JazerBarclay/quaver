@@ -2,252 +2,153 @@ package tech.tora.quaver.notepad.layout;
 
 import javax.swing.JPanel;
 
+import tech.tora.quaver.Launcher;
+import tech.tora.quaver.notepad.template.QuaverTemplate;
+import tech.tora.quaver.notepad.template.StandardTemplate;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.layout.Layout;
+import tech.tora.tools.swing.template.Template;
 
 public abstract class QuaverLayout extends Layout {
 	
-	private JPanel wrapper;
-	protected Theme theme;
+	private QuaverTemplate template;
+	private Theme theme;
+	private String name;
+	private int release, major, minor;
 	
-	public QuaverLayout(Theme theme) {
-		super();
+	public QuaverLayout(QuaverTemplate template, Theme theme, String projectName, int release, int major, int minor) {
 		this.theme = theme;
-		wrapper = buildFrame(theme);
-		constructFrame(wrapper);
-		buildElements(theme);
-		constructElements();
+		this.name = projectName;
+		this.release = release;
+		this.major = major;
+		this.minor = minor;
+		
+		this.template = template;
+		
+		constructElements(theme);
+		buildElements(template);
 	}
 
+	public abstract void constructElements(Theme theme);
+	public abstract void buildElements(QuaverTemplate template);
 	
+	public Template getTemplate() {
+		return template;
+	}
 	
-	/* ------------------------------------------------------ */
-	// Layout Generation
-	/* ------------------------------------------------------ */
+	public Theme getTheme() {
+		return theme;
+	}
 	
-	/**
-	 * Create panels
-	 * @param theme
-	 * @return
-	 */
-	public abstract JPanel buildFrame(Theme theme);
-	
-	/**
-	 * Combine panels to generate layout template 
-	 * @param wrapper
-	 * @return
-	 */
-	public abstract JPanel constructFrame(JPanel wrapper);
-	
-	/**
-	 * Create elements for layout
-	 * @param theme
-	 */
-	public abstract void buildElements(Theme theme);
-	
-	/**
-	 * Add elements to the layout template
-	 */
-	public abstract void constructElements();
-	
+	@Override
+	public String getName() {
+		return name.substring(0, 1).toUpperCase() + name.substring(1);
+	}
+
+	@Override
+	public String getTitle() {
+		return getName() + " M" + release + "." + major + " r" + minor;
+	}
+
+	@Override
+	public JPanel getWrapper() {
+		return getTemplate().getWrapperPanel();
+	}
 	
 	/* ------------------------------------------------------ */
 	// Data Management
 	/* ------------------------------------------------------ */
 	
-	/**
-	 * Add library to a list
-	 * @param library
-	 */
-	public abstract void addLibrary(Library library);
+	public abstract void addLibraryToList(Library library);
 	
-	/**
-	 * Add notebook to a list
-	 * @param notebook
-	 */
-	public abstract void addNotebook(Notebook notebook);
+	public abstract void addNotebookToList(Notebook notebook);
+
+	public abstract void addNoteToList(Note note);
+
+	public abstract void editLibraryInList(Library library);
 	
-	/**
-	 * Add note to a list
-	 * @param note
-	 */
-	public abstract void addNote(Note note);
+	public abstract void editNotebookInList(Notebook notebook);
+
+	public abstract void editNoteInList(Note note);
 	
-	/**
-	 * Alter a library in the list
-	 * @param library
-	 */
-	public abstract void editLibrary(Library library);
+	public abstract void removeLibraryFromList(Library library);
+
+	public abstract void removeNotebookFromList(Notebook notebook);
+
+	public abstract void removeNoteFromList(Note note);
+
+	public abstract boolean saveLibraryToSystem(Library library);
+
+	public abstract boolean saveNotebookToSystem(Notebook notebook);
+
+	public abstract boolean saveNoteToSystem(Note note);
 	
-	/**
-	 * Alter a notebook in the list
-	 * @param notebook
-	 */
-	public abstract void editNotebook(Notebook notebook);
-	
-	/**
-	 * Alter note in the list
-	 * @param note
-	 */
-	public abstract void editNote(Note note);
-	
-	/**
-	 * Remove library from the list
-	 * @param library
-	 */
-	public abstract void removeLibrary(Library library);
-	
-	/**
-	 * Remove notebook from the list
-	 * @param notebook
-	 */
-	public abstract void removeNotebook(Notebook notebook);
-	
-	/**
-	 * Remove note from the list
-	 * @param note
-	 */
-	public abstract void removeNote(Note note);
-	
-	/**
-	 * Save library to the filesystem
-	 * @param library
-	 * @return true if save successful
-	 */
-	public abstract boolean saveLibrary(Library library);
-	
-	/**
-	 * Save notebook to the filesystem
-	 * @param notebook
-	 * @return true if save successful
-	 */
-	public abstract boolean saveNotebook(Notebook notebook);
-	
-	/**
-	 * Save note to the filesystem
-	 * @param note
-	 * @return true if save successful
-	 */
-	public abstract boolean saveNote(Note note);
-	
-	/**
-	 * Delete library from the filesystem
-	 * @param library
-	 * @return true if delete successful
-	 */
-	public abstract boolean deleteLibrary(Library library);
-	
-	/**
-	 * Delete notebook from the filesystem
-	 * @param notebook
-	 * @return true if delete successful
-	 */
-	public abstract boolean deleteNotebook(Notebook notebook);
-	
-	/**
-	 * Delete note from the filesystem
-	 * @param note
-	 * @return true if delete successful
-	 */
-	public abstract boolean deleteNote(Note note);
+	public abstract boolean deleteLibraryFromSystem(Library library);
+
+	public abstract boolean deleteNotebookToSystem(Notebook notebook);
+
+	public abstract boolean deleteNoteToSystem(Note note);
 
 	
 	/* ------------------------------------------------------ */
 	// Actives
 	/* ------------------------------------------------------ */
 	
-	/**
-	 * Get the active library in the list
-	 * @return Library if set, null if unset
-	 */
 	public abstract Library getActiveLibrary();
-	
-	/**
-	 * Set the active library
-	 * @param library
-	 */
+
 	public abstract void setActiveLibrary(Library library);
-	
-	/**
-	 * Get the active notebook in the list
-	 * @return Notebook if set, null if unset
-	 */
+
 	public abstract Notebook getActiveNotebook();
-	
-	/**
-	 * Sets the active notebook
-	 * @param notebook
-	 */
+
 	public abstract void setActiveNotebook(Notebook notebook);
-	
-	/**
-	 * Get the active note in the list
-	 * @return Note if set, null if unset
-	 */
+
 	public abstract Note getActiveNote();
-	
-	/**
-	 * Sets the active note
-	 * @param note
-	 */
+
 	public abstract void setActiveNote(Note note);
+	
 	
 	/* ------------------------------------------------------ */
 	// Display
 	/* ------------------------------------------------------ */
 	
-	/**
-	 * Sets the edit area text
-	 * @param text
-	 */
 	public abstract void setEditText(String text);
-	
-	/**
-	 * Get the edit area text
-	 * @return String text
-	 */
+
 	public abstract String getEditText();
-	
-	/**
-	 * Clears the edit area
-	 */
+
 	public abstract void clearEditText();
 	
-	/**
-	 * Update preview area with cells
-	 * @param cells
-	 */
 	@Deprecated
 	public abstract void updatePreview(Cell[] cells);
 
-	/**
-	 * Update the preview with a HTML complete string
-	 * @param notes
-	 */
 	public abstract void updatePreview(String notes);
 	
+	
 	/* ------------------------------------------------------ */
-	// Standard Layout Overrides
+	// Window Management
 	/* ------------------------------------------------------ */
 	
 	@Override
-	public String getName() {
-		return "Quaver";
+	public void windowOpenAction() {}
+
+	@Override
+	public void windowCloseAction() {
+		Launcher.exit(1, "Close action requested from a Quaver Layout");
 	}
 
 	@Override
-	public String getTitle() {
-		return getName();
-	}
+	public void windowMinimiseAction() {}
 
 	@Override
-	public JPanel getWrapper() {
-		return wrapper;
-	}
+	public void windowMaximiseAction() {}
 
+	@Override
+	public void windowGainFocusAction() {}
+
+	@Override
+	public void windowLoseFocusAction() {}
 
 }

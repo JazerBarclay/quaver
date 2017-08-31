@@ -1,4 +1,4 @@
-package tech.tora.quaver.notepad.layout.standard;
+package tech.tora.quaver.notepad.template;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -8,51 +8,47 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import tech.tora.quaver.Launcher;
-import tech.tora.quaver.notepad.layout.QuaverLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.tools.swing.panel.PaneHorizontal;
 import tech.tora.tools.swing.panel.PaneVertical;
 
-/**
- * Template of the standard layout. Frame created here for all elements to be added to.
- * @author Nythril
- */
-public abstract class StandardLayoutTemplate extends QuaverLayout {
+public class StandardTemplate extends QuaverTemplate {
 
-	protected JPanel leftWrapper;
-	protected JPanel rightWrapper;
+	private JPanel localWrapper;
 	
-	protected PaneVertical notebooksWrapper;
-	protected PaneVertical notesWrapper;
-	protected PaneVertical contentWrapper;
-	protected JPanel splitter;
+	private JPanel leftWrapper;
+	private JPanel rightWrapper;
 	
-	protected JPanel notebooksTop;
-	protected JPanel notebooksListContainer;
-	protected PaneHorizontal notebooksBot;
+	private PaneVertical notebooksWrapper;
+	private PaneVertical notesWrapper;
+	private PaneVertical contentWrapper;
+	private JPanel splitter;
+	
+	private JPanel notebooksTop;
+	private JPanel notebooksListContainer;
+	private PaneHorizontal notebooksBot;
 
-	protected PaneHorizontal notesTop;
-	protected JPanel notesListContainer;
-	protected PaneHorizontal notesBot;
+	private PaneHorizontal notesTop;
+	private JPanel notesListContainer;
+	private PaneHorizontal notesBot;
+
+	private JPanel editAreaPane;
+	private JPanel previewAreaPane;
 	
 	private static int notebooksWidth = 200, notesWidth = 300;
 	private static int notebooksTopHeight = 30, notebooksBotHeight = 30;
 	private static int notesTopHeight = 30, notesBotHeight = 30;
 	
-	public StandardLayoutTemplate(Theme theme) {
+	public StandardTemplate(Theme theme) {
 		super(theme);
-		setDefaultWidth(1600);
-		setDefaultHeight(800);
 	}
-
+	
 	@Override
-	public JPanel buildFrame(Theme theme) {
-
-		// Main Wrappers
-		JPanel wrapper = new JPanel();
-		wrapper.setLayout(new BorderLayout());
-		wrapper.setBackground(new Color(100, 100, 100));
+	protected JPanel buildPanels(Theme theme) {
+		localWrapper = new JPanel();
+		
+		localWrapper.setLayout(new BorderLayout());
+		localWrapper.setBackground(new Color(100, 100, 100));
 		
 		leftWrapper = new JPanel(new BorderLayout());
 		leftWrapper.setBackground(new Color(150, 150, 150));
@@ -91,15 +87,33 @@ public abstract class StandardLayoutTemplate extends QuaverLayout {
 
 		// Content
 		contentWrapper = new PaneVertical(new Color(210, 210, 210));
+
+//		contentWrapper.getHeaderPane().setPreferredSize(new Dimension(0, 30));
+//		contentWrapper.getHeaderPane().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, theme.borderColour.getAsColor()));
+//		contentWrapper.getFooterPane().setPreferredSize(new Dimension(0, 30));
+//		contentWrapper.getFooterPane().setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, theme.borderColour.getAsColor()));
+		
+		
+		contentWrapper.setColour(theme.editFillColour.getAsColor());
 		
 		splitter = new JPanel(new GridLayout());
 		splitter.setOpaque(false);
 		
-		return wrapper;
+		editAreaPane = new JPanel();
+		editAreaPane.setLayout(new BorderLayout());
+		editAreaPane.setBorder(BorderFactory.createEmptyBorder());
+		editAreaPane.setOpaque(false);
+		
+		previewAreaPane = new JPanel();
+		previewAreaPane.setLayout(new BorderLayout());
+		previewAreaPane.setBorder(BorderFactory.createEmptyBorder());
+		previewAreaPane.setOpaque(false);
+		
+		return localWrapper;
 	}
 
 	@Override
-	public JPanel constructFrame(JPanel wrapper) {
+	protected void constructPanels(JPanel wrapper) {
 		
 		wrapper.add(leftWrapper, BorderLayout.WEST);
 		wrapper.add(rightWrapper, BorderLayout.CENTER);
@@ -116,42 +130,79 @@ public abstract class StandardLayoutTemplate extends QuaverLayout {
 		
 		contentWrapper.getCenterPane().add(splitter, BorderLayout.CENTER);
 		
-		return wrapper;
-		
+		splitter.add(editAreaPane);		
+		splitter.add(previewAreaPane);
 	}
-
-	/* ------------------------------------------------------ */
-	// Frame Action Management
-	/* ------------------------------------------------------ */
 	
 	@Override
-	public void windowOpenAction() {
-		System.out.println("Greetings");
+	public JPanel getLibraryListPanel() {
+		return notebooksListContainer;
 	}
 
 	@Override
-	public void windowCloseAction() {
-		Launcher.exit(0, "Close requested from Standard Layout Window");
+	public JPanel getNotebookListPanel() {
+		return notebooksListContainer;
 	}
 
 	@Override
-	public void windowMinimiseAction() {
-		System.out.println("Minimised");
+	public JPanel getNoteListPanel() {
+		return notesListContainer;
 	}
 
 	@Override
-	public void windowMaximiseAction() {
-		System.out.println("Maximise");
+	public JPanel getLibraryTitlePanel() {
+		return notebooksTop;
 	}
 
 	@Override
-	public void windowGainFocusAction() {
-		System.out.println("Focused");
+	public JPanel getNotebookTitlePanel() {
+		return notebooksTop;
 	}
 
 	@Override
-	public void windowLoseFocusAction() {
-		System.out.println("LoS");
+	public JPanel getNoteTitlePanel() {
+		return notesTop;
 	}
+
+	@Override
+	public JPanel getEditTitlePanel() {
+		return new JPanel();
+	}
+
+	@Override
+	public JPanel getEditAreaPanel() {
+		return editAreaPane;
+	}
+
+	@Override
+	public JPanel getEditTagPanel() {
+		return new JPanel();
+	}
+
+	@Override
+	public JPanel getPreviewAreaPanel() {
+		return previewAreaPane;
+	}
+
+	@Override
+	public JPanel getPreviewStatusPanel() {
+		return new JPanel();
+	}
+
+	@Override
+	public JPanel getAddLibraryButtonPanel() {
+		return new JPanel();
+	}
+
+	@Override
+	public JPanel getAddNotebookButtonPanel() {
+		return notebooksBot.getLeftPane();
+	}
+
+	@Override
+	public JPanel getAddNoteButtonPanel() {
+		return notesTop.getLeftPane();
+	}
+
 
 }

@@ -1,45 +1,56 @@
-package tech.tora.quaver.notepad.layout.standard;
+package tech.tora.quaver.notepad.layout;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+
 import tech.tora.quaver.Launcher;
+import tech.tora.quaver.notepad.template.QuaverTemplate;
+import tech.tora.quaver.notepad.template.StandardTemplate;
 import tech.tora.quaver.notepad.widget.elements.AddButton;
 import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.notepad.widget.list.NotebookList;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.quaver.types.Cell;
 import tech.tora.tools.swing.list.BasicList;
 
-/**
- * Standard layout for the notepad
- * @author Nythril
- */
-public abstract class StandardLayout extends StandardLayoutTemplate {
+public abstract class StandardLayout extends QuaverLayout {
 	
-	public JLabel notebookTitle;
+	protected JMenuBar menu;
+	
+	protected JLabel notebookTitle;
 
-	public NotebookList notebooksList;
-	public BasicList notesList;
+	protected NotebookList notebooksList;
+	protected BasicList notesList;
 
-	public AddButton btnAddNotebook;
-	public AddButton btnAddNote;
+	protected AddButton btnAddNotebook;
+	protected AddButton btnAddNote;
 	
-	public EditAreaThing editArea;
-	public PreviewAreaThing previewArea;
+	protected EditAreaThing editArea;
+	protected PreviewAreaThing previewArea;
 	
-	public StandardLayout(Theme theme) {
-		super(theme);
+	public StandardLayout(Theme theme, String projectName, int release, int major, int minor) {
+		super(new StandardTemplate(theme), theme, projectName, release, major, minor);
+		setDefaultWidth(1600);
+		setDefaultHeight(800);
+	}
+	
+	@Override
+	public void windowCloseAction() {
+		Launcher.exit(1, "Close action requested from Standard Layout");
 	}
 
+
 	@Override
-	public void buildElements(Theme theme) {
+	public void constructElements(Theme theme) {
+		menu = new JMenuBar();
+		
 		notebookTitle = new JLabel();
-		notebookTitle.setText("Quaver");
+		notebookTitle.setText(getTitle());
 		notebookTitle.setFont(new Font("Helvetica", Font.BOLD, 14));
 		notebookTitle.setHorizontalAlignment(JLabel.CENTER);
 		notebookTitle.setBackground(new Color(200, 200, 0));
@@ -87,19 +98,12 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 
 			@Override
 			public void onSave() {
-				
+				saveNoteToSystem(getActiveNote());
 			}
 			
 			@Override
 			public void onChange() {
-				String s = getEditText();
-//				getActiveNote().clearCells();
-				
-//				for () {
-//					
-//				}
-				
-				saveNote(getActiveNote());
+				updatePreview(getActiveNote().getCells());
 			}
 			
 			@Override
@@ -117,28 +121,35 @@ public abstract class StandardLayout extends StandardLayoutTemplate {
 			private static final long serialVersionUID = 1L;
 		};
 		
-		previewArea.setText("<html><head><title>" + "Quaver" + "</title>"
-				+ "</head><body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
-				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview ([insert build value here])</p></body></html>");
+		previewArea.setText(
+				"<html>"
+				+ "<head><title>" + "Quaver" + "</title></head>"
+				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
+				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview ([insert build value here])</p>"
+				+ "</body></html>");
 		
 	}
 
 	@Override
-	public void constructElements() {
-		notebooksTop.add(notebookTitle);
+	public void buildElements(QuaverTemplate template) {
+		
+		template.getNotebookTitlePanel().add(notebookTitle);
 
-		// Add Lists
-		notebooksListContainer.add(notebooksList);
-		notesListContainer.add(notesList);
+		template.getNotebookListPanel().add(notebooksList);
+		template.getNoteListPanel().add(notesList);
 		
-		// Add Buttons
-		notebooksBot.getLeftPane().add(btnAddNotebook, BorderLayout.WEST);
-		notesTop.getLeftPane().add(btnAddNote, BorderLayout.WEST);
+		template.getAddNotebookButtonPanel().add(btnAddNotebook);
+		template.getAddNoteButtonPanel().add(btnAddNote);
 		
-		splitter.add(editArea);
-		splitter.add(previewArea);
+		template.getEditAreaPanel().add(editArea);
+		template.getPreviewAreaPanel().add(previewArea);
 		
 	}
-	
 
+	@Override
+	public JMenuBar getMenu() {
+		return menu;
+	}
+
+	
 }
