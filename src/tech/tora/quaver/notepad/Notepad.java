@@ -30,7 +30,7 @@ import tech.tora.tools.swing.frame.AdvancedFrame;
 
 public class Notepad {
 
-	private static boolean newBuild;
+	public static boolean newBuild;
 
 	private static AdvancedFrame window;
 	private static Configuration config;
@@ -299,7 +299,7 @@ public class Notepad {
 
 		window.setVisible(true);
 
-		//		populateLists();
+		populateLists();
 
 		layout.setActiveLibrary(activeLibrary);		
 		layout.setActiveNotebook(activeNotebook);		
