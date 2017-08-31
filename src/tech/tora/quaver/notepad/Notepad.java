@@ -49,9 +49,9 @@ public class Notepad {
 			newBuild = true;
 		} else newBuild = false;
 
-		this.config = configuration;
-		this.build = build;
-		this.theme = Theme.getDefault(); // TODO - Update when themes are saving and loading
+		Notepad.config = configuration;
+		Notepad.build = build;
+		Notepad.theme = Theme.getDefault(); // TODO - Update when themes are saving and loading
 
 		if (!newBuild) getLibraries();
 		

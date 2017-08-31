@@ -3,8 +3,6 @@ package tech.tora.quaver.types;
 import java.io.File;
 import java.util.LinkedHashMap;
 
-import tech.tora.quaver.Launcher;
-
 public class Library {
 	
 	/** Path to the library (not including the library folder) **/

@@ -10,7 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import tech.tora.quaver.Launcher;
 import tech.tora.tools.system.CustomUUID;
 
 public class Note {
@@ -378,7 +377,7 @@ public class Note {
 	}
 	
 	public static Cell[] stringToCells() {
-		Cell[] c = new Cell[] {};
+//		Cell[] c = new Cell[] {};
 		return new Cell[] {};
 	}
 	
