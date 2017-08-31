@@ -140,7 +140,26 @@ public abstract class StandardLayout extends QuaverLayout {
 			
 		};
 		
-		editArea.setText("This is a test preview of " + getTitle());
+		editArea.setText("*This is a test preview of " + getTitle() + "*\n\n" 
+				+ "# Patch Notes\n"
+				+ "## " + release + "." + major + " r" + minor + "\n"
+				+ "* Top menu bar added\n"
+				+ "* Mac support added\n"
+				+ "* Added layout selection\n"
+				+ "\n"
+				+ "## 0.3 r0\n"
+				+ "* Flight checks done on startup\n"
+				+ "* Configuration done on startup\n"
+				+ "* Generates JSON configuration\n"
+				+ "* Notebooks generated with meta file\n"
+				+ "* Notebook UUID generated using notebook name salt\n"
+				+ "* Notes generated in Notebook folder\n"
+				+ "* Notes content holds only data\n"
+				+ "* Notes meta contains all meta data attributed to the content\n"
+				+ "* Saving only functional through keyboard shortcut CTRL+S\n"
+				+ "* Cell type management functional\n"
+				+ "* Documentation.md contains beginning of the technical specification\n"
+				+ "");
 		
 		
 		previewArea = new PreviewAreaThing() {

@@ -14,6 +14,7 @@ import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicListNode;
 import tech.tora.tools.swing.list.ClickListener;
+import tech.tora.tools.system.log.Analytic;
 
 public class StandardScreen extends StandardLayout {
 
@@ -45,8 +46,8 @@ public class StandardScreen extends StandardLayout {
 				setActiveNote(null);
 				
 				notesList.clear();
-				editArea.setText("");
-				updatePreview("", "");
+				clearEditText();
+				updatePreview();
 				
 				for (Note n : notebook.getNoteAsArray()) {
 					addNoteToList(n);
@@ -228,12 +229,13 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public void clearEditText() {
+		txtNoteTitle.setText("");
 		setEditText("");
-		updatePreview("Title", "");
 	}
 
 	@Override
 	public void updatePreview(String title, Cell[] cells) {
+		updateNoteCells();
 		String text = "";
 		for (Cell c : cells) {
 			text += ("[~" + c.type + "~]" + "<br>");
@@ -246,7 +248,7 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public void updatePreview(String title, String notes) {
-		
+		updateNoteCells();
 		String compiled = "";
 		
 		for (String text : notes.split("\n")) {
@@ -266,4 +268,101 @@ public class StandardScreen extends StandardLayout {
 		
 	}
 
+	@Override
+	public String getEditTitle() {
+		return txtNoteTitle.getText();
+	}
+
+	private void updatePreview() {
+		updateNoteCells();
+		updatePreview("", "");
+	}
+	
+	private void updateNoteCells() {
+		if (activeNote == null) return;
+		
+		Cell[] cells = new Cell[] {};
+		
+		Cell activeCell = null;
+		CellType activeCellType = null;
+		String activeCellLang = null;
+		String activeCellData = null;
+		
+		int i = 0;
+		for (String line : getEditText().split("\n")) {
+			if (i == 0) {
+				activeCell = new Cell();
+				activeCellData = "";
+				if (line.startsWith("[~") && line.endsWith("~]") && line.length() > 4) {
+					if (line.equals("[~text~]")) activeCellType = CellType.TEXT;
+					else if (line.equals("[~markdown~]")) activeCellType = CellType.MARKDOWN;
+					else if (line.equals("[~code~]")) activeCellType = CellType.CODE;
+					else if (line.equals("[~latex~]")) activeCellType = CellType.LATEX;
+					else activeCellType = CellType.MARKDOWN;
+					activeCellData = "";
+				} else if (line.startsWith("{~") && line.endsWith("~}") && line.length() > 4) {
+					activeCellType = CellType.CODE;
+					activeCellLang = line.substring(2, line.length()-2);
+					activeCellData = "";
+				} else {
+					activeCellType = CellType.MARKDOWN;
+					activeCellLang = null;
+					activeCellData = "";
+					activeCellData += (line + "\n");
+				}
+			} else {
+				if (line.startsWith("{~")  && line.endsWith("~}") && activeCellLang == null) {
+					activeCellLang = line.substring(2, line.length() -2);
+				} else if (line.startsWith("[~") && line.endsWith("~]")) {
+					activeCell.data = activeCellData;
+					activeCell.language = activeCellLang;
+					activeCell.type = activeCellType.type;
+					cells = addCellToArray(cells, activeCell);
+					activeCell = new Cell();
+					activeCellType = null;
+					activeCellLang = null;
+					activeCellData = "";
+				} else {
+					activeCellData += (line + "\n");
+				}
+			}
+		}
+		
+//		Cell activeCell = null;
+//		CellType type = null;
+//		String activeCellData = "";
+//		
+//		String[] builder = new String[] {};
+//		String[] splitText = getEditText().split("\n");
+//		
+//		int i = 0;
+//		for (String line : splitText) {
+//			if (i == 0) {
+//				if (!line.startsWith("[~") || !line.endsWith("~]")) {
+//					builder = addString(builder, "[~markdown~]");
+//					i++;
+//				}
+//				builder = addString(builder, line);
+//			} else {
+//				
+//			}
+//			i++;
+//		}
+		
+	}
+	
+	private String[] addString(String[] oldArray, String newString) {
+		String[] newStringArray = new String[oldArray.length+1];
+		for (int i = 0; i < oldArray.length; i++) newStringArray[i] = oldArray[i];
+		newStringArray[oldArray.length] = newString;
+		return newStringArray;
+	}
+	
+	private Cell[] addCellToArray(Cell[] oldArray, Cell newCell) {
+		Cell[] newCellArray = new Cell[oldArray.length+1];
+		for (int i = 0; i < oldArray.length; i++) newCellArray[i] = oldArray[i];
+		newCellArray[oldArray.length] = newCell;
+		return newCellArray;
+	}
+	
 }

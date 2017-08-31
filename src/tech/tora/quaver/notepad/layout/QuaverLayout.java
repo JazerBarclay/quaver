@@ -16,8 +16,8 @@ public abstract class QuaverLayout extends Layout {
 	
 	private QuaverTemplate template;
 	private Theme theme;
-	private String name;
-	private int release, major, minor;
+	protected String name;
+	protected int release, major, minor;
 	
 	public QuaverLayout(QuaverTemplate template, Theme theme, String projectName, int release, int major, int minor) {
 		this.theme = theme;
@@ -117,6 +117,8 @@ public abstract class QuaverLayout extends Layout {
 	public abstract void setEditText(String text);
 
 	public abstract String getEditText();
+	
+	public abstract String getEditTitle();
 
 	public abstract void clearEditText();
 	
