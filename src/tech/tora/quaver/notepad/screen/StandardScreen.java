@@ -46,7 +46,7 @@ public class StandardScreen extends StandardLayout {
 				
 				notesList.clear();
 				editArea.setText("");
-				updatePreview("");
+				updatePreview("", "");
 				
 				for (Note n : notebook.getNoteAsArray()) {
 					addNoteToList(n);
@@ -182,7 +182,7 @@ public class StandardScreen extends StandardLayout {
 				notebooksList.onClick((BasicListNode)notebooksList.getNodes().get(key));
 				notesList.clear();
 				editArea.setText("");
-				updatePreview("");
+				updatePreview("", "");
 				
 				for (Note n : notebook.getNoteAsArray()) {
 					addNoteToList(n);
@@ -215,7 +215,7 @@ public class StandardScreen extends StandardLayout {
 					text+=c.data;
 				}
 				setEditText(text);
-				updatePreview(text);
+				updatePreview("", note.getCells());
 
 			}
 		}
@@ -237,21 +237,27 @@ public class StandardScreen extends StandardLayout {
 	@Override
 	public void clearEditText() {
 		setEditText("");
-		updatePreview("");
+		updatePreview("Title", "");
 	}
 
 	@Override
-	public void updatePreview(Cell[] cells) {
-		updatePreview("");
+	public void updatePreview(String title, Cell[] cells) {
+		String text = "";
+		for (Cell c : cells) {
+			text += ("<p>" + "[~" + c.type + "~]" + "</p>");
+			for (String line : c.data.split("\\r?\\n")) {
+				text += "" + line + "\n";
+			}
+		}
+		updatePreview(title, text);
 	}
 
 	@Override
-	public void updatePreview(String notes) {
-		String title = "Title";
-		if (getActiveNote() != null) title = getActiveNote().getTitle();
+	public void updatePreview(String title, String notes) {
+		if (activeNote == null) return;
 		String text = "<html>"
 				+ "<head><title>" + "Quaver" + "</title></head>"
-				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
+				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px; word-wrap: break-word;\">" 
 				+ "<h1>" + title + "</h1>"
 				+ "<hr><br/>"
 				+ notes

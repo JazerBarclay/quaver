@@ -122,9 +122,9 @@ public abstract class QuaverLayout extends Layout {
 	public abstract void clearEditText();
 	
 	@Deprecated
-	public abstract void updatePreview(Cell[] cells);
+	public abstract void updatePreview(String title, Cell[] cells);
 
-	public abstract void updatePreview(String notes);
+	public abstract void updatePreview(String title, String notes);
 	
 	
 	/* ------------------------------------------------------ */

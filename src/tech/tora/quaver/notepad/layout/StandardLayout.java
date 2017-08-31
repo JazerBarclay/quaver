@@ -103,7 +103,7 @@ public abstract class StandardLayout extends QuaverLayout {
 			
 			@Override
 			public void onChange() {
-				updatePreview(getActiveNote().getCells());
+				updatePreview("Title", editArea.getText());
 			}
 			
 			@Override
@@ -125,7 +125,7 @@ public abstract class StandardLayout extends QuaverLayout {
 				"<html>"
 				+ "<head><title>" + "Quaver" + "</title></head>"
 				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
-				+ "<h1>Welcome to Quaver</h1><hr><br/><p>This is a test preview ([insert build value here])</p>"
+				+ "<h1>Welcome to Quaver</h1><hr><p>This is a test preview ([insert build value here])</p>"
 				+ "</body></html>");
 		
 	}

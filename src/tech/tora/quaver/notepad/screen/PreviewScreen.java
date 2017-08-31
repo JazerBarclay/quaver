@@ -123,7 +123,7 @@ public class PreviewScreen extends PreviewLayout {
 	@Override
 	public void setActiveNote(Note note) {
 		this.activeNote = note;
-		updatePreview(note.getCells());
+		updatePreview("", note.getCells());
 	}
 
 	// Edits
@@ -144,19 +144,18 @@ public class PreviewScreen extends PreviewLayout {
 	}
 
 	@Override
-	public void updatePreview(Cell[] cells) {
+	public void updatePreview(String title, Cell[] cells) {
 		String text = "";
 		for (Cell c : cells) {
 			text += ("[~" + c.type + "~]" + "\n");
 			text += c.data;
 			text += "\n";
 		}
-		updatePreview(text);
+		updatePreview("", text);
 	}
 
 	@Override
-	public void updatePreview(String notes) {
-		String title = "Title";
+	public void updatePreview(String title, String notes) {
 		if (getActiveNote() != null) title = getActiveNote().getTitle();
 		String text = "<html>"
 				+ "<head><title>" + "Quaver" + "</title></head>"
