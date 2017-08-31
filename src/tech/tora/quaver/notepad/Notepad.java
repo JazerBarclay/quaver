@@ -54,6 +54,12 @@ public class Notepad {
 		this.theme = Theme.getDefault(); // TODO - Update when themes are saving and loading
 
 		if (!newBuild) getLibraries();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		activeLayout = setupInitialLayout();
 		window = setupWindow();

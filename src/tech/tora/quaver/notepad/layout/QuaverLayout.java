@@ -89,9 +89,9 @@ public abstract class QuaverLayout extends Layout {
 	
 	public abstract boolean deleteLibraryFromSystem(Library library);
 
-	public abstract boolean deleteNotebookToSystem(Notebook notebook);
+	public abstract boolean deleteNotebookFromSystem(Notebook notebook);
 
-	public abstract boolean deleteNoteToSystem(Note note);
+	public abstract boolean deleteNoteFromSystem(Note note);
 
 	
 	/* ------------------------------------------------------ */

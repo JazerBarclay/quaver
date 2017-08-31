@@ -83,12 +83,12 @@ public class PreviewScreen extends PreviewLayout {
 	}
 
 	@Override
-	public boolean deleteNotebookToSystem(Notebook notebook) {
+	public boolean deleteNotebookFromSystem(Notebook notebook) {
 		return false;
 	}
 
 	@Override
-	public boolean deleteNoteToSystem(Note note) {
+	public boolean deleteNoteFromSystem(Note note) {
 		return false;
 	}
 	

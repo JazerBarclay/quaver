@@ -82,34 +82,22 @@ public class StandardScreen extends StandardLayout {
 	}
 
 	@Override
-	public void editLibraryInList(Library library) {
-
-	}
+	public void editLibraryInList(Library library) {}
 
 	@Override
-	public void editNotebookInList(Notebook notebook) {
-
-	}
+	public void editNotebookInList(Notebook notebook) {}
 
 	@Override
-	public void editNoteInList(Note note) {
-
-	}
+	public void editNoteInList(Note note) {}
 
 	@Override
-	public void removeLibraryFromList(Library library) {
-
-	}
+	public void removeLibraryFromList(Library library) {}
 
 	@Override
-	public void removeNotebookFromList(Notebook notebook) {
-
-	}
+	public void removeNotebookFromList(Notebook notebook) {}
 
 	@Override
-	public void removeNoteFromList(Note note) {
-
-	}
+	public void removeNoteFromList(Note note) {}
 
 	@Override
 	public boolean saveLibraryToSystem(Library library) {
@@ -123,6 +111,9 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public boolean saveNoteToSystem(Note note) {
+		note.setTitle(txtNoteTitle.getText());
+//		note.clearCells();
+		// Set note cells here
 		try {
 			Note.writeContentJSON(note);
 			Note.writeMetaJSON(note);
@@ -139,12 +130,12 @@ public class StandardScreen extends StandardLayout {
 	}
 
 	@Override
-	public boolean deleteNotebookToSystem(Notebook notebook) {
+	public boolean deleteNotebookFromSystem(Notebook notebook) {
 		return false;
 	}
 
 	@Override
-	public boolean deleteNoteToSystem(Note note) {
+	public boolean deleteNoteFromSystem(Note note) {
 		return false;
 	}
 	
