@@ -76,7 +76,6 @@ public class StandardScreen extends StandardLayout {
 				}
 			
 				setEditText(text);
-				
 			}
 			
 		});
@@ -216,6 +215,7 @@ public class StandardScreen extends StandardLayout {
 					text+=c.data;
 				}
 				setEditText(text);
+				updatePreview(text);
 
 			}
 		}
@@ -242,11 +242,22 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public void updatePreview(Cell[] cells) {
-		
+		updatePreview("");
 	}
 
 	@Override
 	public void updatePreview(String notes) {
+		String title = "Title";
+		if (getActiveNote() != null) title = getActiveNote().getTitle();
+		String text = "<html>"
+				+ "<head><title>" + "Quaver" + "</title></head>"
+				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
+				+ "<h1>" + title + "</h1>"
+				+ "<hr><br/>"
+				+ notes
+				+ "</body></html>";
+		
+		previewArea.setText(text);
 		
 	}
 
