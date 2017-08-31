@@ -32,7 +32,7 @@ public class StandardTemplate extends QuaverTemplate {
 	private JPanel notesListContainer;
 	private PaneHorizontal notesBot;
 
-	private JPanel editAreaPane;
+	private PaneVertical editAreaPane;
 	private JPanel previewAreaPane;
 	
 	private static int notebooksWidth = 200, notesWidth = 300;
@@ -99,10 +99,11 @@ public class StandardTemplate extends QuaverTemplate {
 		splitter = new JPanel(new GridLayout());
 		splitter.setOpaque(false);
 		
-		editAreaPane = new JPanel();
-		editAreaPane.setLayout(new BorderLayout());
-		editAreaPane.setBorder(BorderFactory.createEmptyBorder());
+		editAreaPane = new PaneVertical(theme.editFillColour.getAsColor());
 		editAreaPane.setOpaque(false);
+		
+		editAreaPane.getHeaderPane().setPreferredSize(new Dimension(0, 40));
+		editAreaPane.getHeaderPane().setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		
 		previewAreaPane = new JPanel();
 		previewAreaPane.setLayout(new BorderLayout());
@@ -166,7 +167,7 @@ public class StandardTemplate extends QuaverTemplate {
 
 	@Override
 	public JPanel getEditTitlePanel() {
-		return new JPanel();
+		return editAreaPane.getHeaderPane();
 	}
 
 	@Override

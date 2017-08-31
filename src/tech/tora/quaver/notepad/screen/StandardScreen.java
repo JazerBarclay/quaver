@@ -215,7 +215,8 @@ public class StandardScreen extends StandardLayout {
 					text+=c.data;
 				}
 				setEditText(text);
-				updatePreview("", note.getCells());
+				txtNoteTitle.setText(note.getTitle());
+				updatePreview(note.getTitle(), text);
 
 			}
 		}
@@ -244,7 +245,7 @@ public class StandardScreen extends StandardLayout {
 	public void updatePreview(String title, Cell[] cells) {
 		String text = "";
 		for (Cell c : cells) {
-			text += ("<p>" + "[~" + c.type + "~]" + "</p>");
+			text += ("[~" + c.type + "~]" + "<br>");
 			for (String line : c.data.split("\\r?\\n")) {
 				text += "" + line + "\n";
 			}
@@ -254,13 +255,20 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public void updatePreview(String title, String notes) {
-		if (activeNote == null) return;
+		
+		String compiled = "";
+		
+		for (String text : notes.split("\n")) {
+			compiled += text;
+			compiled += "<br>";
+		}
+		
 		String text = "<html>"
 				+ "<head><title>" + "Quaver" + "</title></head>"
 				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px; word-wrap: break-word;\">" 
 				+ "<h1>" + title + "</h1>"
 				+ "<hr><br/>"
-				+ notes
+				+ compiled
 				+ "</body></html>";
 		
 		previewArea.setText(text);

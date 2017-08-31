@@ -3,10 +3,13 @@ package tech.tora.quaver.notepad.layout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
+import javax.swing.JTextPane;
 
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.template.QuaverTemplate;
@@ -26,9 +29,11 @@ public abstract class StandardLayout extends QuaverLayout {
 
 	protected NotebookList notebooksList;
 	protected BasicList notesList;
-
+	
 	protected AddButton btnAddNotebook;
 	protected AddButton btnAddNote;
+	
+	protected JTextPane txtNoteTitle;
 	
 	protected EditAreaThing editArea;
 	protected PreviewAreaThing previewArea;
@@ -92,6 +97,28 @@ public abstract class StandardLayout extends QuaverLayout {
 			}
 		};
 		
+		txtNoteTitle = new JTextPane();
+		txtNoteTitle.setBackground(theme.editFillColour.getAsColor());
+		txtNoteTitle.setFont(new Font("Helvetica", Font.BOLD, 21));
+		txtNoteTitle.setText("Welcome to Quaver");
+		txtNoteTitle.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// Do Nothing
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				updatePreview(txtNoteTitle.getText(), editArea.getText());
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// Do Nothing
+			}
+		});
+		
 		editArea = new EditAreaThing() {
 			
 			private static final long serialVersionUID = 1L;
@@ -103,7 +130,7 @@ public abstract class StandardLayout extends QuaverLayout {
 			
 			@Override
 			public void onChange() {
-				updatePreview("Title", editArea.getText());
+				updatePreview(txtNoteTitle.getText(), editArea.getText());
 			}
 			
 			@Override
@@ -113,20 +140,14 @@ public abstract class StandardLayout extends QuaverLayout {
 			
 		};
 		
-		editArea.setText("# Welcome to Quaver\nThis is a test preview ([insert build value here])");
-		
+		editArea.setText("This is a test preview of " + getTitle());
 		
 		
 		previewArea = new PreviewAreaThing() {
 			private static final long serialVersionUID = 1L;
 		};
 		
-		previewArea.setText(
-				"<html>"
-				+ "<head><title>" + "Quaver" + "</title></head>"
-				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
-				+ "<h1>Welcome to Quaver</h1><hr><p>This is a test preview ([insert build value here])</p>"
-				+ "</body></html>");
+		updatePreview(txtNoteTitle.getText(), editArea.getText());
 		
 	}
 
@@ -140,6 +161,8 @@ public abstract class StandardLayout extends QuaverLayout {
 		
 		template.getAddNotebookButtonPanel().add(btnAddNotebook);
 		template.getAddNoteButtonPanel().add(btnAddNote);
+		
+		template.getEditTitlePanel().add(txtNoteTitle);
 		
 		template.getEditAreaPanel().add(editArea);
 		template.getPreviewAreaPanel().add(previewArea);
