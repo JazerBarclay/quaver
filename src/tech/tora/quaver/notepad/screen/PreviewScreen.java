@@ -9,6 +9,10 @@ import tech.tora.quaver.types.Notebook;
 
 public class PreviewScreen extends PreviewLayout {
 
+	private Library activeLibrary = null;
+	private Notebook activeNotebook = null;
+	private Note activeNote = null;
+	
 	public PreviewScreen(Theme theme, String projectName, int release, int major, int minor) {
 		super(theme, projectName, release, major, minor);
 	}
@@ -93,32 +97,33 @@ public class PreviewScreen extends PreviewLayout {
 	
 	@Override
 	public Library getActiveLibrary() {
-		return null;
+		return activeLibrary;
 	}
 
 	@Override
 	public void setActiveLibrary(Library library) {
-		
+		this.activeLibrary = library;
 	}
 
 	@Override
 	public Notebook getActiveNotebook() {
-		return null;
+		return activeNotebook;
 	}
 
 	@Override
 	public void setActiveNotebook(Notebook notebook) {
-
+		this.activeNotebook = notebook;
 	}
 
 	@Override
 	public Note getActiveNote() {
-		return null;
+		return activeNote;
 	}
 
 	@Override
 	public void setActiveNote(Note note) {
-		
+		this.activeNote = note;
+		updatePreview(note.getCells());
 	}
 
 	// Edits
@@ -140,12 +145,28 @@ public class PreviewScreen extends PreviewLayout {
 
 	@Override
 	public void updatePreview(Cell[] cells) {
-		
+		String text = "";
+		for (Cell c : cells) {
+			text += ("[~" + c.type + "~]" + "\n");
+			text += c.data;
+			text += "\n";
+		}
+		updatePreview(text);
 	}
 
 	@Override
 	public void updatePreview(String notes) {
+		String title = "Title";
+		if (getActiveNote() != null) title = getActiveNote().getTitle();
+		String text = "<html>"
+				+ "<head><title>" + "Quaver" + "</title></head>"
+				+ "<body style=\"background-color: #393F4B; color: #f2f2f2; font: helvetica; padding: 20px;\">" 
+				+ "<h1>" + title + "</h1>"
+				+ "<hr><br/>"
+				+ notes
+				+ "</body></html>";
 		
+		previewArea.setText(text);
 	}
 	
 }
