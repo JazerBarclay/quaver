@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
+import tech.tora.quaver.notepad.Notepad;
 import tech.tora.quaver.notepad.layout.StandardLayout;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
@@ -14,13 +15,8 @@ import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicListNode;
 import tech.tora.tools.swing.list.ClickListener;
-import tech.tora.tools.system.log.Analytic;
 
 public class StandardScreen extends StandardLayout {
-
-	private Library activeLibrary = null;
-	private Notebook activeNotebook = null;
-	private Note activeNote = null;
 	
 	public StandardScreen(Theme theme, String projectName, int release, int major, int minor) {
 		super(theme, projectName, release, major, minor);
@@ -71,7 +67,7 @@ public class StandardScreen extends StandardLayout {
 				for (Cell c : note.getCells()) {
 					text+=("[~" + c.type + "~]");
 					text+="\n";
-					if (c.type.equals(CellType.CODE.type)) text+=("{~" + c.language + "~}");
+					if (c.type.equals(CellType.CODE.type) && c.language != null) text+=("{~" + c.language + "~}");
 					text+="\n";
 					text+=c.data;
 				}
@@ -112,6 +108,8 @@ public class StandardScreen extends StandardLayout {
 
 	@Override
 	public boolean saveNoteToSystem(Note note) {
+		if (Notepad.newBuild) return false;
+		if (getActiveNote() == null) return false;
 		note.setTitle(txtNoteTitle.getText());
 //		note.clearCells();
 		// Set note cells here
@@ -144,13 +142,8 @@ public class StandardScreen extends StandardLayout {
 	// Actives
 	
 	@Override
-	public Library getActiveLibrary() {
-		return activeLibrary;
-	}
-
-	@Override
 	public void setActiveLibrary(Library library) {
-		this.activeLibrary = library;
+		super.setActiveLibrary(library);
 		// go through list and run active library click method
 		if (library == null) return;
 		for (String key : notebooksList.getNodeKeys()) {
@@ -161,13 +154,8 @@ public class StandardScreen extends StandardLayout {
 	}
 
 	@Override
-	public Notebook getActiveNotebook() {
-		return activeNotebook;
-	}
-
-	@Override
 	public void setActiveNotebook(Notebook notebook) {
-		this.activeNotebook = notebook;
+		super.setActiveNotebook(notebook);
 		if (notebook == null) return;
 		for (String key : notebooksList.getNodeKeys()) {
 			if (notebooksList.getNodes().get(key).UUID.equals(notebook.getUUID())) {
@@ -182,11 +170,6 @@ public class StandardScreen extends StandardLayout {
 				
 			}
 		}
-	}
-
-	@Override
-	public Note getActiveNote() {
-		return activeNote;
 	}
 
 	@Override
@@ -215,23 +198,6 @@ public class StandardScreen extends StandardLayout {
 	}
 
 	// Edits
-	
-	@Override
-	public void setEditText(String text) {
-		editArea.setText(text);
-		editArea.setCaratPos(0);
-	}
-
-	@Override
-	public String getEditText() {
-		return editArea.getText();
-	}
-
-	@Override
-	public void clearEditText() {
-		txtNoteTitle.setText("");
-		setEditText("");
-	}
 
 	@Override
 	public void updatePreview(String title, Cell[] cells) {
@@ -266,11 +232,6 @@ public class StandardScreen extends StandardLayout {
 		
 		previewArea.setText(text);
 		
-	}
-
-	@Override
-	public String getEditTitle() {
-		return txtNoteTitle.getText();
 	}
 
 	private void updatePreview() {
@@ -326,6 +287,14 @@ public class StandardScreen extends StandardLayout {
 					activeCellData += (line + "\n");
 				}
 			}
+			i++;
+			cells = addCellToArray(cells, activeCell);
+		}
+		
+		getActiveNote().clearCells();
+		for (Cell c : cells) {
+			getActiveNote().addCell(c);
+			System.out.println(c.data);
 		}
 		
 //		Cell activeCell = null;
@@ -351,6 +320,7 @@ public class StandardScreen extends StandardLayout {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private String[] addString(String[] oldArray, String newString) {
 		String[] newStringArray = new String[oldArray.length+1];
 		for (int i = 0; i < oldArray.length; i++) newStringArray[i] = oldArray[i];

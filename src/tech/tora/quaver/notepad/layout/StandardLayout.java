@@ -19,6 +19,9 @@ import tech.tora.quaver.notepad.widget.elements.EditAreaThing;
 import tech.tora.quaver.notepad.widget.elements.PreviewAreaThing;
 import tech.tora.quaver.notepad.widget.list.NotebookList;
 import tech.tora.quaver.theme.Theme;
+import tech.tora.quaver.types.Library;
+import tech.tora.quaver.types.Note;
+import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.list.BasicList;
 
 public abstract class StandardLayout extends QuaverLayout {
@@ -38,10 +41,19 @@ public abstract class StandardLayout extends QuaverLayout {
 	protected EditAreaThing editArea;
 	protected PreviewAreaThing previewArea;
 	
+	protected Library activeLibrary = null;
+	protected Notebook activeNotebook = null;
+	protected Note activeNote = null;
+	
 	public StandardLayout(Theme theme, String projectName, int release, int major, int minor) {
 		super(new StandardTemplate(theme), theme, projectName, release, major, minor);
 		setDefaultWidth(1600);
 		setDefaultHeight(800);
+	}
+
+	@Override
+	public JMenuBar getMenu() {
+		return menu;
 	}
 	
 	@Override
@@ -125,7 +137,9 @@ public abstract class StandardLayout extends QuaverLayout {
 
 			@Override
 			public void onSave() {
-				saveNoteToSystem(getActiveNote());
+				if (!saveNoteToSystem(getActiveNote())) {
+					System.out.println("File not saved");
+				}
 			}
 			
 			@Override
@@ -195,10 +209,57 @@ public abstract class StandardLayout extends QuaverLayout {
 		template.getPreviewAreaPanel().add(previewArea);
 		
 	}
+	
+	@Override
+	public void setEditText(String text) {
+		editArea.setText(text);
+		editArea.setCaratPos(0);
+	}
+	
+	@Override
+	public String getEditText() {
+		return editArea.getText();
+	}
 
 	@Override
-	public JMenuBar getMenu() {
-		return menu;
+	public void clearEditText() {
+		txtNoteTitle.setText("");
+		setEditText("");
+	}
+
+	@Override
+	public String getEditTitle() {
+		return txtNoteTitle.getText();
+	}
+
+	@Override
+	public void setActiveLibrary(Library library) {
+		this.activeLibrary = library;
+	}
+		
+	@Override
+	public Library getActiveLibrary() {
+		return activeLibrary;
+	}
+	
+	@Override
+	public void setActiveNotebook(Notebook notebook) {
+		this.activeNotebook = notebook;
+	}
+
+	@Override
+	public Notebook getActiveNotebook() {
+		return activeNotebook;
+	}
+	
+	@Override
+	public void setActiveNote(Note note) {
+		this.activeNote = note;
+	}
+
+	@Override
+	public Note getActiveNote() {
+		return activeNote;
 	}
 
 	
