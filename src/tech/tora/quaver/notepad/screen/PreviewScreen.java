@@ -91,7 +91,6 @@ public class PreviewScreen extends PreviewLayout {
 	public boolean deleteNoteFromSystem(Note note) {
 		return false;
 	}
-	
 
 	// Actives
 	
