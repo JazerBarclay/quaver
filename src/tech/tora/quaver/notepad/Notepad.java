@@ -20,6 +20,8 @@ import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.layout.QuaverLayout;
 import tech.tora.quaver.notepad.screen.PreviewScreen;
 import tech.tora.quaver.notepad.screen.StandardScreen;
+import tech.tora.quaver.notepad.screen.TinyScreen;
+import tech.tora.quaver.notepad.template.TinyTemplate;
 import tech.tora.quaver.theme.Theme;
 import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
@@ -367,6 +369,19 @@ public class Notepad {
 			}
 		});
 
+		JMenuItem tinyView = new JMenuItem("Switch to Tiny Layout");
+		tinyView.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeLayout(new TinyScreen(new TinyTemplate(theme), theme, build.name(), build.release(), build.major(), build.minor()) {
+					@Override
+					public JMenuBar getMenu() {	
+						return generateCustomMenuBar();
+					}
+				});
+			}
+		});
+
 		JMenuItem previewView = new JMenuItem("Switch to Preview Layout");
 		previewView.addActionListener(new ActionListener() {
 			@Override
@@ -382,6 +397,7 @@ public class Notepad {
 
 		if (!(activeLayout instanceof StandardScreen)) view.add(defaultView);
 		view.add(compactView);
+		if (!(activeLayout instanceof TinyScreen)) view.add(tinyView);
 		if (!(activeLayout instanceof PreviewScreen)) view.add(previewView);
 
 		JMenuItem alwaysOnTop = new JMenuItem("Set Always On Top");
