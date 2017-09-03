@@ -22,7 +22,7 @@ public class PreviewList extends AbstractList {
 	public boolean manageDuplicateNode(AbstractListNode original, AbstractListNode newNode) {
 //		return false;
 //		return overwriteDuplicate(original, newNode);
-		return renameAndSaveDuplicate(newNode, newNode.UUID + "_1", newNode.title + "_1");
+		return renameAndSaveDuplicate(newNode, newNode.getUUID() + "_1", newNode.getTitle() + "_1");
 	}
 	
 	

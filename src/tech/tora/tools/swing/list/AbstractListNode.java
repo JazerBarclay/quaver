@@ -2,10 +2,7 @@ package tech.tora.tools.swing.list;
 
 import javax.swing.JPanel;
 
-public abstract class AbstractListNode {
-	
-	public String UUID;
-	public String title;
+public abstract class AbstractListNode extends ListNode {
 	
 	private AbstractListNode parentNode;
 	private AbstractList parentList;
@@ -13,8 +10,7 @@ public abstract class AbstractListNode {
 	public abstract JPanel generateNode();
 	
 	public AbstractListNode(String uuid, String title) {
-		this.UUID = uuid;
-		this.title = title;
+		super(uuid, title);
 	}
 	
 	protected void addNode(AbstractList list) {
@@ -22,7 +18,7 @@ public abstract class AbstractListNode {
 	}
 	
 	protected void removeNode() {
-		parentList.removeNode(this.UUID);
+		parentList.removeNode(this.getUUID());
 	}
 	
 	/** Set the parent - Only for DataList **/

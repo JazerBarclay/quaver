@@ -92,9 +92,9 @@ public abstract class TinyLayout extends QuaverLayout {
 
 			@Override
 			public void onSave() {
-				if (!saveNoteToSystem(getActiveNote())) {
-					System.out.println("File not saved");
-				}
+//				if (!saveNoteToSystem(getActiveNote())) {
+//					System.out.println("File not saved");
+//				}
 			}
 			
 			@Override

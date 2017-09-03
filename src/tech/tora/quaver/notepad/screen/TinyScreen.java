@@ -11,6 +11,7 @@ import tech.tora.quaver.types.CellType;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
+import tech.tora.tools.swing.list.AbstractListNode;
 import tech.tora.tools.swing.list.BasicClickListNode;
 import tech.tora.tools.swing.list.BasicListNode;
 
@@ -74,20 +75,20 @@ public class TinyScreen extends TinyLayout {
 
 		});
 	}
-
+	
 	@Override
-	public void editLibraryInList(Library library) {
-
+	public void updateLibrary(Library library) {
+		
 	}
 
 	@Override
-	public void editNotebookInList(Notebook notebook) {
-
+	public void updateNotebook(Notebook notebook) {
+		
 	}
 
 	@Override
-	public void editNoteInList(Note note) {
-
+	public void updateNote(Note note) {
+		
 	}
 
 	@Override
@@ -106,41 +107,11 @@ public class TinyScreen extends TinyLayout {
 	}
 
 	@Override
-	public boolean saveLibraryToSystem(Library library) {
-		return false;
-	}
-
-	@Override
-	public boolean saveNotebookToSystem(Notebook notebook) {
-		return false;
-	}
-
-	@Override
-	public boolean saveNoteToSystem(Note note) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteLibraryFromSystem(Library library) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteNotebookFromSystem(Notebook notebook) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteNoteFromSystem(Note note) {
-		return false;
-	}
-
-	@Override
 	public void setActiveLibrary(Library library) {
 		super.setActiveLibrary(library);
 		if (library == null) return;
 		for (String key : list.getNodeKeys()) {
-			if (list.getNodes().get(key).UUID.equals(library.getPath() + File.separator + library.getName())) {
+			if (list.getNodes().get(key).getUUID().equals(library.getPath() + File.separator + library.getName())) {
 				System.out.println("ACTIVE: " + library.getName());
 			}
 		}
@@ -151,7 +122,7 @@ public class TinyScreen extends TinyLayout {
 		super.setActiveNotebook(notebook);
 		if (notebook == null) return;
 		for (String key : list.getNodeKeys()) {
-			if (list.getNodes().get(key).UUID.equals(notebook.getUUID())) {
+			if (list.getNodes().get(key).getUUID().equals(notebook.getUUID())) {
 				list.onClick((BasicListNode)list.getNodes().get(key));
 				editArea.setText("");
 				updatePreview("", "");
@@ -170,7 +141,7 @@ public class TinyScreen extends TinyLayout {
 		if (note == null) return;
 		// go through notes list and run active notes click method
 		for (String key : list.getNodeKeys()) {
-			if (list.getNodes().get(key).UUID.equals(note.getUUID())) {
+			if (list.getNodes().get(key).getUUID().equals(note.getUUID())) {
 				list.onClick((BasicListNode)list.getNodes().get(key));
 				
 				String text = "";
@@ -190,13 +161,28 @@ public class TinyScreen extends TinyLayout {
 	}
 
 	@Override
-	public void updatePreview(String title, Cell[] cells) {
+	public void updatePreview(Note note) {
 
 	}
 
 	@Override
 	public void updatePreview(String title, String notes) {
 
+	}
+
+	@Override
+	public AbstractListNode getLibraryNodeFromList() {
+		return null;
+	}
+
+	@Override
+	public AbstractListNode getNotebooNodeFromList() {
+		return null;
+	}
+
+	@Override
+	public AbstractListNode getNoteNodeFromList() {
+		return null;
 	}
 
 }

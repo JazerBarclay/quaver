@@ -13,7 +13,7 @@ public class BasicList extends AbstractList {
 
 	@Override
 	public boolean manageDuplicateNode(AbstractListNode original, AbstractListNode newNode) {
-		renameAndSaveDuplicate(newNode, newNode.UUID + "_1", newNode.title + "_1");
+		renameAndSaveDuplicate(newNode, newNode.getUUID() + "_1", newNode.getTitle() + "_1");
 //		overwriteDuplicate(original, newNode);
 		return true;
 	}

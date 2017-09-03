@@ -6,6 +6,7 @@ import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
+import tech.tora.tools.swing.list.AbstractListNode;
 
 public class PreviewScreen extends PreviewLayout {
 
@@ -33,20 +34,20 @@ public class PreviewScreen extends PreviewLayout {
 	}
 
 	@Override
-	public void editLibraryInList(Library library) {
-
+	public void updateLibrary(Library library) {
+		
 	}
 
 	@Override
-	public void editNotebookInList(Notebook notebook) {
-
+	public void updateNotebook(Notebook notebook) {
+		
 	}
 
 	@Override
-	public void editNoteInList(Note note) {
-
+	public void updateNote(Note note) {
+		
 	}
-
+	
 	@Override
 	public void removeLibraryFromList(Library library) {
 
@@ -60,36 +61,6 @@ public class PreviewScreen extends PreviewLayout {
 	@Override
 	public void removeNoteFromList(Note note) {
 
-	}
-
-	@Override
-	public boolean saveLibraryToSystem(Library library) {
-		return false;
-	}
-
-	@Override
-	public boolean saveNotebookToSystem(Notebook notebook) {
-		return false;
-	}
-
-	@Override
-	public boolean saveNoteToSystem(Note note) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteLibraryFromSystem(Library library) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteNotebookFromSystem(Notebook notebook) {
-		return false;
-	}
-
-	@Override
-	public boolean deleteNoteFromSystem(Note note) {
-		return false;
 	}
 
 	// Actives
@@ -122,7 +93,7 @@ public class PreviewScreen extends PreviewLayout {
 	@Override
 	public void setActiveNote(Note note) {
 		this.activeNote = note;
-		if (note != null) updatePreview("", note.getCells());
+		if (note != null) updatePreview(note);
 		else updatePreview("", "");
 	}
 
@@ -144,9 +115,9 @@ public class PreviewScreen extends PreviewLayout {
 	}
 
 	@Override
-	public void updatePreview(String title, Cell[] cells) {
+	public void updatePreview(Note note) {
 		String text = "";
-		for (Cell c : cells) {
+		for (Cell c : note.getCells()) {
 			text += ("[~" + c.type + "~]" + "\n");
 			text += c.data;
 			text += "\n";
@@ -175,6 +146,21 @@ public class PreviewScreen extends PreviewLayout {
 	@Override
 	public String getEditTitle() {
 		return "";
+	}
+
+	@Override
+	public AbstractListNode getLibraryNodeFromList() {
+		return null;
+	}
+
+	@Override
+	public AbstractListNode getNotebooNodeFromList() {
+		return null;
+	}
+
+	@Override
+	public AbstractListNode getNoteNodeFromList() {
+		return null;
 	}
 	
 }

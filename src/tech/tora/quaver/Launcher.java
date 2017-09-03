@@ -15,7 +15,7 @@ import tech.tora.tools.system.log.Logging;
 public class Launcher {
 
 	public Launcher() {
-		
+
 		Build build = readBuildProperties();
 
 		System.out.println("Launching " + build.name().substring(0, 1).toUpperCase() + build.name().substring(1));

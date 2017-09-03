@@ -40,7 +40,7 @@ public abstract class BasicListNode extends AbstractListNode {
 	}
 	
 	protected JPanel standardGenerate() {
-		JLabel title = new JLabel(this.title);
+		JLabel title = new JLabel(this.getTitle());
 		title.setFont(titleFont);
 		title.setForeground(titleColour.getAsColor());
 		

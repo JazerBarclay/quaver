@@ -63,6 +63,8 @@ public class Notepad {
 		activeLayout = setupInitialLayout();
 		window = setupWindow();
 		window.setVisible(true);
+	
+		System.out.println("Setup Time: " + a.lapTimer() + "ms");
 		
 		// If new build, prompt to create configuration file
 		if (newBuild) {
@@ -80,7 +82,6 @@ public class Notepad {
 						+"\nPlease relaunch to run first time setup after trial.");
 			}
 		}
-		
 		populateLists();
 		System.out.println("Load Time: " + a.lapTimer() + "ms");
 	}

@@ -36,7 +36,7 @@ public abstract class NotebookListNode extends BasicClickListNode {
 	@Override
 	protected JPanel standardGenerate() {
 		
-		JLabel label1 = new JLabel(title);
+		JLabel label1 = new JLabel(getTitle());
 		label1.setFont(titleFont);
 		label1.setForeground(titleColour.getAsColor());
 

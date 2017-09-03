@@ -58,6 +58,11 @@ public abstract class StandardLayout extends QuaverLayout {
 	
 	@Override
 	public void windowCloseAction() {
+		try {
+			saveNoteToSystem(getActiveNote());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Launcher.exit(1, "Close action requested from Standard Layout");
 	}
 
@@ -122,6 +127,7 @@ public abstract class StandardLayout extends QuaverLayout {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
+				updateNote(getActiveNote());
 				updatePreview(txtNoteTitle.getText(), editArea.getText());
 			}
 			
@@ -137,13 +143,14 @@ public abstract class StandardLayout extends QuaverLayout {
 
 			@Override
 			public void onSave() {
-				if (!saveNoteToSystem(getActiveNote())) {
-					System.out.println("File not saved");
-				}
+//				if (!saveNoteToSystem(getActiveNote())) {
+//					System.out.println("File not saved");
+//				}
 			}
 			
 			@Override
 			public void onChange() {
+				updateNote(getActiveNote());
 				updatePreview(txtNoteTitle.getText(), editArea.getText());
 			}
 			
@@ -230,36 +237,6 @@ public abstract class StandardLayout extends QuaverLayout {
 	@Override
 	public String getEditTitle() {
 		return txtNoteTitle.getText();
-	}
-
-	@Override
-	public void setActiveLibrary(Library library) {
-		this.activeLibrary = library;
-	}
-		
-	@Override
-	public Library getActiveLibrary() {
-		return activeLibrary;
-	}
-	
-	@Override
-	public void setActiveNotebook(Notebook notebook) {
-		this.activeNotebook = notebook;
-	}
-
-	@Override
-	public Notebook getActiveNotebook() {
-		return activeNotebook;
-	}
-	
-	@Override
-	public void setActiveNote(Note note) {
-		this.activeNote = note;
-	}
-
-	@Override
-	public Note getActiveNote() {
-		return activeNote;
 	}
 
 	

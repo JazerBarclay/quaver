@@ -13,9 +13,7 @@ import javax.swing.ScrollPaneConstants;
 
 public abstract class AbstractList extends JPanel {
 
-	/**
-	 * 
-	 */
+	/***/
 	private static final long serialVersionUID = 1L;
 	
 	public int width;
@@ -65,7 +63,7 @@ public abstract class AbstractList extends JPanel {
 	private void addNodeToList(AbstractListNode node) {
 		AbstractListNode dupe = null;
 		for (String key : nodes.keySet()) {
-			if (nodes.get(key).UUID.equals(node.UUID)) {
+			if (nodes.get(key).getUUID().equals(node.getUUID())) {
 				dupe = nodes.get(key);
 			}
 		}
@@ -74,12 +72,12 @@ public abstract class AbstractList extends JPanel {
 			manageDuplicateNode(dupe, node);
 		} else {
 			node.setParentList(this);
-			nodes.put(node.UUID, node);
+			nodes.put(node.getUUID(), node);
 		}
 	}
 
 	protected void removeNode(AbstractListNode node) {
-		removeNode(node.UUID);
+		removeNode(node.getUUID());
 	}
 
 	protected void removeNode(String key) {
@@ -88,14 +86,14 @@ public abstract class AbstractList extends JPanel {
 	}
 
 	protected boolean renameAndSaveDuplicate(AbstractListNode newNode, String newuuid, String newTitle) {
-		newNode.UUID = newuuid;
-		newNode.title = newTitle;
+		newNode.setUUID(newuuid);
+		newNode.setTitle(newTitle);
 		addNode(newNode);
 		return true;
 	}
 
 	protected boolean overwriteDuplicate(AbstractListNode originalNode, AbstractListNode newNode) {
-		nodes.replace(originalNode.UUID, newNode);
+		nodes.replace(originalNode.getUUID(), newNode);
 		return true;
 	}
 	

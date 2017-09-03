@@ -127,7 +127,7 @@ public class Notebook {
 	 * @param notebook
 	 * @throws IOException
 	 */
-	public static void writeJSON(Notebook notebook) throws IOException {
+	public static void writeMetaJSON(Notebook notebook) throws IOException {
 		writeJSON(notebook.uuid, notebook.name, notebook.path);
 	}
 	

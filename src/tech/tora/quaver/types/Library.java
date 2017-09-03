@@ -51,6 +51,10 @@ public class Library {
 	// Core Methods
 	/* ------------------------------------------------------ */
 	
+	public static void writeMetaJSON(Library library) {
+		System.out.println("Write to be implemented");
+	}
+	
 	/**
 	 * Check if the library exists in the filesystem
 	 * 

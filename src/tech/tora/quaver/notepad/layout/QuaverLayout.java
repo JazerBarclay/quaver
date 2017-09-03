@@ -5,11 +5,11 @@ import javax.swing.JPanel;
 import tech.tora.quaver.Launcher;
 import tech.tora.quaver.notepad.template.QuaverTemplate;
 import tech.tora.quaver.theme.Theme;
-import tech.tora.quaver.types.Cell;
 import tech.tora.quaver.types.Library;
 import tech.tora.quaver.types.Note;
 import tech.tora.quaver.types.Notebook;
 import tech.tora.tools.swing.layout.Layout;
+import tech.tora.tools.swing.list.ListNode;
 import tech.tora.tools.swing.template.Template;
 
 public abstract class QuaverLayout extends Layout {
@@ -18,6 +18,14 @@ public abstract class QuaverLayout extends Layout {
 	private Theme theme;
 	protected String name;
 	protected int release, major, minor;
+
+	protected ListNode activeLibraryNode = null;
+	protected ListNode activeNotebookNode = null;
+	protected ListNode activeNoteNode = null;
+	
+	protected Library activeLibrary = null;
+	protected Notebook activeNotebook = null;
+	protected Note activeNote = null;
 	
 	public QuaverLayout(QuaverTemplate template, Theme theme, String projectName, int release, int major, int minor) {
 		this.theme = theme;
@@ -62,17 +70,23 @@ public abstract class QuaverLayout extends Layout {
 	// Data Management
 	/* ------------------------------------------------------ */
 	
+	public abstract ListNode getLibraryNodeFromList();
+	
+	public abstract ListNode getNotebooNodeFromList();
+	
+	public abstract ListNode getNoteNodeFromList();
+	
 	public abstract void addLibraryToList(Library library);
 	
 	public abstract void addNotebookToList(Notebook notebook);
 
 	public abstract void addNoteToList(Note note);
 
-	public abstract void editLibraryInList(Library library);
+	public abstract void updateLibrary(Library library);
 	
-	public abstract void editNotebookInList(Notebook notebook);
-
-	public abstract void editNoteInList(Note note);
+	public abstract void updateNotebook(Notebook notebook);
+	
+	public abstract void updateNote(Note note);
 	
 	public abstract void removeLibraryFromList(Library library);
 
@@ -80,34 +94,113 @@ public abstract class QuaverLayout extends Layout {
 
 	public abstract void removeNoteFromList(Note note);
 
-	public abstract boolean saveLibraryToSystem(Library library);
+	public void saveLibraryToSystem(Library library) throws Exception {
+		Library.writeMetaJSON(library);
+	}
 
-	public abstract boolean saveNotebookToSystem(Notebook notebook);
+	public void saveNotebookToSystem(Notebook notebook) throws Exception {
+		Notebook.writeMetaJSON(notebook);
+	}
 
-	public abstract boolean saveNoteToSystem(Note note);
+	public void saveNoteToSystem(Note note) throws Exception {
+		Note.writeContentJSON(note);
+		Note.writeMetaJSON(note);
+	}
 	
-	public abstract boolean deleteLibraryFromSystem(Library library);
+	public void deleteLibraryFromSystem(Library library) throws Exception {
+		System.out.println(library.getPath());
+//		try {
+//		    Files.delete(new File(library.getPath()).toPath());
+//		} catch (NoSuchFileException x) {
+//		    System.err.format("%s: no such" + " file or directory%n", library.getPath());
+//		} catch (DirectoryNotEmptyException x) {
+//		    System.err.format("%s not empty%n", library.getPath());
+//		} catch (IOException x) {
+//		    // File permission problems are caught here.
+//		    System.err.println(x);
+//		}
+	}
 
-	public abstract boolean deleteNotebookFromSystem(Notebook notebook);
+	public void deleteNotebookFromSystem(Notebook notebook) throws Exception {
+		System.out.println(notebook.getPath());
+//		try {
+//		    Files.delete(new File(notebook.getPath()).toPath());
+//		} catch (NoSuchFileException x) {
+//		    System.err.format("%s: no such" + " file or directory%n", notebook.getPath());
+//		} catch (DirectoryNotEmptyException x) {
+//		    System.err.format("%s not empty%n", notebook.getPath());
+//		} catch (IOException x) {
+//		    // File permission problems are caught here.
+//		    System.err.println(x);
+//		}
+	}
 
-	public abstract boolean deleteNoteFromSystem(Note note);
+	public void deleteNoteFromSystem(Note note) throws Exception {
+		System.out.println(note.getPath());
+//		try {
+//		    Files.delete(new File(note.getPath()).toPath());
+//		} catch (NoSuchFileException x) {
+//		    System.err.format("%s: no such" + " file or directory%n", note.getPath());
+//		} catch (DirectoryNotEmptyException x) {
+//		    System.err.format("%s not empty%n", note.getPath());
+//		} catch (IOException x) {
+//		    // File permission problems are caught here.
+//		    System.err.println(x);
+//		}
+	}
 
 	
 	/* ------------------------------------------------------ */
 	// Actives
 	/* ------------------------------------------------------ */
 	
-	public abstract Library getActiveLibrary();
+	public void setActiveLibraryNode (ListNode libraryNode) {
+		this.activeLibraryNode = libraryNode;
+	}
+	
+	public ListNode getActiveLibraryNode() {
+		return activeLibraryNode;
+	}
+	
+	public void setActiveNotebookNode (ListNode notebookNode) {
+		this.activeNotebookNode = notebookNode;
+	}
+	
+	public ListNode getActiveNotebookNode() {
+		return activeNotebookNode;
+	}
+	
+	public void setActiveNoteNode (ListNode noteNode) {
+		this.activeNoteNode = noteNode;
+	}
+	
+	public ListNode getActiveNoteNode() {
+		return activeNoteNode;
+	}
+	
+	public void setActiveLibrary(Library library) {
+		this.activeLibrary = library;
+	}
+	
+	public Library getActiveLibrary() {
+		return activeLibrary;
+	}
+	
+	public void setActiveNotebook(Notebook notebook) {
+		this.activeNotebook = notebook;
+	}
 
-	public abstract void setActiveLibrary(Library library);
+	public Notebook getActiveNotebook() {
+		return activeNotebook;
+	}
+	
+	public void setActiveNote(Note note) {
+		this.activeNote = note;
+	}
 
-	public abstract Notebook getActiveNotebook();
-
-	public abstract void setActiveNotebook(Notebook notebook);
-
-	public abstract Note getActiveNote();
-
-	public abstract void setActiveNote(Note note);
+	public Note getActiveNote() {
+		return activeNote;
+	}
 	
 	
 	/* ------------------------------------------------------ */
@@ -122,8 +215,7 @@ public abstract class QuaverLayout extends Layout {
 
 	public abstract void clearEditText();
 	
-	@Deprecated
-	public abstract void updatePreview(String title, Cell[] cells);
+	public abstract void updatePreview(Note note);
 
 	public abstract void updatePreview(String title, String notes);
 	
