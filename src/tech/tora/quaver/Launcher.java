@@ -16,10 +16,14 @@ public class Launcher {
 
 	public Launcher() {
 
-		Build build = readBuildProperties();
-
-		System.out.println("Launching " + build.name().substring(0, 1).toUpperCase() + build.name().substring(1));
-		System.out.println("Mark " + build.release() +"."+ build.major() + " revision " + build.minor());
+		Build build = null;
+		try {
+			build = readBuildProperties();
+			System.out.println("Launching " + build.name().substring(0, 1).toUpperCase() + build.name().substring(1));
+			System.out.println("Mark " + build.release() +"."+ build.major() + " revision " + build.minor());
+		} catch (Exception e) {
+			Logging.warn("Failure to read build file", "Cannot access or read the build file", e);
+		}
 
 		if (System.getProperty("os.name").contains("Mac")) initMac();
 		
@@ -43,7 +47,7 @@ public class Launcher {
 
 	}
 
-	private Build readBuildProperties() {
+	private Build readBuildProperties() throws Exception {
 		
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -72,7 +76,7 @@ public class Launcher {
 			}
 		}
 		
-		return null;
+		throw new Exception("Build read failure");
 		
 	}
 
