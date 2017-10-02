@@ -15,16 +15,32 @@ public class Configuration {
 	
 	private String name;
 	private String theme;
+	private boolean mac_menu_enabled;
+	private boolean track_external;
+	private int track_external_ms;
+	private boolean adv_autosave;
 	private boolean devmode;
 	private String[] libraries;
 
 	public Configuration() {
-		this(null, null, false);
+		this(null, null, true, true, 1000, true, false);
 	}
 	
-	public Configuration(String name, String theme, boolean devmode) {
+	public Configuration(
+			String name, 
+			String theme, 
+			boolean mac_menu_enabled, 
+			boolean track_external, 
+			int track_external_ms, 
+			boolean adv_autosave, 
+			boolean devmode) 
+	{
 		this.name = name;
 		this.theme = theme;
+		this.mac_menu_enabled = mac_menu_enabled;
+		this.track_external = track_external;
+		this.track_external_ms = track_external_ms;
+		this.adv_autosave = adv_autosave;
 		this.devmode = devmode;
 		libraries = new String[] {};
 	}
@@ -34,6 +50,10 @@ public class Configuration {
 		JSONObject obj = new JSONObject();
 		obj.put("config_name", config.name);
 		obj.put("devmode", config.devmode);
+		obj.put("mac_menu_enabled", config.mac_menu_enabled);
+		obj.put("track_external", config.track_external);
+		obj.put("track_external_ms", config.track_external_ms);
+		obj.put("adv_autosave", config.adv_autosave);
 		obj.put("theme", config.theme);
 
 		JSONArray librariesJSON = new JSONArray();
@@ -63,11 +83,21 @@ public class Configuration {
 
 		String name = (String) jsonObject.get("config_name");
 		boolean devmode = (boolean) jsonObject.get("devmode");
+		boolean mac_menu_enabled = (boolean) jsonObject.get("mac_menu_enabled");
+		boolean track_external = (boolean) jsonObject.get("track_external");
+		int track_external_ms = (Integer) jsonObject.get("track_external_ms");
+		boolean adv_autosave= (Boolean) jsonObject.get("adv_autosave");
 		String theme = (String) jsonObject.get("theme");
 		JSONArray libraries = (JSONArray) jsonObject.get("libraries");
+
+		// TODO - Do checks on all values before passing to config variables
 		
-		config.name  = name;
-		config.devmode  = devmode;
+		config.name = name;
+		config.devmode = devmode;
+		config.mac_menu_enabled = mac_menu_enabled;
+		config.track_external = track_external;
+		config.track_external_ms = track_external_ms;
+		config.adv_autosave = adv_autosave;
 		config.theme = theme;
 		config.libraries = new String[libraries.size()];
 		
@@ -80,6 +110,9 @@ public class Configuration {
 		return config;
 	}
 
+	public static Configuration generateDefault() {
+		return new Configuration("Default", "Default", false, false, 1000, false, true);
+	}
 	
 	/* ------------------------------------------------------ */
 	// Getters and Setters

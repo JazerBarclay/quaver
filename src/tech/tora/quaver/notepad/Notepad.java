@@ -50,7 +50,7 @@ public class Notepad {
 		Analytic a = new Analytic();
 		a.startTimer();
 		if (configuration == null) {
-			configuration = new Configuration("Default", "Default", true);
+			configuration = Configuration.generateDefault();
 			newBuild = true;
 		} else newBuild = false;
 
