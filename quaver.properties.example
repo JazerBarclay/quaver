@@ -1,0 +1,8 @@
+#Sun, 19 Jan 2020 15:03:19 +0000
+project.name=quaver
+build.release=0
+build.major=1
+build.minor=1
+source.folder=${basedir}
+main.class=tech.tora.quaver.Launcher
+class.path=./ json-simple-1.1.1.jar
